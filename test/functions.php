@@ -30,7 +30,7 @@ class SimplePie_Unit_Test2_Group extends Unit_Test2_Group
 
 class SimplePie_Unit_Test2 extends Unit_Test2
 {
-	function SimplePie_Unit_Test2()
+	function __construct()
 	{
 		parent::Unit_Test2();
 		if (strpos($this->name, 'SimplePie') === 0)
@@ -75,7 +75,6 @@ class SimplePie_Feed_Test extends SimplePie_Unit_Test2
 	{
 		$feed = new SimplePie();
 		$feed->set_raw_data($this->data);
-		$feed->enable_cache(false);
 		$feed->init();
 		return $feed;
 	}
@@ -436,7 +435,7 @@ class diveintomark_Atom_Autodiscovery extends SimplePie_Unit_Test2
 	
 	function data()
 	{
-		$this->data['file'] =& new SimplePie_File($this->data['url'], 10, 5, null, SIMPLEPIE_USERAGENT);
+		$this->data['file'] = new SimplePie_File($this->data['url'], 10, 5, null, SIMPLEPIE_USERAGENT);
 		$this->name = $this->data['url'];
 		$this->data['url'] = false;
 	}

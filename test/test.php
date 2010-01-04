@@ -2,11 +2,11 @@
 
 if (version_compare(PHP_VERSION, '5.3', '>='))
 {
-	error_reporting(E_ALL ^ E_DEPRECATED ^ E_USER_DEPRECATED);
+	error_reporting(E_ALL | E_DEPRECATED | E_USER_DEPRECATED | E_STRICT);
 }
 else
 {
-	error_reporting(E_ALL);
+	error_reporting(E_ALL | E_STRICT);
 }
 
 if (version_compare(PHP_VERSION, '5.1', '>='))
