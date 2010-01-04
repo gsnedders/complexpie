@@ -4935,6 +4935,23 @@ class SimplePie_Parse_Date
 	);
 
 	/**
+	 * List of timezones, abbreviation => offset from UTC
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	var $timezone = array(
+		'CDT' => -18000,
+		'CST' => -21600,
+		'EDT' => -14400,
+		'EST' => -18000,
+		'MDT' => -21600,
+		'MST' => -25200,
+		'PDT' => -25200,
+		'PST' => -28800,
+	);
+
+	/**
 	 * Cached PCRE for SimplePie_Parse_Date::$day
 	 *
 	 * @access protected
@@ -5248,6 +5265,11 @@ class SimplePie_Parse_Date
 					$timezone = 0 - $timezone;
 				}
 			}
+			// Character timezone
+			elseif (isset($this->timezone[strtoupper($match[11])]))
+			{
+				$timezone = $this->timezone[strtoupper($match[11])];
+			}
 			// Assume everything else to be -0000
 			else
 			{
@@ -5318,6 +5340,17 @@ class SimplePie_Parse_Date
 			// Month
 			$month = $this->month[strtolower($match[3])];
 
+			// Character timezone
+			if (isset($this->timezone[strtoupper($match[8])]))
+			{
+				$timezone = $this->timezone[strtoupper($match[8])];
+			}
+			// Assume everything else to be -0000
+			else
+			{
+				$timezone = 0;
+			}
+
 			// Deal with 2 digit year
 			if ($match[4] < 50)
 			{
@@ -5328,7 +5361,7 @@ class SimplePie_Parse_Date
 				$match[4] += 1900;
 			}
 
-			return gmmktime($match[5], $match[6], $match[7], $month, $match[2], $match[4]);
+			return gmmktime($match[5], $match[6], $match[7], $month, $match[2], $match[4]) - $timezone;
 		}
 		else
 		{
