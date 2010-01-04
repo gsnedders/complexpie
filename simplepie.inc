@@ -65,12 +65,6 @@ define('SIMPLEPIE_BUILD', gmdate('YmdHis', SimplePie_Misc::parse_date(substr('$D
 define('SIMPLEPIE_URL', 'http://simplepie.org');
 
 /**
- * SimplePie Useragent
- * @see SimplePie::set_useragent()
- */
-define('SIMPLEPIE_USERAGENT', SIMPLEPIE_NAME . '/' . SIMPLEPIE_VERSION . ' (Feed Parser; ' . SIMPLEPIE_URL . '; Allow like Gecko) Build/' . SIMPLEPIE_BUILD);
-
-/**
  * SimplePie Linkback
  */
 define('SIMPLEPIE_LINKBACK', '<a href="' . SIMPLEPIE_URL . '" title="' . SIMPLEPIE_NAME . ' ' . SIMPLEPIE_VERSION . '">' . SIMPLEPIE_NAME . '</a>');
@@ -297,36 +291,6 @@ define('SIMPLEPIE_NAMESPACE_XHTML', 'http://www.w3.org/1999/xhtml');
 define('SIMPLEPIE_IANA_LINK_RELATIONS_REGISTRY', 'http://www.iana.org/assignments/relation/');
 
 /**
- * No file source
- */
-define('SIMPLEPIE_FILE_SOURCE_NONE', 0);
-
-/**
- * Remote file source
- */
-define('SIMPLEPIE_FILE_SOURCE_REMOTE', 1);
-
-/**
- * Local file source
- */
-define('SIMPLEPIE_FILE_SOURCE_LOCAL', 2);
-
-/**
- * fsockopen() file source
- */
-define('SIMPLEPIE_FILE_SOURCE_FSOCKOPEN', 4);
-
-/**
- * cURL file source
- */
-define('SIMPLEPIE_FILE_SOURCE_CURL', 8);
-
-/**
- * file_get_contents() file source
- */
-define('SIMPLEPIE_FILE_SOURCE_FILE_GET_CONTENTS', 16);
-
-/**
  * SimplePie
  *
  * @package SimplePie
@@ -353,55 +317,11 @@ class SimplePie
 	public $sanitize;
 
 	/**
-	 * @var string SimplePie Useragent
-	 * @see SimplePie::set_useragent()
-	 * @access private
-	 */
-	public $useragent = SIMPLEPIE_USERAGENT;
-
-	/**
-	 * @var string Feed URL
-	 * @see SimplePie::set_feed_url()
-	 * @access private
-	 */
-	public $feed_url;
-
-	/**
-	 * @var object Instance of SimplePie_File to use as a feed
-	 * @see SimplePie::set_file()
-	 * @access private
-	 */
-	public $file;
-
-	/**
 	 * @var string Raw feed data
 	 * @see SimplePie::set_raw_data()
 	 * @access private
 	 */
 	public $raw_data;
-
-	/**
-	 * @var int Timeout for fetching remote files
-	 * @see SimplePie::set_timeout()
-	 * @access private
-	 */
-	public $timeout = 10;
-
-	/**
-	 * @var bool Forces fsockopen() to be used for remote files instead
-	 * of cURL, even if a new enough version is installed
-	 * @see SimplePie::force_fsockopen()
-	 * @access private
-	 */
-	public $force_fsockopen = false;
-
-	/**
-	 * @var bool Force the given data/URL to be treated as a feed no matter what
-	 * it appears like
-	 * @see SimplePie::force_feed()
-	 * @access private
-	 */
-	public $force_feed = false;
 
 	/**
 	 * @var bool Enable/Disable XML dump
@@ -431,13 +351,6 @@ class SimplePie
 	 * @access private
 	 */
 	public $parser_class = 'SimplePie_Parser';
-
-	/**
-	 * @var string Class used for fetching feeds
-	 * @see SimplePie::set_file_class()
-	 * @access private
-	 */
-	public $file_class = 'SimplePie_File';
 
 	/**
 	 * @var string Class used for items
@@ -564,7 +477,6 @@ class SimplePie
 	 * @access public
 	 * @since 1.0 Beta 3
 	 * @param string $data RSS or Atom data as a string.
-	 * @see SimplePie::set_feed_url()
 	 */
 	public function set_raw_data($data)
 	{
@@ -716,17 +628,6 @@ class SimplePie
 	}
 
 	/**
-	 * Allows you to override the default user agent string.
-	 *
-	 * @access public
-	 * @param string $ua New user agent string.
-	 */
-	public function set_useragent($ua = SIMPLEPIE_USERAGENT)
-	{
-		$this->useragent = (string) $ua;
-	}
-
-	/**
 	 * Set javascript query string parameter
 	 *
 	 * @access public
@@ -802,9 +703,6 @@ class SimplePie
 			}
 		}
 
-		// Pass whatever was set with config options over to the sanitizer.
-		$this->sanitize->pass_file_data($this->file_class, $this->timeout, $this->useragent, $this->force_fsockopen);
-
 		if ($this->raw_data !== null)
 		{
 			$this->error = null;
@@ -857,7 +755,7 @@ class SimplePie
 						}
 						else
 						{
-							$this->error = "A feed could not be found at $this->feed_url. This does not appear to be a valid RSS or Atom feed.";
+							$this->error = "This does not appear to be a valid RSS or Atom feed.";
 							SimplePie_Misc::error($this->error, E_USER_NOTICE, __FILE__, __LINE__);
 							return false;
 						}
@@ -991,22 +889,6 @@ class SimplePie
 			}
 		}
 		return $this->data['type'];
-	}
-
-	/**
-	 * @todo If we have a perm redirect we should return the new URL
-	 * @todo Also, |atom:link|@rel=self
-	 */
-	public function subscribe_url()
-	{
-		if ($this->feed_url !== null)
-		{
-			return $this->sanitize($this->feed_url, SIMPLEPIE_CONSTRUCT_IRI);
-		}
-		else
-		{
-			return null;
-		}
 	}
 
 	public function get_feed_tags($namespace, $tag)
@@ -8214,12 +8096,6 @@ class SimplePie_Sanitize
 	// Private vars
 	var $base;
 
-	// Options
-	var $file_class = 'SimplePie_File';
-	var $timeout = 10;
-	var $useragent = '';
-	var $force_fsockopen = false;
-
 	var $replace_url_attributes = array(
 		'a' => 'href',
 		'area' => 'href',
@@ -8231,29 +8107,6 @@ class SimplePie_Sanitize
 		'ins' => 'cite',
 		'q' => 'cite'
 	);
-
-	public function pass_file_data($file_class = 'SimplePie_File', $timeout = 10, $useragent = '', $force_fsockopen = false)
-	{
-		if ($file_class)
-		{
-			$this->file_class = (string) $file_class;
-		}
-
-		if ($timeout)
-		{
-			$this->timeout = (string) $timeout;
-		}
-
-		if ($useragent)
-		{
-			$this->useragent = (string) $useragent;
-		}
-
-		if ($force_fsockopen)
-		{
-			$this->force_fsockopen = (string) $force_fsockopen;
-		}
-	}
 
 	/**
 	 * Set element/attribute key/value pairs of HTML attributes
