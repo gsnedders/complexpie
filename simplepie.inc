@@ -497,20 +497,6 @@ class SimplePie
 	public $all_discovered_feeds = array();
 
 	/**
-	 * @var array Stores the default attributes to be stripped by strip_attributes().
-	 * @see SimplePie::strip_attributes()
-	 * @access private
-	 */
-	public $strip_attributes = array('bgsound', 'class', 'expr', 'id', 'style', 'onclick', 'onerror', 'onfinish', 'onmouseover', 'onmouseout', 'onfocus', 'onblur', 'lowsrc', 'dynsrc');
-
-	/**
-	 * @var array Stores the default tags to be stripped by strip_htmltags().
-	 * @see SimplePie::strip_htmltags()
-	 * @access private
-	 */
-	public $strip_htmltags = array('base', 'blink', 'body', 'doctype', 'embed', 'font', 'form', 'frame', 'frameset', 'html', 'iframe', 'input', 'marquee', 'meta', 'noscript', 'object', 'param', 'script', 'style');
-
-	/**
 	 * The SimplePie class contains feed level data and options
 	 *
 	 * There are two ways that you can create a new SimplePie object. The first
@@ -771,9 +757,6 @@ class SimplePie
 		{
 			$this->enable_order_by_date(false);
 			$this->remove_div(false);
-			$this->strip_comments(false);
-			$this->strip_htmltags(false);
-			$this->strip_attributes(false);
 		}
 	}
 
@@ -791,38 +774,6 @@ class SimplePie
 	public function remove_div($enable = true)
 	{
 		$this->sanitize->remove_div($enable);
-	}
-
-	public function strip_htmltags($tags = '', $encode = null)
-	{
-		if ($tags === '')
-		{
-			$tags = $this->strip_htmltags;
-		}
-		$this->sanitize->strip_htmltags($tags);
-		if ($encode !== null)
-		{
-			$this->sanitize->encode_instead_of_strip($tags);
-		}
-	}
-
-	public function encode_instead_of_strip($enable = true)
-	{
-		$this->sanitize->encode_instead_of_strip($enable);
-	}
-
-	public function strip_attributes($attribs = '')
-	{
-		if ($attribs === '')
-		{
-			$attribs = $this->strip_attributes;
-		}
-		$this->sanitize->strip_attributes($attribs);
-	}
-
-	public function strip_comments($strip = false)
-	{
-		$this->sanitize->strip_comments($strip);
 	}
 
 	/**
@@ -5053,31 +5004,6 @@ class SimplePie_Misc
 		return false;
 	}
 
-	/**
-	 * Strip HTML comments
-	 *
-	 * @access public
-	 * @param string $data Data to strip comments from
-	 * @return string Comment stripped string
-	 */
-	public static function strip_comments($data)
-	{
-		$output = '';
-		while (($start = strpos($data, '<!--')) !== false)
-		{
-			$output .= substr($data, 0, $start);
-			if (($end = strpos($data, '-->', $start)) !== false)
-			{
-				$data = substr_replace($data, '', 0, $end + 3);
-			}
-			else
-			{
-				$data = '';
-			}
-		}
-		return $output . $data;
-	}
-
 	public static function parse_date($dt)
 	{
 		$parser = SimplePie_Parse_Date::get();
@@ -8296,10 +8222,6 @@ class SimplePie_Sanitize
 
 	// Options
 	var $remove_div = true;
-	var $strip_htmltags = array('base', 'blink', 'body', 'doctype', 'embed', 'font', 'form', 'frame', 'frameset', 'html', 'iframe', 'input', 'marquee', 'meta', 'noscript', 'object', 'param', 'script', 'style');
-	var $encode_instead_of_strip = false;
-	var $strip_attributes = array('bgsound', 'class', 'expr', 'id', 'style', 'onclick', 'onerror', 'onfinish', 'onmouseover', 'onmouseout', 'onfocus', 'onblur', 'lowsrc', 'dynsrc');
-	var $strip_comments = false;
 	var $file_class = 'SimplePie_File';
 	var $timeout = 10;
 	var $useragent = '';
@@ -8343,54 +8265,6 @@ class SimplePie_Sanitize
 		{
 			$this->force_fsockopen = (string) $force_fsockopen;
 		}
-	}
-
-	public function strip_htmltags($tags = array('base', 'blink', 'body', 'doctype', 'embed', 'font', 'form', 'frame', 'frameset', 'html', 'iframe', 'input', 'marquee', 'meta', 'noscript', 'object', 'param', 'script', 'style'))
-	{
-		if ($tags)
-		{
-			if (is_array($tags))
-			{
-				$this->strip_htmltags = $tags;
-			}
-			else
-			{
-				$this->strip_htmltags = explode(',', $tags);
-			}
-		}
-		else
-		{
-			$this->strip_htmltags = false;
-		}
-	}
-
-	public function encode_instead_of_strip($encode = false)
-	{
-		$this->encode_instead_of_strip = (bool) $encode;
-	}
-
-	public function strip_attributes($attribs = array('bgsound', 'class', 'expr', 'id', 'style', 'onclick', 'onerror', 'onfinish', 'onmouseover', 'onmouseout', 'onfocus', 'onblur', 'lowsrc', 'dynsrc'))
-	{
-		if ($attribs)
-		{
-			if (is_array($attribs))
-			{
-				$this->strip_attributes = $attribs;
-			}
-			else
-			{
-				$this->strip_attributes = explode(',', $attribs);
-			}
-		}
-		else
-		{
-			$this->strip_attributes = false;
-		}
-	}
-
-	public function strip_comments($strip = false)
-	{
-		$this->strip_comments = (bool) $strip;
 	}
 
 	/**
@@ -8443,35 +8317,6 @@ class SimplePie_Sanitize
 
 			if ($type & (SIMPLEPIE_CONSTRUCT_HTML | SIMPLEPIE_CONSTRUCT_XHTML))
 			{
-				// Strip comments
-				if ($this->strip_comments)
-				{
-					$data = SimplePie_Misc::strip_comments($data);
-				}
-
-				// Strip out HTML tags and attributes that might cause various security problems.
-				// Based on recommendations by Mark Pilgrim at:
-				// http://diveintomark.org/archives/2003/06/12/how_to_consume_rss_safely
-				if ($this->strip_htmltags)
-				{
-					foreach ($this->strip_htmltags as $tag)
-					{
-						$pcre = "/<($tag)" . SIMPLEPIE_PCRE_HTML_ATTRIBUTE . "(>(.*)<\/$tag" . SIMPLEPIE_PCRE_HTML_ATTRIBUTE . '>|(\/)?>)/siU';
-						while (preg_match($pcre, $data))
-						{
-							$data = preg_replace_callback($pcre, array(&$this, 'do_strip_htmltags'), $data);
-						}
-					}
-				}
-
-				if ($this->strip_attributes)
-				{
-					foreach ($this->strip_attributes as $attrib)
-					{
-						$data = preg_replace('/(<[A-Za-z][^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3E]*)' . SIMPLEPIE_PCRE_HTML_ATTRIBUTE . trim($attrib) . '(?:\s*=\s*(?:"(?:[^"]*)"|\'(?:[^\']*)\'|(?:[^\x09\x0A\x0B\x0C\x0D\x20\x22\x27\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x3E]*)?))?' . SIMPLEPIE_PCRE_HTML_ATTRIBUTE . '>/', '\1\2\3>', $data);
-					}
-				}
-
 				// Replace relative URLs
 				$this->base = $base;
 				foreach ($this->replace_url_attributes as $element => $attributes)
@@ -8498,56 +8343,28 @@ class SimplePie_Sanitize
 
 	public function replace_urls($data, $tag, $attributes)
 	{
-		if (!is_array($this->strip_htmltags) || !in_array($tag, $this->strip_htmltags))
+		$elements = SimplePie_Misc::get_element($tag, $data);
+		foreach ($elements as $element)
 		{
-			$elements = SimplePie_Misc::get_element($tag, $data);
-			foreach ($elements as $element)
+			if (is_array($attributes))
 			{
-				if (is_array($attributes))
+				foreach ($attributes as $attribute)
 				{
-					foreach ($attributes as $attribute)
+					if (isset($element['attribs'][$attribute]['data']))
 					{
-						if (isset($element['attribs'][$attribute]['data']))
-						{
-							$element['attribs'][$attribute]['data'] = SimplePie_Misc::absolutize_url($element['attribs'][$attribute]['data'], $this->base);
-							$new_element = SimplePie_Misc::element_implode($element);
-							$data = str_replace($element['full'], $new_element, $data);
-							$element['full'] = $new_element;
-						}
+						$element['attribs'][$attribute]['data'] = SimplePie_Misc::absolutize_url($element['attribs'][$attribute]['data'], $this->base);
+						$new_element = SimplePie_Misc::element_implode($element);
+						$data = str_replace($element['full'], $new_element, $data);
+						$element['full'] = $new_element;
 					}
 				}
-				elseif (isset($element['attribs'][$attributes]['data']))
-				{
-					$element['attribs'][$attributes]['data'] = SimplePie_Misc::absolutize_url($element['attribs'][$attributes]['data'], $this->base);
-					$data = str_replace($element['full'], SimplePie_Misc::element_implode($element), $data);
-				}
+			}
+			elseif (isset($element['attribs'][$attributes]['data']))
+			{
+				$element['attribs'][$attributes]['data'] = SimplePie_Misc::absolutize_url($element['attribs'][$attributes]['data'], $this->base);
+				$data = str_replace($element['full'], SimplePie_Misc::element_implode($element), $data);
 			}
 		}
 		return $data;
-	}
-
-	public function do_strip_htmltags($match)
-	{
-		if ($this->encode_instead_of_strip)
-		{
-			if (isset($match[4]) && !in_array(strtolower($match[1]), array('script', 'style')))
-			{
-				$match[1] = htmlspecialchars($match[1], ENT_COMPAT, 'UTF-8');
-				$match[2] = htmlspecialchars($match[2], ENT_COMPAT, 'UTF-8');
-				return "&lt;$match[1]$match[2]&gt;$match[3]&lt;/$match[1]&gt;";
-			}
-			else
-			{
-				return htmlspecialchars($match[0], ENT_COMPAT, 'UTF-8');
-			}
-		}
-		elseif (isset($match[4]) && !in_array(strtolower($match[1]), array('script', 'style')))
-		{
-			return $match[4];
-		}
-		else
-		{
-			return '';
-		}
 	}
 }
