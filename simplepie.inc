@@ -756,7 +756,6 @@ class SimplePie
 		if ($set)
 		{
 			$this->enable_order_by_date(false);
-			$this->remove_div(false);
 		}
 	}
 
@@ -769,11 +768,6 @@ class SimplePie
 	public function set_max_checked_feeds($max = 10)
 	{
 		$this->max_checked_feeds = (int) $max;
-	}
-
-	public function remove_div($enable = true)
-	{
-		$this->sanitize->remove_div($enable);
 	}
 
 	/**
@@ -8221,7 +8215,6 @@ class SimplePie_Sanitize
 	var $base;
 
 	// Options
-	var $remove_div = true;
 	var $file_class = 'SimplePie_File';
 	var $timeout = 10;
 	var $useragent = '';
@@ -8238,11 +8231,6 @@ class SimplePie_Sanitize
 		'ins' => 'cite',
 		'q' => 'cite'
 	);
-
-	public function remove_div($enable = true)
-	{
-		$this->remove_div = (bool) $enable;
-	}
 
 	public function pass_file_data($file_class = 'SimplePie_File', $timeout = 10, $useragent = '', $force_fsockopen = false)
 	{
@@ -8304,15 +8292,8 @@ class SimplePie_Sanitize
 
 			if ($type & SIMPLEPIE_CONSTRUCT_XHTML)
 			{
-				if ($this->remove_div)
-				{
-					$data = preg_replace('/^<div' . SIMPLEPIE_PCRE_XML_ATTRIBUTE . '>/', '', $data);
-					$data = preg_replace('/<\/div>$/', '', $data);
-				}
-				else
-				{
-					$data = preg_replace('/^<div' . SIMPLEPIE_PCRE_XML_ATTRIBUTE . '>/', '<div>', $data);
-				}
+				$data = preg_replace('/^<div' . SIMPLEPIE_PCRE_XML_ATTRIBUTE . '>/', '', $data);
+				$data = preg_replace('/<\/div>$/', '', $data);
 			}
 
 			if ($type & (SIMPLEPIE_CONSTRUCT_HTML | SIMPLEPIE_CONSTRUCT_XHTML))
