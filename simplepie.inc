@@ -820,11 +820,6 @@ class SimplePie
 		$this->sanitize->strip_attributes($attribs);
 	}
 
-	public function set_output_encoding($encoding = 'UTF-8')
-	{
-		$this->sanitize->set_output_encoding($encoding);
-	}
-
 	public function strip_comments($strip = false)
 	{
 		$this->sanitize->strip_comments($strip);
@@ -954,11 +949,6 @@ class SimplePie
 	public function error()
 	{
 		return $this->error;
-	}
-
-	public function get_encoding()
-	{
-		return $this->sanitize->output_encoding;
 	}
 
 	public function handle_content_type($mime = 'text/html')
@@ -8310,7 +8300,6 @@ class SimplePie_Sanitize
 	var $encode_instead_of_strip = false;
 	var $strip_attributes = array('bgsound', 'class', 'expr', 'id', 'style', 'onclick', 'onerror', 'onfinish', 'onmouseover', 'onmouseout', 'onfocus', 'onblur', 'lowsrc', 'dynsrc');
 	var $strip_comments = false;
-	var $output_encoding = 'UTF-8';
 	var $file_class = 'SimplePie_File';
 	var $timeout = 10;
 	var $useragent = '';
@@ -8402,11 +8391,6 @@ class SimplePie_Sanitize
 	public function strip_comments($strip = false)
 	{
 		$this->strip_comments = (bool) $strip;
-	}
-
-	public function set_output_encoding($encoding = 'UTF-8')
-	{
-		$this->output_encoding = (string) $encoding;
 	}
 
 	/**
@@ -8507,11 +8491,6 @@ class SimplePie_Sanitize
 			if ($type & (SIMPLEPIE_CONSTRUCT_TEXT | SIMPLEPIE_CONSTRUCT_IRI))
 			{
 				$data = htmlspecialchars($data, ENT_COMPAT, 'UTF-8');
-			}
-
-			if ($this->output_encoding !== 'UTF-8')
-			{
-				$data = SimplePie_Misc::change_encoding($data, 'UTF-8', $this->output_encoding);
 			}
 		}
 		return $data;
