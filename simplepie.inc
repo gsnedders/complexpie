@@ -411,41 +411,6 @@ class SimplePie
 	public $xml_dump = false;
 
 	/**
-	 * @var bool Enable/Disable Caching
-	 * @see SimplePie::enable_cache()
-	 * @access private
-	 */
-	public $cache = true;
-
-	/**
-	 * @var int Cache duration (in seconds)
-	 * @see SimplePie::set_cache_duration()
-	 * @access private
-	 */
-	public $cache_duration = 3600;
-
-	/**
-	 * @var int Auto-discovery cache duration (in seconds)
-	 * @see SimplePie::set_autodiscovery_cache_duration()
-	 * @access private
-	 */
-	public $autodiscovery_cache_duration = 604800; // 7 Days.
-
-	/**
-	 * @var string Cache location (relative to executing script)
-	 * @see SimplePie::set_cache_location()
-	 * @access private
-	 */
-	public $cache_location = './cache';
-
-	/**
-	 * @var string Function that creates the cache filename
-	 * @see SimplePie::set_cache_name_function()
-	 * @access private
-	 */
-	public $cache_name_function = 'md5';
-
-	/**
 	 * @var bool Reorder feed by date descending
 	 * @see SimplePie::enable_order_by_date()
 	 * @access private
@@ -459,13 +424,6 @@ class SimplePie
 	 * @access private
 	 */
 	public $input_encoding = false;
-
-	/**
-	 * @var string Class used for caching feeds
-	 * @see SimplePie::set_cache_class()
-	 * @access private
-	 */
-	public $cache_class = 'SimplePie_Cache';
 
 	/**
 	 * @var string Class used for parsing feeds
@@ -783,20 +741,6 @@ class SimplePie
 	}
 
 	/**
-	 * Set callback function to create cache filename with
-	 *
-	 * @access public
-	 * @param mixed $function Callback function
-	 */
-	public function set_cache_name_function($function = 'md5')
-	{
-		if (is_callable($function))
-		{
-			$this->cache_name_function = $function;
-		}
-	}
-
-	/**
 	 * Set javascript query string parameter
 	 *
 	 * @access public
@@ -919,14 +863,12 @@ class SimplePie
 		}
 
 		// Pass whatever was set with config options over to the sanitizer.
-		$this->sanitize->pass_cache_data($this->cache, $this->cache_location, $this->cache_name_function, $this->cache_class);
 		$this->sanitize->pass_file_data($this->file_class, $this->timeout, $this->useragent, $this->force_fsockopen);
 
 		if ($this->raw_data !== null)
 		{
 			$this->error = null;
 			$this->data = array();
-			$cache = false;
 
 			$data = $this->raw_data;
 
@@ -8369,10 +8311,6 @@ class SimplePie_Sanitize
 	var $strip_attributes = array('bgsound', 'class', 'expr', 'id', 'style', 'onclick', 'onerror', 'onfinish', 'onmouseover', 'onmouseout', 'onfocus', 'onblur', 'lowsrc', 'dynsrc');
 	var $strip_comments = false;
 	var $output_encoding = 'UTF-8';
-	var $enable_cache = true;
-	var $cache_location = './cache';
-	var $cache_name_function = 'md5';
-	var $cache_class = 'SimplePie_Cache';
 	var $file_class = 'SimplePie_File';
 	var $timeout = 10;
 	var $useragent = '';
@@ -8393,29 +8331,6 @@ class SimplePie_Sanitize
 	public function remove_div($enable = true)
 	{
 		$this->remove_div = (bool) $enable;
-	}
-
-	public function pass_cache_data($enable_cache = true, $cache_location = './cache', $cache_name_function = 'md5', $cache_class = 'SimplePie_Cache')
-	{
-		if (isset($enable_cache))
-		{
-			$this->enable_cache = (bool) $enable_cache;
-		}
-
-		if ($cache_location)
-		{
-			$this->cache_location = (string) $cache_location;
-		}
-
-		if ($cache_name_function)
-		{
-			$this->cache_name_function = (string) $cache_name_function;
-		}
-
-		if ($cache_class)
-		{
-			$this->cache_class = (string) $cache_class;
-		}
 	}
 
 	public function pass_file_data($file_class = 'SimplePie_File', $timeout = 10, $useragent = '', $force_fsockopen = false)
