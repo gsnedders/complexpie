@@ -324,13 +324,6 @@ class SimplePie
 	public $raw_data;
 
 	/**
-	 * @var bool Enable/Disable XML dump
-	 * @see SimplePie::enable_xml_dump()
-	 * @access private
-	 */
-	public $xml_dump = false;
-
-	/**
 	 * @var mixed Force input encoding to be set to the follow value
 	 * (false, or anything type-cast to false, disables this feature)
 	 * @see SimplePie::set_input_encoding()
@@ -635,14 +628,6 @@ class SimplePie
 
 			// There's no point in trying an encoding twice
 			$encodings = array_unique($encodings);
-
-			// If we want the XML, just output that with the most likely encoding and quit
-			if ($this->xml_dump)
-			{
-				header('Content-type: text/xml; charset=' . $encodings[0]);
-				echo $data;
-				exit;
-			}
 
 			// Loop through each possible encoding, till we return something, or run out of possibilities
 			foreach ($encodings as $encoding)
