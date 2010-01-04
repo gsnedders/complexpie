@@ -331,13 +331,6 @@ class SimplePie
 	public $xml_dump = false;
 
 	/**
-	 * @var bool Reorder feed by date descending
-	 * @see SimplePie::enable_order_by_date()
-	 * @access private
-	 */
-	public $order_by_date = true;
-
-	/**
 	 * @var mixed Force input encoding to be set to the follow value
 	 * (false, or anything type-cast to false, disables this feature)
 	 * @see SimplePie::set_input_encoding()
@@ -386,28 +379,6 @@ class SimplePie
 	 * @access private
 	 */
 	public $source_class = 'SimplePie_Source';
-
-	/**
-	 * @var mixed Set javascript query string parameter (false, or
-	 * anything type-cast to false, disables this feature)
-	 * @see SimplePie::set_javascript()
-	 * @access private
-	 */
-	public $javascript = 'js';
-
-	/**
-	 * @var int Maximum number of feeds to check with autodiscovery
-	 * @see SimplePie::set_max_checked_feeds()
-	 * @access private
-	 */
-	public $max_checked_feeds = 10;
-
-	/**
-	 * @var array All the feeds found during the autodiscovery process
-	 * @see SimplePie::get_all_discovered_feeds()
-	 * @access private
-	 */
-	public $all_discovered_feeds = array();
 
 	/**
 	 * The SimplePie class contains feed level data and options
@@ -592,24 +563,6 @@ class SimplePie
 	}
 
 	/**
-	 * Allows you to change which class SimplePie uses for content-type sniffing.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_content_type_sniffer_class($class = 'SimplePie_Content_Type_Sniffer')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Content_Type_Sniffer'))
-		{
-			$this->content_type_sniffer_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Allows you to change which class SimplePie uses item sources.
 	 * Useful when you are overloading or extending SimplePie's default classes.
 	 *
@@ -625,50 +578,6 @@ class SimplePie
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Set javascript query string parameter
-	 *
-	 * @access public
-	 * @param mixed $get Javascript query string parameter
-	 */
-	public function set_javascript($get = 'js')
-	{
-		if ($get)
-		{
-			$this->javascript = (string) $get;
-		}
-		else
-		{
-			$this->javascript = false;
-		}
-	}
-
-	/**
-	 * Set options to make SP as fast as possible.	 Forgoes a
-	 * substantial amount of data sanitization in favor of speed.
-	 *
-	 * @access public
-	 * @param bool $set Whether to set them or not
-	 */
-	public function set_stupidly_fast($set = false)
-	{
-		if ($set)
-		{
-			$this->enable_order_by_date(false);
-		}
-	}
-
-	/**
-	 * Set maximum number of feeds to check with autodiscovery
-	 *
-	 * @access public
-	 * @param int $max Maximum number of feeds to check
-	 */
-	public function set_max_checked_feeds($max = 10)
-	{
-		$this->max_checked_feeds = (int) $max;
 	}
 
 	/**
@@ -1374,11 +1283,6 @@ class SimplePie
 		{
 			return null;
 		}
-	}
-
-	public function get_all_discovered_feeds()
-	{
-		return $this->all_discovered_feeds;
 	}
 
 	public function get_description()
