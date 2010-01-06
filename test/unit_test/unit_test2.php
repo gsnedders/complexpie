@@ -511,22 +511,7 @@ class Unit_Test2_Group
 	 */
 	 function is_a($object, $class_name)
 	 {
-	 	if (function_exists('is_a'))
-	 	{
-	 		return is_a($object, $class_name);
-	 	}
-	 	elseif (!is_object($object))
-	 	{
-	 		return false;
-	 	}
-	 	elseif (get_class($object) == strtolower($class_name))
-	 	{
-	 		return true;
-	 	}
-	 	else
-	 	{
-	 		return is_subclass_of($object, $class_name);
-	 	}
+	 	return $object instanceof $class_name;
 	 }
 
 	/**
@@ -572,7 +557,7 @@ class Unit_Test2_Files
 	 * @param string $dir Folder to get listing for
 	 * @return array
 	 */
-	function get_files($dir)
+	static function get_files($dir)
 	{
 		$files = array();
 		if ($dh = opendir($dir))
@@ -606,7 +591,7 @@ class Unit_Test2_Files
 	 * @param string $b File/folder 2
 	 * @return int
 	 */
-	function sort_files($a, $b)
+	static function sort_files($a, $b)
 	{
 		if (is_dir($a) && is_dir($b))
 		{

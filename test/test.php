@@ -2,11 +2,11 @@
 
 if (version_compare(PHP_VERSION, '5.3', '>='))
 {
-	error_reporting(E_ALL ^ E_DEPRECATED ^ E_USER_DEPRECATED);
+	error_reporting(E_ALL | E_DEPRECATED | E_USER_DEPRECATED | E_STRICT);
 }
 else
 {
-	error_reporting(E_ALL);
+	error_reporting(E_ALL | E_STRICT);
 }
 
 if (version_compare(PHP_VERSION, '5.1', '>='))
@@ -158,8 +158,6 @@ $tests = array(
 	'first_item_date',
 	'first_item_description',
 	'first_item_id',
-	'first_item_latitude',
-	'first_item_longitude',
 	'first_item_permalink',
 	'first_item_title',
 );
@@ -176,17 +174,6 @@ foreach ($tests as $test)
 $test_group = new SimplePie_Unit_Test2_Group('Who knows a <title> from a hole in the ground?');
 $test_group->load_folder('who_knows_a_title_from_a_hole_in_the_ground');
 $master->add($test_group);
-
-$test_group = new SimplePie_Unit_Test2_Group('iTunesRSS');
-$test_group->load_folder('itunes_rss');
-$master->add($test_group);
-
-if (isset($_GET['remote']))
-{
-	$test_group = new SimplePie_Unit_Test2_Group('Atom autodiscovery test suite');
-	$test_group->add(new diveintomark_Atom_Autodiscovery);
-	$master->add($test_group);
-}
 
 $master->run();
 
