@@ -65,9 +65,10 @@ define('SIMPLEPIE_BUILD', gmdate('YmdHis', SimplePie_Misc::parse_date(substr('$D
 define('SIMPLEPIE_URL', 'http://simplepie.org');
 
 /**
- * SimplePie Linkback
+ * SimplePie Useragent
+ * This can be passed into whatever HTTP class you use.
  */
-define('SIMPLEPIE_LINKBACK', '<a href="' . SIMPLEPIE_URL . '" title="' . SIMPLEPIE_NAME . ' ' . SIMPLEPIE_VERSION . '">' . SIMPLEPIE_NAME . '</a>');
+define('SIMPLEPIE_USERAGENT', SIMPLEPIE_NAME . '/' . SIMPLEPIE_VERSION . ' (Feed Parser; ' . SIMPLEPIE_URL . ') Build/' . SIMPLEPIE_BUILD);
 
 /**
  * No known feed type
