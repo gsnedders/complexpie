@@ -24,6 +24,15 @@ For a complete list of contributors:
 * PCRE support
 
 
+## Pulling two-dot-oh
+Assuming you've already forked SimplePie and pulled down the `master` branch, you can pull down the 2.0 branch with:
+
+	git checkout -b two-dot-oh
+	git pull -f simplepie two-dot-oh:two-dot-oh
+
+This will create a new branch, then pull a fresh (non-fast-forward) copy of the `two-dot-oh` branch down.
+
+
 ## License
 [New BSD license](http://www.opensource.org/licenses/bsd-license.php)
 
