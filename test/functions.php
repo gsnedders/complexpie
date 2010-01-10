@@ -30,7 +30,7 @@ class SimplePie_Unit_Test2_Group extends Unit_Test2_Group
 
 class SimplePie_Unit_Test2 extends Unit_Test2
 {
-	function SimplePie_Unit_Test2()
+	function __construct()
 	{
 		parent::Unit_Test2();
 		if (strpos($this->name, 'SimplePie') === 0)
@@ -75,7 +75,6 @@ class SimplePie_Feed_Test extends SimplePie_Unit_Test2
 	{
 		$feed = new SimplePie();
 		$feed->set_raw_data($this->data);
-		$feed->enable_cache(false);
 		$feed->init();
 		return $feed;
 	}
@@ -368,28 +367,6 @@ class SimplePie_First_Item_ID_Test extends SimplePie_First_Item_Test
 	}
 }
 
-class SimplePie_First_Item_Latitude_Test extends SimplePie_First_Item_Test
-{
-	function test()
-	{
-		if ($item = $this->first_item())
-		{
-			$this->result = $item->get_latitude();
-		}
-	}
-}
-
-class SimplePie_First_Item_Longitude_Test extends SimplePie_First_Item_Test
-{
-	function test()
-	{
-		if ($item = $this->first_item())
-		{
-			$this->result = $item->get_longitude();
-		}
-	}
-}
-
 class SimplePie_First_Item_Permalink_Test extends SimplePie_First_Item_Test
 {
 	function test()
@@ -412,31 +389,13 @@ class SimplePie_First_Item_Title_Test extends SimplePie_First_Item_Test
 	}
 }
 
-class SimplePie_iTunesRSS_Channel_Block_Test extends SimplePie_First_Item_Test
-{
-	function test()
-	{
-		if ($item = $this->first_item())
-		{
-			if ($enclosure = $item->get_enclosure())
-			{
-				if ($restriction = $enclosure->get_restriction())
-				{
-					return $restriction->get_relationship();
-				}
-			}
-		}
-		return false;
-	}
-}
-
 class diveintomark_Atom_Autodiscovery extends SimplePie_Unit_Test2
 {
 	var $data = array('url' => 'http://diveintomark.org/tests/client/autodiscovery/');
 	
 	function data()
 	{
-		$this->data['file'] =& new SimplePie_File($this->data['url'], 10, 5, null, SIMPLEPIE_USERAGENT);
+		$this->data['file'] = new SimplePie_File($this->data['url'], 10, 5, null, SIMPLEPIE_USERAGENT);
 		$this->name = $this->data['url'];
 		$this->data['url'] = false;
 	}
