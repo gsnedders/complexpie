@@ -645,7 +645,7 @@ class SimplePie_Feed
 
 		if (!empty($categories))
 		{
-			return SimplePie_Misc::array_unique($categories);
+			return array_unique($categories);
 		}
 		else
 		{
@@ -724,7 +724,7 @@ class SimplePie_Feed
 
 		if (!empty($authors))
 		{
-			return SimplePie_Misc::array_unique($authors);
+			return array_unique($authors);
 		}
 		else
 		{
@@ -795,7 +795,7 @@ class SimplePie_Feed
 
 		if (!empty($contributors))
 		{
-			return SimplePie_Misc::array_unique($contributors);
+			return array_unique($contributors);
 		}
 		else
 		{
@@ -1450,7 +1450,7 @@ class SimplePie_Item
 
 		if (!empty($categories))
 		{
-			return SimplePie_Misc::array_unique($categories);
+			return array_unique($categories);
 		}
 		else
 		{
@@ -1534,7 +1534,7 @@ class SimplePie_Item
 
 		if (!empty($contributors))
 		{
-			return SimplePie_Misc::array_unique($contributors);
+			return array_unique($contributors);
 		}
 		else
 		{
@@ -1604,7 +1604,7 @@ class SimplePie_Item
 
 		if (!empty($authors))
 		{
-			return SimplePie_Misc::array_unique($authors);
+			return array_unique($authors);
 		}
 		elseif (($source = $this->get_source()) && ($authors = $source->get_authors()))
 		{
@@ -1960,7 +1960,7 @@ class SimplePie_Item
 				}
 			}
 
-			$this->data['enclosures'] = array_values(SimplePie_Misc::array_unique($this->data['enclosures']));
+			$this->data['enclosures'] = array_values(array_unique($this->data['enclosures']));
 		}
 		if (!empty($this->data['enclosures']))
 		{
@@ -2126,7 +2126,7 @@ class SimplePie_Source
 
 		if (!empty($categories))
 		{
-			return SimplePie_Misc::array_unique($categories);
+			return array_unique($categories);
 		}
 		else
 		{
@@ -2205,7 +2205,7 @@ class SimplePie_Source
 
 		if (!empty($authors))
 		{
-			return SimplePie_Misc::array_unique($authors);
+			return array_unique($authors);
 		}
 		else
 		{
@@ -2276,7 +2276,7 @@ class SimplePie_Source
 
 		if (!empty($contributors))
 		{
-			return SimplePie_Misc::array_unique($contributors);
+			return array_unique($contributors);
 		}
 		else
 		{
@@ -2670,60 +2670,6 @@ class SimplePie_Misc
 		return $iri->get_iri();
 	}
 
-	public static function remove_dot_segments($input)
-	{
-		$output = '';
-		while (strpos($input, './') !== false || strpos($input, '/.') !== false || $input === '.' || $input === '..')
-		{
-			// A: If the input buffer begins with a prefix of "../" or "./", then remove that prefix from the input buffer; otherwise,
-			if (strpos($input, '../') === 0)
-			{
-				$input = substr($input, 3);
-			}
-			elseif (strpos($input, './') === 0)
-			{
-				$input = substr($input, 2);
-			}
-			// B: if the input buffer begins with a prefix of "/./" or "/.", where "." is a complete path segment, then replace that prefix with "/" in the input buffer; otherwise,
-			elseif (strpos($input, '/./') === 0)
-			{
-				$input = substr_replace($input, '/', 0, 3);
-			}
-			elseif ($input === '/.')
-			{
-				$input = '/';
-			}
-			// C: if the input buffer begins with a prefix of "/../" or "/..", where ".." is a complete path segment, then replace that prefix with "/" in the input buffer and remove the last segment and its preceding "/" (if any) from the output buffer; otherwise,
-			elseif (strpos($input, '/../') === 0)
-			{
-				$input = substr_replace($input, '/', 0, 4);
-				$output = substr_replace($output, '', strrpos($output, '/'));
-			}
-			elseif ($input === '/..')
-			{
-				$input = '/';
-				$output = substr_replace($output, '', strrpos($output, '/'));
-			}
-			// D: if the input buffer consists only of "." or "..", then remove that from the input buffer; otherwise,
-			elseif ($input === '.' || $input === '..')
-			{
-				$input = '';
-			}
-			// E: move the first path segment in the input buffer to the end of the output buffer, including the initial "/" character (if any) and any subsequent characters up to, but not including, the next "/" character or the end of the input buffer
-			elseif (($pos = strpos($input, '/', 1)) !== false)
-			{
-				$output .= substr($input, 0, $pos);
-				$input = substr_replace($input, '', 0, $pos);
-			}
-			else
-			{
-				$output .= $input;
-				$input = '';
-			}
-		}
-		return $output . $input;
-	}
-
 	public static function get_element($realname, $string)
 	{
 		$return = array();
@@ -2850,74 +2796,6 @@ class SimplePie_Misc
 		return $iri->get_iri();
 	}
 
-	public static function percent_encoding_normalization($match)
-	{
-		$integer = hexdec($match[1]);
-		if ($integer >= 0x41 && $integer <= 0x5A || $integer >= 0x61 && $integer <= 0x7A || $integer >= 0x30 && $integer <= 0x39 || $integer === 0x2D || $integer === 0x2E || $integer === 0x5F || $integer === 0x7E)
-		{
-			return chr($integer);
-		}
-		else
-		{
-			return strtoupper($match[0]);
-		}
-	}
-
-	public static function get_curl_version()
-	{
-		if (is_array($curl = curl_version()))
-		{
-			$curl = $curl['version'];
-		}
-		elseif (substr($curl, 0, 5) === 'curl/')
-		{
-			$curl = substr($curl, 5, strcspn($curl, "\x09\x0A\x0B\x0C\x0D", 5));
-		}
-		elseif (substr($curl, 0, 8) === 'libcurl/')
-		{
-			$curl = substr($curl, 8, strcspn($curl, "\x09\x0A\x0B\x0C\x0D", 8));
-		}
-		else
-		{
-			$curl = 0;
-		}
-		return $curl;
-	}
-
-	public static function is_subclass_of($class1, $class2)
-	{
-		if (func_num_args() !== 2)
-		{
-			trigger_error('Wrong parameter count for SimplePie_Misc::is_subclass_of()', E_USER_WARNING);
-		}
-		elseif (version_compare(PHP_VERSION, '5.0.3', '>=') || is_object($class1))
-		{
-			return is_subclass_of($class1, $class2);
-		}
-		elseif (is_string($class1) && is_string($class2))
-		{
-			if (class_exists($class1))
-			{
-				if (class_exists($class2))
-				{
-					$class2 = strtolower($class2);
-					while ($class1 = strtolower(get_parent_class($class1)))
-					{
-						if ($class1 === $class2)
-						{
-							return true;
-						}
-					}
-				}
-			}
-			else
-			{
-				trigger_error('Unknown class passed as parameter', E_USER_WARNNG);
-			}
-		}
-		return false;
-	}
-
 	public static function parse_date($dt)
 	{
 		$parser = SimplePie_Parse_Date::get();
@@ -2934,90 +2812,6 @@ class SimplePie_Misc
 	{
 		$decoder = new SimplePie_Decode_HTML_Entities($data);
 		return $decoder->parse();
-	}
-
-	/**
-	 * Remove RFC822 comments
-	 *
-	 * @param string $data Data to strip comments from
-	 * @return string Comment stripped string
-	 */
-	public static function uncomment_rfc822($string)
-	{
-		$string = (string) $string;
-		$position = 0;
-		$length = strlen($string);
-		$depth = 0;
-
-		$output = '';
-
-		while ($position < $length && ($pos = strpos($string, '(', $position)) !== false)
-		{
-			$output .= substr($string, $position, $pos - $position);
-			$position = $pos + 1;
-			if ($string[$pos - 1] !== '\\')
-			{
-				$depth++;
-				while ($depth && $position < $length)
-				{
-					$position += strcspn($string, '()', $position);
-					if ($string[$position - 1] === '\\')
-					{
-						$position++;
-						continue;
-					}
-					elseif (isset($string[$position]))
-					{
-						switch ($string[$position])
-						{
-							case '(':
-								$depth++;
-								break;
-
-							case ')':
-								$depth--;
-								break;
-						}
-						$position++;
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
-			else
-			{
-				$output .= '(';
-			}
-		}
-		$output .= substr($string, $position);
-
-		return $output;
-	}
-
-	public static function parse_mime($mime)
-	{
-		if (($pos = strpos($mime, ';')) === false)
-		{
-			return trim($mime);
-		}
-		else
-		{
-			return trim(substr($mime, 0, $pos));
-		}
-	}
-
-	public static function htmlspecialchars_decode($string, $quote_style)
-	{
-		if (function_exists('htmlspecialchars_decode'))
-		{
-			return htmlspecialchars_decode($string, $quote_style);
-		}
-		else
-		{
-			return strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS, $quote_style)));
-		}
 	}
 
 	public static function atom_03_construct_type($attribs)
@@ -3114,67 +2908,6 @@ class SimplePie_Misc
 		return (bool) preg_match('/^([A-Za-z0-9\-._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!$&\'()*+,;=@]|(%[0-9ABCDEF]{2}))+$/u', $string);
 	}
 
-	public static function space_seperated_tokens($string)
-	{
-		$space_characters = "\x20\x09\x0A\x0B\x0C\x0D";
-		$string_length = strlen($string);
-
-		$position = strspn($string, $space_characters);
-		$tokens = array();
-
-		while ($position < $string_length)
-		{
-			$len = strcspn($string, $space_characters, $position);
-			$tokens[] = substr($string, $position, $len);
-			$position += $len;
-			$position += strspn($string, $space_characters, $position);
-		}
-
-		return $tokens;
-	}
-
-	public static function array_unique($array)
-	{
-		if (version_compare(PHP_VERSION, '5.2', '>='))
-		{
-			return array_unique($array);
-		}
-		else
-		{
-			$array = (array) $array;
-			$new_array = array();
-			$new_array_strings = array();
-			foreach ($array as $key => $value)
-			{
-				if (is_object($value))
-				{
-					if (method_exists($value, '__toString'))
-					{
-						$cmp = $value->__toString();
-					}
-					else
-					{
-						trigger_error('Object of class ' . get_class($value) . ' could not be converted to string', E_USER_ERROR);
-					}
-				}
-				elseif (is_array($value))
-				{
-					$cmp = (string) reset($value);
-				}
-				else
-				{
-					$cmp = (string) $value;
-				}
-				if (!in_array($cmp, $new_array_strings))
-				{
-					$new_array[$key] = $value;
-					$new_array_strings[] = $cmp;
-				}
-			}
-			return $new_array;
-		}
-	}
-
 	/**
 	 * Converts a unicode codepoint to a UTF-8 character
 	 *
@@ -3209,78 +2942,6 @@ class SimplePie_Misc
 			// U+FFFD REPLACEMENT CHARACTER
 			return "\xEF\xBF\xBD";
 		}
-	}
-
-	/**
-	 * Re-implementation of PHP 5's stripos()
-	 *
-	 * Returns the numeric position of the first occurrence of needle in the
-	 * haystack string.
-	 *
-	 * @param object $haystack
-	 * @param string $needle Note that the needle may be a string of one or more
-	 *		characters. If needle is not a string, it is converted to an integer
-	 *		and applied as the ordinal value of a character.
-	 * @param int $offset The optional offset parameter allows you to specify which
-	 *		character in haystack to start searching. The position returned is still
-	 *		relative to the beginning of haystack.
-	 * @return bool If needle is not found, stripos() will return boolean false.
-	 */
-	public static function stripos($haystack, $needle, $offset = 0)
-	{
-		if (function_exists('stripos'))
-		{
-			return stripos($haystack, $needle, $offset);
-		}
-		else
-		{
-			if (is_string($needle))
-			{
-				$needle = strtolower($needle);
-			}
-			elseif (is_int($needle) || is_bool($needle) || is_double($needle))
-			{
-				$needle = strtolower(chr($needle));
-			}
-			else
-			{
-				trigger_error('needle is not a string or an integer', E_USER_WARNING);
-				return false;
-			}
-
-			return strpos(strtolower($haystack), $needle, $offset);
-		}
-	}
-
-	/**
-	 * Similar to parse_str()
-	 *
-	 * Returns an associative array of name/value pairs, where the value is an
-	 * array of values that have used the same name
-	 *
-	 * @access string
-	 * @param string $str The input string.
-	 * @return array
-	 */
-	public static function parse_str($str)
-	{
-		$return = array();
-		$str = explode('&', $str);
-
-		foreach ($str as $section)
-		{
-			if (strpos($section, '=') !== false)
-			{
-				list($name, $value) = explode('=', $section, 2);
-				$return[urldecode($name)][] = urldecode($value);
-			}
-			else
-			{
-				$return[urldecode($section)][] = null;
-			}
-		}
-
-		return $return;
 	}
 }
 
