@@ -310,48 +310,6 @@ class SimplePie
 	public $raw_data;
 
 	/**
-	 * @var string Class used for parsing feeds
-	 * @see SimplePie::set_parser_class()
-	 * @access private
-	 */
-	public $parser_class = 'SimplePie_Parser';
-
-	/**
-	 * @var string Class used for items
-	 * @see SimplePie::set_item_class()
-	 * @access private
-	 */
-	public $item_class = 'SimplePie_Item';
-
-	/**
-	 * @var string Class used for authors
-	 * @see SimplePie::set_author_class()
-	 * @access private
-	 */
-	public $author_class = 'SimplePie_Author';
-
-	/**
-	 * @var string Class used for categories
-	 * @see SimplePie::set_category_class()
-	 * @access private
-	 */
-	public $category_class = 'SimplePie_Category';
-
-	/**
-	 * @var string Class used for enclosures
-	 * @see SimplePie::set_enclosures_class()
-	 * @access private
-	 */
-	public $enclosure_class = 'SimplePie_Enclosure';
-
-	/**
-	 * @var string Class used for item sources.
-	 * @see SimplePie::set_source_class()
-	 * @access private
-	 */
-	public $source_class = 'SimplePie_Source';
-
-	/**
 	 * The SimplePie class contains feed level data and options
 	 *
 	 * There are two ways that you can create a new SimplePie object. The first
@@ -426,132 +384,6 @@ class SimplePie
 	}
 
 	/**
-	 * Allows you to change which class SimplePie uses for XML parsing.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_parser_class($class = 'SimplePie_Parser')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Parser'))
-		{
-			$this->parser_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Allows you to change which class SimplePie uses for data sanitization.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_sanitize_class($class = 'SimplePie_Sanitize')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Sanitize'))
-		{
-			$this->sanitize = new $class();
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Allows you to change which class SimplePie uses for handling feed items.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_item_class($class = 'SimplePie_Item')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Item'))
-		{
-			$this->item_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Allows you to change which class SimplePie uses for handling author data.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_author_class($class = 'SimplePie_Author')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Author'))
-		{
-			$this->author_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Allows you to change which class SimplePie uses for handling category data.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_category_class($class = 'SimplePie_Category')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Category'))
-		{
-			$this->category_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Allows you to change which class SimplePie uses for feed enclosures.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_enclosure_class($class = 'SimplePie_Enclosure')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Enclosure'))
-		{
-			$this->enclosure_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Allows you to change which class SimplePie uses item sources.
-	 * Useful when you are overloading or extending SimplePie's default classes.
-	 *
-	 * @access public
-	 * @param string $class Name of custom class.
-	 * @link http://php.net/manual/en/language.oop5.basic.php#language.oop5.basic.extends PHP5 extends documentation
-	 */
-	public function set_source_class($class = 'SimplePie_Source')
-	{
-		if (SimplePie_Misc::is_subclass_of($class, 'SimplePie_Source'))
-		{
-			$this->source_class = $class;
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Set element/attribute key/value pairs of HTML attributes
 	 * containing URLs that need to be resolved relative to the feed
 	 *
@@ -591,7 +423,7 @@ class SimplePie
 			$data = $this->raw_data;
 
 			// Create new parser
-			$parser = new $this->parser_class();
+			$parser = new SimplePie_Parser();
 
 			// If it's parsed fine
 			if ($parser->parse($data, 'UTF-8'))
@@ -920,7 +752,7 @@ class SimplePie
 			{
 				$label = $this->sanitize($category['attribs']['']['label'], SIMPLEPIE_CONSTRUCT_TEXT);
 			}
-			$categories[] = new $this->category_class($term, $scheme, $label);
+			$categories[] = new SimplePie_Category($term, $scheme, $label);
 		}
 		foreach ((array) $this->get_channel_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'category') as $category)
 		{
@@ -935,15 +767,15 @@ class SimplePie
 			{
 				$scheme = null;
 			}
-			$categories[] = new $this->category_class($term, $scheme, null);
+			$categories[] = new SimplePie_Category($term, $scheme, null);
 		}
 		foreach ((array) $this->get_channel_tags(SIMPLEPIE_NAMESPACE_DC_11, 'subject') as $category)
 		{
-			$categories[] = new $this->category_class($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$categories[] = new SimplePie_Category($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 		foreach ((array) $this->get_channel_tags(SIMPLEPIE_NAMESPACE_DC_10, 'subject') as $category)
 		{
-			$categories[] = new $this->category_class($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$categories[] = new SimplePie_Category($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 
 		if (!empty($categories))
@@ -991,7 +823,7 @@ class SimplePie
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$authors[] = new $this->author_class($name, $uri, $email);
+				$authors[] = new SimplePie_Author($name, $uri, $email);
 			}
 		}
 		if ($author = $this->get_channel_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'author'))
@@ -1013,16 +845,16 @@ class SimplePie
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$authors[] = new $this->author_class($name, $url, $email);
+				$authors[] = new SimplePie_Author($name, $url, $email);
 			}
 		}
 		foreach ((array) $this->get_channel_tags(SIMPLEPIE_NAMESPACE_DC_11, 'creator') as $author)
 		{
-			$authors[] = new $this->author_class($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$authors[] = new SimplePie_Author($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 		foreach ((array) $this->get_channel_tags(SIMPLEPIE_NAMESPACE_DC_10, 'creator') as $author)
 		{
-			$authors[] = new $this->author_class($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$authors[] = new SimplePie_Author($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 
 		if (!empty($authors))
@@ -1070,7 +902,7 @@ class SimplePie
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$contributors[] = new $this->author_class($name, $uri, $email);
+				$contributors[] = new SimplePie_Author($name, $uri, $email);
 			}
 		}
 		foreach ((array) $this->get_channel_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'contributor') as $contributor)
@@ -1092,7 +924,7 @@ class SimplePie
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$contributors[] = new $this->author_class($name, $url, $email);
+				$contributors[] = new SimplePie_Author($name, $url, $email);
 			}
 		}
 
@@ -1446,7 +1278,7 @@ class SimplePie
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new $this->item_class($this, $items[$key]);
+                    $this->data['items'][] = new SimplePie_Item($this, $items[$key]);
                 }
             }
             if ($items = $this->get_feed_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'entry'))
@@ -1454,7 +1286,7 @@ class SimplePie
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new $this->item_class($this, $items[$key]);
+                    $this->data['items'][] = new SimplePie_Item($this, $items[$key]);
                 }
             }
             if ($items = $this->get_feed_tags(SIMPLEPIE_NAMESPACE_RSS_10, 'item'))
@@ -1462,7 +1294,7 @@ class SimplePie
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new $this->item_class($this, $items[$key]);
+                    $this->data['items'][] = new SimplePie_Item($this, $items[$key]);
                 }
             }
             if ($items = $this->get_feed_tags(SIMPLEPIE_NAMESPACE_RSS_090, 'item'))
@@ -1470,7 +1302,7 @@ class SimplePie
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new $this->item_class($this, $items[$key]);
+                    $this->data['items'][] = new SimplePie_Item($this, $items[$key]);
                 }
             }
             if ($items = $this->get_channel_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'item'))
@@ -1478,7 +1310,7 @@ class SimplePie
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new $this->item_class($this, $items[$key]);
+                    $this->data['items'][] = new SimplePie_Item($this, $items[$key]);
                 }
             }
 		}
@@ -1725,7 +1557,7 @@ class SimplePie_Item
 			{
 				$label = $this->sanitize($category['attribs']['']['label'], SIMPLEPIE_CONSTRUCT_TEXT);
 			}
-			$categories[] = new $this->feed->category_class($term, $scheme, $label);
+			$categories[] = new SimplePie_Category($term, $scheme, $label);
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'category') as $category)
 		{
@@ -1740,15 +1572,15 @@ class SimplePie_Item
 			{
 				$scheme = null;
 			}
-			$categories[] = new $this->feed->category_class($term, $scheme, null);
+			$categories[] = new SimplePie_Category($term, $scheme, null);
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_DC_11, 'subject') as $category)
 		{
-			$categories[] = new $this->feed->category_class($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$categories[] = new SimplePie_Category($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_DC_10, 'subject') as $category)
 		{
-			$categories[] = new $this->feed->category_class($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$categories[] = new SimplePie_Category($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 
 		if (!empty($categories))
@@ -1809,7 +1641,7 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$contributors[] = new $this->feed->author_class($name, $uri, $email);
+				$contributors[] = new SimplePie_Author($name, $uri, $email);
 			}
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'contributor') as $contributor)
@@ -1831,7 +1663,7 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$contributors[] = new $this->feed->author_class($name, $url, $email);
+				$contributors[] = new SimplePie_Author($name, $url, $email);
 			}
 		}
 
@@ -1867,7 +1699,7 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$authors[] = new $this->feed->author_class($name, $uri, $email);
+				$authors[] = new SimplePie_Author($name, $uri, $email);
 			}
 		}
 		if ($author = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'author'))
@@ -1889,20 +1721,20 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$authors[] = new $this->feed->author_class($name, $url, $email);
+				$authors[] = new SimplePie_Author($name, $url, $email);
 			}
 		}
 		if ($author = $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'author'))
 		{
-			$authors[] = new $this->feed->author_class(null, null, $this->sanitize($author[0]['data'], SIMPLEPIE_CONSTRUCT_TEXT));
+			$authors[] = new SimplePie_Author(null, null, $this->sanitize($author[0]['data'], SIMPLEPIE_CONSTRUCT_TEXT));
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_DC_11, 'creator') as $author)
 		{
-			$authors[] = new $this->feed->author_class($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$authors[] = new SimplePie_Author($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_DC_10, 'creator') as $author)
 		{
-			$authors[] = new $this->feed->author_class($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$authors[] = new SimplePie_Author($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 
 		if (!empty($authors))
@@ -2205,7 +2037,7 @@ class SimplePie_Item
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
-					$this->data['enclosures'][] = new $this->feed->enclosure_class($url, $type, $length);
+					$this->data['enclosures'][] = new SimplePie_Enclosure($url, $type, $length);
 				}
 			}
 
@@ -2232,7 +2064,7 @@ class SimplePie_Item
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
-					$this->data['enclosures'][] = new $this->feed->enclosure_class($url, $type, $length);
+					$this->data['enclosures'][] = new SimplePie_Enclosure($url, $type, $length);
 				}
 			}
 
@@ -2259,7 +2091,7 @@ class SimplePie_Item
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
-					$this->data['enclosures'][] = new $this->feed->enclosure_class($url, $type, $length);
+					$this->data['enclosures'][] = new SimplePie_Enclosure($url, $type, $length);
 				}
 			}
 
@@ -2279,7 +2111,7 @@ class SimplePie_Item
 	{
 		if ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'source'))
 		{
-			return new $this->feed->source_class($this, $return[0]);
+			return new SimplePie_Source($this, $return[0]);
 		}
 		else
 		{
@@ -2401,7 +2233,7 @@ class SimplePie_Source
 			{
 				$label = $this->sanitize($category['attribs']['']['label'], SIMPLEPIE_CONSTRUCT_TEXT);
 			}
-			$categories[] = new $this->item->feed->category_class($term, $scheme, $label);
+			$categories[] = new SimplePie_Category($term, $scheme, $label);
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'category') as $category)
 		{
@@ -2416,15 +2248,15 @@ class SimplePie_Source
 			{
 				$scheme = null;
 			}
-			$categories[] = new $this->item->feed->category_class($term, $scheme, null);
+			$categories[] = new SimplePie_Category($term, $scheme, null);
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_DC_11, 'subject') as $category)
 		{
-			$categories[] = new $this->item->feed->category_class($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$categories[] = new SimplePie_Category($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_DC_10, 'subject') as $category)
 		{
-			$categories[] = new $this->item->feed->category_class($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$categories[] = new SimplePie_Category($this->sanitize($category['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 
 		if (!empty($categories))
@@ -2472,7 +2304,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$authors[] = new $this->item->feed->author_class($name, $uri, $email);
+				$authors[] = new SimplePie_Author($name, $uri, $email);
 			}
 		}
 		if ($author = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'author'))
@@ -2494,16 +2326,16 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$authors[] = new $this->item->feed->author_class($name, $url, $email);
+				$authors[] = new SimplePie_Author($name, $url, $email);
 			}
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_DC_11, 'creator') as $author)
 		{
-			$authors[] = new $this->item->feed->author_class($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$authors[] = new SimplePie_Author($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_DC_10, 'creator') as $author)
 		{
-			$authors[] = new $this->item->feed->author_class($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
+			$authors[] = new SimplePie_Author($this->sanitize($author['data'], SIMPLEPIE_CONSTRUCT_TEXT), null, null);
 		}
 
 		if (!empty($authors))
@@ -2551,7 +2383,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$contributors[] = new $this->item->feed->author_class($name, $uri, $email);
+				$contributors[] = new SimplePie_Author($name, $uri, $email);
 			}
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'contributor') as $contributor)
@@ -2573,7 +2405,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$contributors[] = new $this->item->feed->author_class($name, $url, $email);
+				$contributors[] = new SimplePie_Author($name, $url, $email);
 			}
 		}
 
