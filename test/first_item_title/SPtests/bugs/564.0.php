@@ -14,7 +14,7 @@ class SimplePie_First_Item_Title_Test_Bug_564_Test_0 extends SimplePie_First_Ite
 	
 	function expected()
 	{
-		$this->expected = 'ABC';
+		$this->expected = '<blink>A<blink>B</blink>C</blink>';
 	}
 }
 
