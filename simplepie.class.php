@@ -2760,35 +2760,6 @@ class SimplePie_Misc
 		return $message;
 	}
 
-	public static function parse_url($url)
-	{
-		$iri = new SimplePie_IRI($url);
-		return array(
-			'scheme' => (string) $iri->get_scheme(),
-			'authority' => (string) $iri->get_authority(),
-			'path' => (string) $iri->get_path(),
-			'query' => (string) $iri->get_query(),
-			'fragment' => (string) $iri->get_fragment()
-		);
-	}
-
-	public static function compress_parse_url($scheme = '', $authority = '', $path = '', $query = '', $fragment = '')
-	{
-		$iri = new SimplePie_IRI('');
-		$iri->set_scheme($scheme);
-		$iri->set_authority($authority);
-		$iri->set_path($path);
-		$iri->set_query($query);
-		$iri->set_fragment($fragment);
-		return $iri->get_iri();
-	}
-
-	public static function normalize_url($url)
-	{
-		$iri = new SimplePie_IRI($url);
-		return $iri->get_iri();
-	}
-
 	public static function parse_date($dt)
 	{
 		$parser = SimplePie_Parse_Date::get();
