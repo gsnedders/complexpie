@@ -281,7 +281,7 @@ define('SIMPLEPIE_IANA_LINK_RELATIONS_REGISTRY', 'http://www.iana.org/assignment
  *
  * @package SimplePie
  */
-function SimplePie($data)
+function SimplePie($data, $uri = null)
 {
 	// Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
 	if (!extension_loaded('xmlreader'))
@@ -303,6 +303,7 @@ function SimplePie($data)
 	// Create new parser
 	$parser = new SimplePie_Parser();
 	$dom = new DOMDocument();
+	$dom->documentURI = $uri;
 
 	// If it's parsed fine
 	if (@$dom->loadXML($data))
@@ -329,6 +330,7 @@ class SimplePie_Feed
 		$this->dom = $dom;
 		$this->data = $oldtree;
 		$this->sanitize = new SimplePie_Sanitize();
+		$this->dom->ownerDocument->documentURI = html_entity_decode($this->get_link(), ENT_QUOTES, 'UTF-8');
 	}
 	
 	public function get_type()
