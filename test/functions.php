@@ -73,10 +73,7 @@ class SimplePie_Feed_Test extends SimplePie_Unit_Test2
 {
 	function feed()
 	{
-		$feed = new SimplePie();
-		$feed->set_raw_data($this->data);
-		$feed->init();
-		return $feed;
+		return SimplePie($this->data);
 	}
 }
 

@@ -281,193 +281,56 @@ define('SIMPLEPIE_IANA_LINK_RELATIONS_REGISTRY', 'http://www.iana.org/assignment
  *
  * @package SimplePie
  */
-class SimplePie
+function SimplePie($data)
 {
-	/**
-	 * @var array Raw data
-	 * @access private
-	 */
-	public $data = array();
-
-	/**
-	 * @var mixed Error string
-	 * @access private
-	 */
-	public $error;
-
-	/**
-	 * @var object Instance of SimplePie_Sanitize (or other class)
-	 * @see SimplePie::set_sanitize_class()
-	 * @access private
-	 */
-	public $sanitize;
-
-	/**
-	 * @var string Raw feed data
-	 * @see SimplePie::set_raw_data()
-	 * @access private
-	 */
-	public $raw_data;
-
-	/**
-	 * The SimplePie class contains feed level data and options
-	 *
-	 * There are two ways that you can create a new SimplePie object. The first
-	 * is by passing a feed URL as a parameter to the SimplePie constructor
-	 * (as well as optionally setting the cache location and cache expiry). This
-	 * will initialise the whole feed with all of the default settings, and you
-	 * can begin accessing methods and properties immediately.
-	 *
-	 * The second way is to create the SimplePie object with no parameters
-	 * at all. This will enable you to set configuration options. After setting
-	 * them, you must initialise the feed using $feed->init(). At that point the
-	 * object's methods and properties will be available to you. This format is
-	 * what is used throughout this documentation.
-	 *
-	 * @access public
-	 * @since 1.0 Preview Release
-	 */
-	public function __construct()
+	// Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
+	if (!extension_loaded('xmlreader'))
 	{
-		// Other objects, instances created here so we can set options on them
+		static $xml_is_sane = null;
+		if ($xml_is_sane === null)
+		{
+			$parser_check = xml_parser_create();
+			xml_parse_into_struct($parser_check, '<foo>&amp;</foo>', $values);
+			xml_parser_free($parser_check);
+			$xml_is_sane = isset($values[0]['value']);
+		}
+		if (!$xml_is_sane)
+		{
+			return false;
+		}
+	}
+
+	// Create new parser
+	$parser = new SimplePie_Parser();
+	$dom = new DOMDocument();
+
+	// If it's parsed fine
+	if (@$dom->loadXML($data))
+	{
+		$parser->parse($data, 'UTF-8');
+		$tree = $parser->get_data();
+		return new SimplePie_Feed($dom, $tree);
+	}
+	else
+	{
+		// We have an error, just set SimplePie_Misc::error to it and quit
+		$error = sprintf('This XML document is invalid, likely due to invalid characters. XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
+
+		SimplePie_Misc::error($error, E_USER_NOTICE, __FILE__, __LINE__);
+	
+		return false;
+	}
+}
+
+class SimplePie_Feed
+{
+	public function __construct($dom, $oldtree)
+	{
+		$this->dom = $dom;
+		$this->data = $oldtree;
 		$this->sanitize = new SimplePie_Sanitize();
 	}
-
-	/**
-	 * Used for converting object to a string
-	 */
-	public function __toString()
-	{
-		return md5(serialize($this->data));
-	}
-
-	/**
-	 * Remove items that link back to this before destroying this object
-	 */
-	public function __destruct()
-	{
-		if ((version_compare(PHP_VERSION, '5.3', '<') || !gc_enabled()) && !ini_get('zend.ze1_compatibility_mode'))
-		{
-			if (!empty($this->data['items']))
-			{
-				foreach ($this->data['items'] as $item)
-				{
-					$item->__destruct();
-				}
-				unset($item, $this->data['items']);
-			}
-			if (!empty($this->data['ordered_items']))
-			{
-				foreach ($this->data['ordered_items'] as $item)
-				{
-					$item->__destruct();
-				}
-				unset($item, $this->data['ordered_items']);
-			}
-		}
-	}
-
-	/**
-	 * Allows you to use a string of RSS/Atom data instead of a remote feed.
-	 *
-	 * If you have a feed available as a string in PHP, you can tell SimplePie
-	 * to parse that data string instead of a remote feed. Any set feed URL
-	 * takes precedence.
-	 *
-	 * @access public
-	 * @since 1.0 Beta 3
-	 * @param string $data RSS or Atom data as a string.
-	 */
-	public function set_raw_data($data)
-	{
-		$this->raw_data = $data;
-	}
-
-	/**
-	 * Set element/attribute key/value pairs of HTML attributes
-	 * containing URLs that need to be resolved relative to the feed
-	 *
-	 * @access public
-	 * @since 1.0
-	 * @param array $element_attribute Element/attribute key/value pairs
-	 */
-	public function set_url_replacements($element_attribute = array('a' => 'href', 'area' => 'href', 'blockquote' => 'cite', 'del' => 'cite', 'form' => 'action', 'img' => array('longdesc', 'src'), 'input' => 'src', 'ins' => 'cite', 'q' => 'cite'))
-	{
-		$this->sanitize->set_url_replacements($element_attribute);
-	}
-
-	public function init()
-	{
-		// Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
-		if (!extension_loaded('xmlreader'))
-		{
-			static $xml_is_sane = null;
-			if ($xml_is_sane === null)
-			{
-				$parser_check = xml_parser_create();
-				xml_parse_into_struct($parser_check, '<foo>&amp;</foo>', $values);
-				xml_parser_free($parser_check);
-				$xml_is_sane = isset($values[0]['value']);
-			}
-			if (!$xml_is_sane)
-			{
-				return false;
-			}
-		}
-
-		if ($this->raw_data !== null)
-		{
-			$this->error = null;
-			$this->data = array();
-
-			$data = $this->raw_data;
-
-			// Create new parser
-			$parser = new SimplePie_Parser();
-
-			// If it's parsed fine
-			if ($parser->parse($data, 'UTF-8'))
-			{
-				$this->data = $parser->get_data();
-				if ($this->get_type() & ~SIMPLEPIE_TYPE_NONE)
-				{
-					$this->data['build'] = SIMPLEPIE_BUILD;
-					return true;
-				}
-				else
-				{
-					$this->error = "This does not appear to be a valid RSS or Atom feed.";
-					SimplePie_Misc::error($this->error, E_USER_NOTICE, __FILE__, __LINE__);
-					return false;
-				}
-			}
-			else
-			{
-				// We have an error, just set SimplePie_Misc::error to it and quit
-				$this->error = sprintf('This XML document is invalid, likely due to invalid characters. XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
-			}
-
-			SimplePie_Misc::error($this->error, E_USER_NOTICE, __FILE__, __LINE__);
-
-			return false;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Return the error message for the occured error
-	 *
-	 * @access public
-	 * @return string Error message
-	 */
-	public function error()
-	{
-		return $this->error;
-	}
-
+	
 	public function get_type()
 	{
 		if (!isset($this->data['type']))
