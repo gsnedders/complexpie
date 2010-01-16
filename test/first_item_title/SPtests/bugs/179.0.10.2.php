@@ -23,7 +23,7 @@ class SimplePie_First_Item_Title_Test_Bug_179_Post_10_Test_2 extends SimplePie_F
 	
 	function expected()
 	{
-		$this->expected = 'Title 1';
+		$this->expected = 'Title 2';
 	}
 }
 
