@@ -81,4 +81,40 @@ class SimplePie_Content
 				return self::from_textcontent($text_construct);
 		}
 	}
+	
+	public function to_text()
+	{
+		if (is_array($this->node))
+		{
+			$text = '';
+			foreach ($this->node as $node)
+			{
+				$text .= $node->textContent;
+			}
+			return $text;
+		}
+		else
+		{
+			return $this->node->textContent;
+		}
+	}
+	
+	public function to_xml()
+	{
+		if (is_array($this->node))
+		{
+			$xml = '';
+			foreach ($this->node as $node)
+			{
+				$document = $node instanceof DOMDocument ? $node : $node->ownerDocument;
+				$xml .= $document->saveXML($node);
+			}
+			return $xml;
+		}
+		else
+		{
+			$document = $this->node instanceof DOMDocument ? $this->node : $this->node->ownerDocument;
+			return $document->saveXML($node);
+		}
+	}
 }
