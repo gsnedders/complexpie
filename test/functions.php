@@ -58,6 +58,20 @@ class SimplePie_Unit_Test2 extends Unit_Test2
 	
 	function result()
 	{
+		if ($this->result instanceof SimplePie_Content)
+		{
+			$node = $this->result->get_node();
+			if (is_array($node))
+			{
+				$baseURI = $node[0]->baseURI;
+			}
+			else
+			{
+				$baseURI = $node->baseURI;
+			}
+			$sanitizer = new SimplePie_Sanitize();
+			$this->result = $sanitizer->sanitize($this->result->to_xml(), SIMPLEPIE_CONSTRUCT_XHTML, $baseURI);
+		}
 		if ($this->result === $this->expected)
 		{
 			$this->pass();

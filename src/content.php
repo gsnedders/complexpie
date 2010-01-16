@@ -65,7 +65,6 @@ class SimplePie_Content
 								!isset($the_div))
 							{
 								$the_div = $child;
-								$div_count++;
 								break;
 							}
 						
@@ -80,6 +79,11 @@ class SimplePie_Content
 			default:
 				return self::from_textcontent($text_construct);
 		}
+	}
+	
+	public function get_node()
+	{
+		return $this->node;
 	}
 	
 	public function to_text()
@@ -114,7 +118,7 @@ class SimplePie_Content
 		else
 		{
 			$document = $this->node instanceof DOMDocument ? $this->node : $this->node->ownerDocument;
-			return $document->saveXML($node);
+			return $document->saveXML($this->node);
 		}
 	}
 }
