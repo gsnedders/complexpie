@@ -309,7 +309,7 @@ function SimplePie($data)
 	{
 		$parser->parse($data, 'UTF-8');
 		$tree = $parser->get_data();
-		return new SimplePie_Feed($dom, $tree);
+		return new SimplePie_Feed($dom->documentElement, $tree);
 	}
 	else
 	{
