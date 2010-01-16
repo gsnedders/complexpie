@@ -43,7 +43,7 @@ class SimplePie_Content
 				return self::from_escaped_html($text_construct);
 			
 			case 'xhtml':
-				$div_count = null;
+				$use_div = (bool) $text_construct->childNodes->length;
 				foreach ($text_construct->childNodes as $child)
 				{
 					switch ($child->nodeType)
@@ -57,7 +57,8 @@ class SimplePie_Content
 						
 						case XML_ELEMENT_NODE:
 							if ($child->namespaceURI === 'http://www.w3.org/1999/xhtml' &&
-								$child->localName === 'div')
+								$child->localName === 'div' &&
+								!isset($the_div))
 							{
 								$the_div = $child;
 								$div_count++;
@@ -65,17 +66,12 @@ class SimplePie_Content
 							}
 						
 						default:
-							$div_count = false;
+							$use_div = false;
 							break 2;
 					}
 				}
-				$element = $div_count === 1 ? $the_div : $text_construct;
-				$elements = array();
-				foreach ($element->childNodes as $child)
-				{
-					$elements[] = $child;
-				}
-				return new SimplePie_Content($elements, 'application/xhtml+xml');
+				$element = $use_div ? $the_div : $text_construct;
+				return new SimplePie_Content($element, 'application/xhtml+xml');
 				
 			default:
 				return self::from_textcontent($text_construct);
