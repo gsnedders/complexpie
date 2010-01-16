@@ -549,9 +549,56 @@ class SimplePie_Feed
 
 	public function get_title()
 	{
-		if ($return = $this->get_channel_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'title'))
+		if ($return = SimplePie_Misc::get_descendant($this->dom, 'atom:title', array('atom' => SIMPLEPIE_NAMESPACE_ATOM_10), true))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			switch ($return->getAttribute('type'))
+			{
+				case 'html':
+					return $this->sanitize($return->textContent, SIMPLEPIE_CONSTRUCT_HTML, $return->baseURI);
+				
+				case 'xhtml':
+					$divs = 0;
+					$div_count = null;
+					foreach ($return->childNodes as $child)
+					{
+						switch ($child->nodeType)
+						{
+							case XML_TEXT_NODE:
+								if (strspn("\x09\x0A\x0D\x20", $child->data) === strlen($child->data))
+									break;
+							
+							case XML_ELEMENT_NODE:
+								if ($child->namespaceURI === 'http://www.w3.org/1999/xhtml' &&
+									$child->localName === 'div')
+								{
+									$the_div = $child;
+									$div_count++;
+									break;
+								}
+							
+							default:
+								$div_count = false;
+								break 2;
+						}
+					}
+					$document = $return->ownerDocument;
+					$element = $div_count === 1 ? $the_div : $return;
+					$elements = array();
+					foreach ($element->childNodes as $child)
+					{
+						$elements[] = $child;
+					}
+					// XXX: temp
+					$str = '';
+					foreach ($elements as $element)
+					{
+						$str .= $document->saveXML($element);
+					}
+					return $this->sanitize($str, SIMPLEPIE_CONSTRUCT_XHTML, $return->baseURI);
+				
+				default:
+					return $this->sanitize($return->textContent, SIMPLEPIE_CONSTRUCT_TEXT, $return->baseURI);
+			}
 		}
 		elseif ($return = $this->get_channel_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'title'))
 		{
@@ -2907,6 +2954,21 @@ class SimplePie_Misc
 			return "\xEF\xBF\xBD";
 		}
 	}
+	
+	public static function get_descendant($root, $query, $namespace_map = array(), $onlyfirst = false)
+	{
+		$doc = isset($root->ownerDocument) ? $root->ownerDocument : $root;
+		$xpath = new DOMXPath($doc);
+		foreach ($namespace_map as $prefix => $uri)
+		{
+			$xpath->registerNamespace($prefix, $uri);
+		}
+		$result = $xpath->query($query, $root);
+		if ($onlyfirst)
+			return $result->item(0);
+		else
+			return $result;
+	}
 }
 
 /**
@@ -5007,3 +5069,22 @@ class SimplePie_Sanitize
 		return $data;
 	}
 }
+
+/*class SimplePie_Content
+{
+	public function __construct($node, $type)
+	{
+		$this->node = $node;
+		$this->type = $type;
+	}
+	
+	public static function from_escaped_html($escaped_node)
+	{
+		$dom = new DOMDocument();
+		$dom->documentURI = $escaped_node->baseURI;
+		$dom->loadHTML('<div>' . $escaped_node->textContent);
+		$node = $dom->getElementsByTagName('div');
+		$node = $node[0];
+		return new SimplePie_Content($node, 'text/html');
+	}
+}*/
