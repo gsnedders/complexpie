@@ -11,6 +11,10 @@ class SimplePie_Content
 				$new_node[] = $n;
 			$node = $new_node;
 		}
+		if (is_array($node) && count($node) === 1)
+		{
+			$node = $node[0];
+		}
 		$this->node = $node;
 		$this->type = $type;
 	}
