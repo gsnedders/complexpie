@@ -246,13 +246,13 @@ class SimplePie_Feed
 		{
 			return $this->sanitize($return[0]['data'], SIMPLEPIE_CONSTRUCT_HTML, $this->get_base($return[0]));
 		}
-		elseif ($return = $this->get_channel_tags(SIMPLEPIE_NAMESPACE_DC_11, 'title'))
+		elseif ($return = SimplePie_Misc::get_descendant($this->dom, 'dc:title', array('dc' => SIMPLEPIE_NAMESPACE_DC_11), true))
 		{
-			return $this->sanitize($return[0]['data'], SIMPLEPIE_CONSTRUCT_TEXT);
+			return SimplePie_Content::from_textcontent($return);
 		}
-		elseif ($return = $this->get_channel_tags(SIMPLEPIE_NAMESPACE_DC_10, 'title'))
+		elseif ($return = SimplePie_Misc::get_descendant($this->dom, 'dc:title', array('dc' => SIMPLEPIE_NAMESPACE_DC_10), true))
 		{
-			return $this->sanitize($return[0]['data'], SIMPLEPIE_CONSTRUCT_TEXT);
+			return SimplePie_Content::from_textcontent($return);
 		}
 		else
 		{
