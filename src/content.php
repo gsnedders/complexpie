@@ -58,4 +58,8 @@ abstract class SimplePie_Content
 				return self::from_textcontent($text_construct);
 		}
 	}
+	
+	abstract public function to_text();
+	abstract public function to_xml();
+	// abstract public function to_html();
 }
