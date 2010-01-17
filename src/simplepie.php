@@ -43,21 +43,32 @@
  * @todo phpDoc comments
  */
 
-require_once 'author.php';
-require_once 'category.php';
-require_once 'content.php';
-require_once 'content_node.php';
-require_once 'content_string.php';
-require_once 'decode_html_entities.php';
-require_once 'enclosure.php';
-require_once 'feed.php';
-require_once 'iri.php';
-require_once 'item.php';
-require_once 'misc.php';
-require_once 'parse_date.php';
-require_once 'parser.php';
-require_once 'sanitize.php';
-require_once 'source.php';
+if (extension_loaded('spl'))
+{
+	if (spl_autoload_functions() === false && function_exists('__autoload'))
+	{
+		spl_autoload_register('__autoload');
+	}
+	
+	function SimplePie__autoload($classname)
+    {
+        if (substr($classname, 0, 10) === 'SimplePie_')
+        {
+            require_once dirname(__FILE__) . '/' . strtolower(substr($classname, 10)) . '.php';
+        }
+    }
+	
+	spl_autoload_register('SimplePie__autoload');
+}
+else
+{
+	$files = glob(dirname(__FILE__) . '/*.php');
+	foreach ($files as $file)
+	{
+		if ($file !== __FILE__)
+			require_once $file;
+	}
+}
 
 /**
  * SimplePie Name
