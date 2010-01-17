@@ -2,7 +2,7 @@
 
 class SimplePie_Content
 {
-	public function __construct($node, $type)
+	public function __construct($node)
 	{
 		if ($node instanceof DOMNodeList)
 		{
@@ -16,7 +16,6 @@ class SimplePie_Content
 			$node = $node[0];
 		}
 		$this->node = $node;
-		$this->type = $type;
 	}
 	
 	public static function from_textcontent($root)
@@ -26,7 +25,7 @@ class SimplePie_Content
 		$dom->appendChild($dom->createElement('SIMPLEPIE_INTERNAL'));
 		$node = $dom->createTextNode($root->textContent);
 		$dom->firstChild->appendChild($node);
-		return new SimplePie_Content($node, 'text/plain');
+		return new SimplePie_Content($node);
 	}
 	
 	public static function from_escaped_html($escaped_node)
@@ -36,7 +35,7 @@ class SimplePie_Content
 		$dom->loadHTML('<div>' . $escaped_node->textContent);
 		$node = $dom->getElementsByTagName('div');
 		$node = $node[0];
-		return new SimplePie_Content($node->childNodes, 'text/html');
+		return new SimplePie_Content($node->childNodes);
 	}
 	
 	public static function from_atom_text_construct($text_construct)
