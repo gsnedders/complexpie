@@ -46,6 +46,8 @@
 require_once 'author.php';
 require_once 'category.php';
 require_once 'content.php';
+require_once 'content_node.php';
+require_once 'content_string.php';
 require_once 'decode_html_entities.php';
 require_once 'enclosure.php';
 require_once 'feed.php';

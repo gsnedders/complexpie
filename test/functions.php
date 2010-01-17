@@ -60,14 +60,21 @@ class SimplePie_Unit_Test2 extends Unit_Test2
 	{
 		if ($this->result instanceof SimplePie_Content)
 		{
-			$node = $this->result->get_node();
-			if (is_array($node))
+			if ($this->result instanceof SimplePie_Content_Node)
 			{
-				$baseURI = $node[0]->baseURI;
+				$node = $this->result->get_node();
+				if (is_array($node))
+				{
+					$baseURI = $node[0]->baseURI;
+				}
+				else
+				{
+					$baseURI = $node->baseURI;
+				}
 			}
 			else
 			{
-				$baseURI = $node->baseURI;
+				$baseURI = null;
 			}
 			$sanitizer = new SimplePie_Sanitize();
 			$this->result = $sanitizer->sanitize($this->result->to_xml(), SIMPLEPIE_CONSTRUCT_XHTML, $baseURI);
