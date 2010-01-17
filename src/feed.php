@@ -1,6 +1,6 @@
 <?php
 
-class SimplePie_Feed
+class SimplePie_Feed extends SimplePie_Data
 {
 	public function __construct($dom, $oldtree)
 	{
@@ -8,14 +8,6 @@ class SimplePie_Feed
 		$this->data = $oldtree;
 		$this->sanitize = new SimplePie_Sanitize();
 		$this->dom->ownerDocument->documentURI = html_entity_decode($this->get_link(), ENT_QUOTES, 'UTF-8');
-	}
-	
-	public function __get($name)
-	{
-		if (method_exists($this, "get_$name"))
-		{
-			return call_user_func(array($this, "get_$name"));
-		}
 	}
 	
 	public function get_type()
