@@ -273,16 +273,6 @@ define('SIMPLEPIE_NAMESPACE_RSS_10_MODULES_CONTENT', 'http://purl.org/rss/1.0/mo
 define('SIMPLEPIE_NAMESPACE_RSS_20', '');
 
 /**
- * DC 1.0 Namespace
- */
-define('SIMPLEPIE_NAMESPACE_DC_10', 'http://purl.org/dc/elements/1.0/');
-
-/**
- * DC 1.1 Namespace
- */
-define('SIMPLEPIE_NAMESPACE_DC_11', 'http://purl.org/dc/elements/1.1/');
-
-/**
  * XHTML Namespace
  */
 define('SIMPLEPIE_NAMESPACE_XHTML', 'http://www.w3.org/1999/xhtml');
