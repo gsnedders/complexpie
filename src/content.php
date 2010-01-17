@@ -73,7 +73,7 @@ class SimplePie_Content
 					}
 				}
 				$element = $use_div ? $the_div : $text_construct;
-				return new SimplePie_Content($element->childNodes, 'application/xhtml+xml');
+				return new SimplePie_Content($element->childNodes);
 				
 			default:
 				return self::from_textcontent($text_construct);
