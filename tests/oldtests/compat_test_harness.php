@@ -19,7 +19,7 @@ class Unit_Test2
     /**
      * Whether this class is a test
      */
-    function is_test()
+    public function is_test()
     {
         return (bool) $this->test;
     }
@@ -27,7 +27,7 @@ class Unit_Test2
     /**
      * Test name
      */
-    function name()
+    public function name()
     {
         return $this->name;
     }
@@ -59,10 +59,9 @@ class Unit_Test2_Group
     /**
      * Add a test (a Unit_Test2 child, or a Unit_Test2_Group)
      *
-     * @access public
      * @param object $test Test to add
      */
-    function add($test)
+    public function add($test)
     {
         $this->tests[$test->name][] = $test;
     }
@@ -70,10 +69,9 @@ class Unit_Test2_Group
     /**
      * Remove a test
      *
-     * @access public
      * @param string $name Test name
      */
-    function remove($name)
+    public function remove($name)
     {
         unset($this->tests[$name]);
     }
@@ -84,10 +82,9 @@ class Unit_Test2_Group
      * This loads all the Unit_Test2 classes within files with the same
      * extension as this file within the specified folder
      *
-     * @access public
      * @param string $folder Folder name
      */
-    function load_folder($folder)
+    public function load_folder($folder)
     {
         static $extension = null;
         if (!$extension)
@@ -128,12 +125,10 @@ class Unit_Test2_Files
     /**
      * Get a list of files/folders within $dir
      *
-     * @static
-     * @access public
      * @param string $dir Folder to get listing for
      * @return array
      */
-    function get_files($dir)
+    static public function get_files($dir)
     {
         $files = array();
         if ($dh = opendir($dir))
@@ -161,13 +156,11 @@ class Unit_Test2_Files
     /**
      * Sort files/folders with files listed before inner folders
      *
-     * @static
-     * @access public
      * @param string $a File/folder 1
      * @param string $b File/folder 2
      * @return int
      */
-    function sort_files($a, $b)
+    static public function sort_files($a, $b)
     {
         if (is_dir($a) && is_dir($b))
         {
