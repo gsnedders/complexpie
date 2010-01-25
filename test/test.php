@@ -135,6 +135,7 @@ function fnLoadPngs() {
 <?php
 
 require_once '../src/simplepie.php';
+require_once 'unit_test/unit_test2.php';
 require_once 'functions.php';
 
 $tests = array(
