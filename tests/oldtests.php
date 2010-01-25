@@ -51,7 +51,7 @@ class OldTest extends PHPUnit_Framework_TestCase
         
         $tests = array();
         $groups = array($master);
-        while ($group = array_pop($groups))
+        while ($group = array_shift($groups))
         {
             foreach ($group->tests as $group_tests)
             {
