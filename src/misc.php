@@ -13,7 +13,7 @@ class Misc
 	{
 		$return = array();
 		$name = preg_quote($realname, '/');
-		if (preg_match_all("/<($name)" . SIMPLEPIE_PCRE_HTML_ATTRIBUTE . "(>(.*)<\/$name>|(\/)?>)/siU", $string, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE))
+		if (preg_match_all("/<($name)" . PCRE_HTML_ATTRIBUTE . "(>(.*)<\/$name>|(\/)?>)/siU", $string, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE))
 		{
 			for ($i = 0, $total_matches = count($matches); $i < $total_matches; $i++)
 			{
@@ -128,11 +128,11 @@ class Misc
 	{
 		if (isset($attribs['']['mode']) && strtolower(trim($attribs['']['mode']) === 'base64'))
 		{
-			$mode = SIMPLEPIE_CONSTRUCT_BASE64;
+			$mode = CONSTRUCT_BASE64;
 		}
 		else
 		{
-			$mode = SIMPLEPIE_CONSTRUCT_NONE;
+			$mode = CONSTRUCT_NONE;
 		}
 		if (isset($attribs['']['type']))
 		{
@@ -140,23 +140,23 @@ class Misc
 			{
 				case 'text':
 				case 'text/plain':
-					return SIMPLEPIE_CONSTRUCT_TEXT | $mode;
+					return CONSTRUCT_TEXT | $mode;
 
 				case 'html':
 				case 'text/html':
-					return SIMPLEPIE_CONSTRUCT_HTML | $mode;
+					return CONSTRUCT_HTML | $mode;
 
 				case 'xhtml':
 				case 'application/xhtml+xml':
-					return SIMPLEPIE_CONSTRUCT_XHTML | $mode;
+					return CONSTRUCT_XHTML | $mode;
 
 				default:
-					return SIMPLEPIE_CONSTRUCT_NONE | $mode;
+					return CONSTRUCT_NONE | $mode;
 			}
 		}
 		else
 		{
-			return SIMPLEPIE_CONSTRUCT_TEXT | $mode;
+			return CONSTRUCT_TEXT | $mode;
 		}
 	}
 
@@ -167,19 +167,19 @@ class Misc
 			switch (strtolower(trim($attribs['']['type'])))
 			{
 				case 'text':
-					return SIMPLEPIE_CONSTRUCT_TEXT;
+					return CONSTRUCT_TEXT;
 
 				case 'html':
-					return SIMPLEPIE_CONSTRUCT_HTML;
+					return CONSTRUCT_HTML;
 
 				case 'xhtml':
-					return SIMPLEPIE_CONSTRUCT_XHTML;
+					return CONSTRUCT_XHTML;
 
 				default:
-					return SIMPLEPIE_CONSTRUCT_NONE;
+					return CONSTRUCT_NONE;
 			}
 		}
-		return SIMPLEPIE_CONSTRUCT_TEXT;
+		return CONSTRUCT_TEXT;
 	}
 
 	public static function atom_10_content_construct_type($attribs)
@@ -190,26 +190,26 @@ class Misc
 			switch ($type)
 			{
 				case 'text':
-					return SIMPLEPIE_CONSTRUCT_TEXT;
+					return CONSTRUCT_TEXT;
 
 				case 'html':
-					return SIMPLEPIE_CONSTRUCT_HTML;
+					return CONSTRUCT_HTML;
 
 				case 'xhtml':
-					return SIMPLEPIE_CONSTRUCT_XHTML;
+					return CONSTRUCT_XHTML;
 			}
 			if (in_array(substr($type, -4), array('+xml', '/xml')) || substr($type, 0, 5) === 'text/')
 			{
-				return SIMPLEPIE_CONSTRUCT_NONE;
+				return CONSTRUCT_NONE;
 			}
 			else
 			{
-				return SIMPLEPIE_CONSTRUCT_BASE64;
+				return CONSTRUCT_BASE64;
 			}
 		}
 		else
 		{
-			return SIMPLEPIE_CONSTRUCT_TEXT;
+			return CONSTRUCT_TEXT;
 		}
 	}
 

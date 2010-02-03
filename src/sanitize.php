@@ -37,20 +37,20 @@ class Sanitize
 	public function dosanitize($data, $type, $base = '')
 	{
 		$data = trim($data);
-		if ($data !== '' || $type & SIMPLEPIE_CONSTRUCT_IRI)
+		if ($data !== '' || $type & CONSTRUCT_IRI)
 		{
-			if ($type & SIMPLEPIE_CONSTRUCT_BASE64)
+			if ($type & CONSTRUCT_BASE64)
 			{
 				$data = base64_decode($data);
 			}
 
-			if ($type & SIMPLEPIE_CONSTRUCT_XHTML)
+			if ($type & CONSTRUCT_XHTML)
 			{
-				$data = preg_replace('/^<div' . SIMPLEPIE_PCRE_XML_ATTRIBUTE . '>/', '', $data);
+				$data = preg_replace('/^<div' . PCRE_XML_ATTRIBUTE . '>/', '', $data);
 				$data = preg_replace('/<\/div>$/', '', $data);
 			}
 
-			if ($type & (SIMPLEPIE_CONSTRUCT_HTML | SIMPLEPIE_CONSTRUCT_XHTML))
+			if ($type & (CONSTRUCT_HTML | CONSTRUCT_XHTML))
 			{
 				// Replace relative URLs
 				$this->base = $base;
@@ -63,12 +63,12 @@ class Sanitize
 				$data = trim($data);
 			}
 
-			if ($type & SIMPLEPIE_CONSTRUCT_IRI)
+			if ($type & CONSTRUCT_IRI)
 			{
 				$data = Misc::absolutize_url($data, $base);
 			}
 
-			if ($type & (SIMPLEPIE_CONSTRUCT_TEXT | SIMPLEPIE_CONSTRUCT_IRI))
+			if ($type & (CONSTRUCT_TEXT | CONSTRUCT_IRI))
 			{
 				$data = htmlspecialchars($data, ENT_COMPAT, 'UTF-8');
 			}

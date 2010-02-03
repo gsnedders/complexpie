@@ -270,14 +270,14 @@ class IRI
 	 * @param int $case Normalise case
 	 * @return string
 	 */
-	public function replace_invalid_with_pct_encoding($string, $valid_chars, $case = SIMPLEPIE_SAME_CASE)
+	public function replace_invalid_with_pct_encoding($string, $valid_chars, $case = SAME_CASE)
 	{
 		// Normalise case
-		if ($case & SIMPLEPIE_LOWERCASE)
+		if ($case & LOWERCASE)
 		{
 			$string = strtolower($string);
 		}
-		elseif ($case & SIMPLEPIE_UPPERCASE)
+		elseif ($case & UPPERCASE)
 		{
 			$string = strtoupper($string);
 		}
@@ -301,11 +301,11 @@ class IRI
 					// If the character is valid, replace the pct-encoded with the actual character while normalising case
 					if (strpos($valid_chars, $chr) !== false)
 					{
-						if ($case & SIMPLEPIE_LOWERCASE)
+						if ($case & LOWERCASE)
 						{
 							$chr = strtolower($chr);
 						}
-						elseif ($case & SIMPLEPIE_UPPERCASE)
+						elseif ($case & UPPERCASE)
 						{
 							$chr = strtoupper($chr);
 						}
@@ -479,7 +479,7 @@ class IRI
 		}
 		else
 		{
-			$this->host = $this->replace_invalid_with_pct_encoding($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~!$&\'()*+,;=', SIMPLEPIE_LOWERCASE);
+			$this->host = $this->replace_invalid_with_pct_encoding($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~!$&\'()*+,;=', LOWERCASE);
 			$this->valid[__FUNCTION__] = true;
 			return true;
 		}

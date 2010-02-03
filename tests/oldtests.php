@@ -97,7 +97,8 @@ class OldTest extends PHPUnit_Framework_TestCase
 				$baseURI = null;
 			}
 			$sanitizer = new \ComplexPie\Sanitize();
-			$test->result = $sanitizer->dosanitize($test->result->to_xml(), SIMPLEPIE_CONSTRUCT_XHTML, $baseURI);
+			// The 4 below should be \ComplexPie\CONSTRUCT_XHTML, but that errors. WTF PHP?
+			$test->result = $sanitizer->dosanitize($test->result->to_xml(), 4, $baseURI);
 		}
 		$this->assertSame($test->expected, $test->result);
     }

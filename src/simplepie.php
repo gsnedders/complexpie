@@ -77,225 +77,225 @@ else
 /**
  * SimplePie Name
  */
-define('SIMPLEPIE_NAME', 'SimplePie');
+define('NAME', 'SimplePie');
 
 /**
  * SimplePie Version
  */
-define('SIMPLEPIE_VERSION', '2.0-dev');
+define('VERSION', '2.0-dev');
 
 /**
  * SimplePie Build
  * @todo Hardcode for release (there's no need to have to call Misc::parse_date() only every load of simplepie.inc)
  */
-define('SIMPLEPIE_BUILD', gmdate('YmdHis', Misc::parse_date(substr('$Date$', 7, 25)) ? Misc::parse_date(substr('$Date$', 7, 25)) : filemtime(__FILE__)));
+define('BUILD', gmdate('YmdHis', Misc::parse_date(substr('$Date$', 7, 25)) ? Misc::parse_date(substr('$Date$', 7, 25)) : filemtime(__FILE__)));
 
 /**
  * SimplePie Website URL
  */
-define('SIMPLEPIE_URL', 'http://simplepie.org');
+define('URL', 'http://simplepie.org');
 
 /**
  * SimplePie Useragent
  * This can be passed into whatever HTTP class you use.
  */
-define('SIMPLEPIE_USERAGENT', SIMPLEPIE_NAME . '/' . SIMPLEPIE_VERSION . ' (Feed Parser; ' . SIMPLEPIE_URL . ') Build/' . SIMPLEPIE_BUILD);
+define('USERAGENT', NAME . '/' . VERSION . ' (Feed Parser; ' . URL . ') Build/' . BUILD);
 
 /**
  * No known feed type
  */
-define('SIMPLEPIE_TYPE_NONE', 0);
+define('TYPE_NONE', 0);
 
 /**
  * RSS 0.90
  */
-define('SIMPLEPIE_TYPE_RSS_090', 1);
+define('TYPE_RSS_090', 1);
 
 /**
  * RSS 0.91 (Netscape)
  */
-define('SIMPLEPIE_TYPE_RSS_091_NETSCAPE', 2);
+define('TYPE_RSS_091_NETSCAPE', 2);
 
 /**
  * RSS 0.91 (Userland)
  */
-define('SIMPLEPIE_TYPE_RSS_091_USERLAND', 4);
+define('TYPE_RSS_091_USERLAND', 4);
 
 /**
  * RSS 0.91 (both Netscape and Userland)
  */
-define('SIMPLEPIE_TYPE_RSS_091', 6);
+define('TYPE_RSS_091', 6);
 
 /**
  * RSS 0.92
  */
-define('SIMPLEPIE_TYPE_RSS_092', 8);
+define('TYPE_RSS_092', 8);
 
 /**
  * RSS 0.93
  */
-define('SIMPLEPIE_TYPE_RSS_093', 16);
+define('TYPE_RSS_093', 16);
 
 /**
  * RSS 0.94
  */
-define('SIMPLEPIE_TYPE_RSS_094', 32);
+define('TYPE_RSS_094', 32);
 
 /**
  * RSS 1.0
  */
-define('SIMPLEPIE_TYPE_RSS_10', 64);
+define('TYPE_RSS_10', 64);
 
 /**
  * RSS 2.0
  */
-define('SIMPLEPIE_TYPE_RSS_20', 128);
+define('TYPE_RSS_20', 128);
 
 /**
  * RDF-based RSS
  */
-define('SIMPLEPIE_TYPE_RSS_RDF', 65);
+define('TYPE_RSS_RDF', 65);
 
 /**
  * Non-RDF-based RSS (truly intended as syndication format)
  */
-define('SIMPLEPIE_TYPE_RSS_SYNDICATION', 190);
+define('TYPE_RSS_SYNDICATION', 190);
 
 /**
  * All RSS
  */
-define('SIMPLEPIE_TYPE_RSS_ALL', 255);
+define('TYPE_RSS_ALL', 255);
 
 /**
  * Atom 0.3
  */
-define('SIMPLEPIE_TYPE_ATOM_03', 256);
+define('TYPE_ATOM_03', 256);
 
 /**
  * Atom 1.0
  */
-define('SIMPLEPIE_TYPE_ATOM_10', 512);
+define('TYPE_ATOM_10', 512);
 
 /**
  * All Atom
  */
-define('SIMPLEPIE_TYPE_ATOM_ALL', 768);
+define('TYPE_ATOM_ALL', 768);
 
 /**
  * All feed types
  */
-define('SIMPLEPIE_TYPE_ALL', 1023);
+define('TYPE_ALL', 1023);
 
 /**
  * No construct
  */
-define('SIMPLEPIE_CONSTRUCT_NONE', 0);
+define('CONSTRUCT_NONE', 0);
 
 /**
  * Text construct
  */
-define('SIMPLEPIE_CONSTRUCT_TEXT', 1);
+define('CONSTRUCT_TEXT', 1);
 
 /**
  * HTML construct
  */
-define('SIMPLEPIE_CONSTRUCT_HTML', 2);
+define('CONSTRUCT_HTML', 2);
 
 /**
  * XHTML construct
  */
-define('SIMPLEPIE_CONSTRUCT_XHTML', 4);
+define('CONSTRUCT_XHTML', 4);
 
 /**
  * base64-encoded construct
  */
-define('SIMPLEPIE_CONSTRUCT_BASE64', 8);
+define('CONSTRUCT_BASE64', 8);
 
 /**
  * IRI construct
  */
-define('SIMPLEPIE_CONSTRUCT_IRI', 16);
+define('CONSTRUCT_IRI', 16);
 
 /**
  * All constructs
  */
-define('SIMPLEPIE_CONSTRUCT_ALL', 63);
+define('CONSTRUCT_ALL', 63);
 
 /**
  * Don't change case
  */
-define('SIMPLEPIE_SAME_CASE', 1);
+define('SAME_CASE', 1);
 
 /**
  * Change to lowercase
  */
-define('SIMPLEPIE_LOWERCASE', 2);
+define('LOWERCASE', 2);
 
 /**
  * Change to uppercase
  */
-define('SIMPLEPIE_UPPERCASE', 4);
+define('UPPERCASE', 4);
 
 /**
  * PCRE for HTML attributes
  */
-define('SIMPLEPIE_PCRE_HTML_ATTRIBUTE', '((?:[\x09\x0A\x0B\x0C\x0D\x20]+[^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3D\x3E]*(?:[\x09\x0A\x0B\x0C\x0D\x20]*=[\x09\x0A\x0B\x0C\x0D\x20]*(?:"(?:[^"]*)"|\'(?:[^\']*)\'|(?:[^\x09\x0A\x0B\x0C\x0D\x20\x22\x27\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x3E]*)?))?)*)[\x09\x0A\x0B\x0C\x0D\x20]*');
+define('PCRE_HTML_ATTRIBUTE', '((?:[\x09\x0A\x0B\x0C\x0D\x20]+[^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3D\x3E]*(?:[\x09\x0A\x0B\x0C\x0D\x20]*=[\x09\x0A\x0B\x0C\x0D\x20]*(?:"(?:[^"]*)"|\'(?:[^\']*)\'|(?:[^\x09\x0A\x0B\x0C\x0D\x20\x22\x27\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x3E]*)?))?)*)[\x09\x0A\x0B\x0C\x0D\x20]*');
 
 /**
  * PCRE for XML attributes
  */
-define('SIMPLEPIE_PCRE_XML_ATTRIBUTE', '((?:\s+(?:(?:[^\s:]+:)?[^\s:]+)\s*=\s*(?:"(?:[^"]*)"|\'(?:[^\']*)\'))*)\s*');
+define('PCRE_XML_ATTRIBUTE', '((?:\s+(?:(?:[^\s:]+:)?[^\s:]+)\s*=\s*(?:"(?:[^"]*)"|\'(?:[^\']*)\'))*)\s*');
 
 /**
  * XML Namespace
  */
-define('SIMPLEPIE_NAMESPACE_XML', 'http://www.w3.org/XML/1998/namespace');
+define('NAMESPACE_XML', 'http://www.w3.org/XML/1998/namespace');
 
 /**
  * Atom 1.0 Namespace
  */
-define('SIMPLEPIE_NAMESPACE_ATOM_10', 'http://www.w3.org/2005/Atom');
+define('NAMESPACE_ATOM_10', 'http://www.w3.org/2005/Atom');
 
 /**
  * Atom 0.3 Namespace
  */
-define('SIMPLEPIE_NAMESPACE_ATOM_03', 'http://purl.org/atom/ns#');
+define('NAMESPACE_ATOM_03', 'http://purl.org/atom/ns#');
 
 /**
  * RDF Namespace
  */
-define('SIMPLEPIE_NAMESPACE_RDF', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+define('NAMESPACE_RDF', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
 
 /**
  * RSS 0.90 Namespace
  */
-define('SIMPLEPIE_NAMESPACE_RSS_090', 'http://my.netscape.com/rdf/simple/0.9/');
+define('NAMESPACE_RSS_090', 'http://my.netscape.com/rdf/simple/0.9/');
 
 /**
  * RSS 1.0 Namespace
  */
-define('SIMPLEPIE_NAMESPACE_RSS_10', 'http://purl.org/rss/1.0/');
+define('NAMESPACE_RSS_10', 'http://purl.org/rss/1.0/');
 
 /**
  * RSS 1.0 Content Module Namespace
  */
-define('SIMPLEPIE_NAMESPACE_RSS_10_MODULES_CONTENT', 'http://purl.org/rss/1.0/modules/content/');
+define('NAMESPACE_RSS_10_MODULES_CONTENT', 'http://purl.org/rss/1.0/modules/content/');
 
 /**
  * RSS 2.0 Namespace
  * (Stupid, I know, but I'm certain it will confuse people less with support.)
  */
-define('SIMPLEPIE_NAMESPACE_RSS_20', '');
+define('NAMESPACE_RSS_20', '');
 
 /**
  * XHTML Namespace
  */
-define('SIMPLEPIE_NAMESPACE_XHTML', 'http://www.w3.org/1999/xhtml');
+define('NAMESPACE_XHTML', 'http://www.w3.org/1999/xhtml');
 
 /**
  * IANA Link Relations Registry
  */
-define('SIMPLEPIE_IANA_LINK_RELATIONS_REGISTRY', 'http://www.iana.org/assignments/relation/');
+define('IANA_LINK_RELATIONS_REGISTRY', 'http://www.iana.org/assignments/relation/');
 
 /**
  * SimplePie
