@@ -1,9 +1,6 @@
-# SimplePie 2.0
+# ComplexPie 2.0
 
-This is the 2.0 branch of SimplePie. The point of this release is to rip out all of the non-essential crap and focus exclusively on the parser itself.
-
-This is not your mother's SimplePie. We've ripped out fetching, caching and HTML sanitization — and that's just to start. You'll need to find other classes to do those things instead.
-
+This is the initial version of ComplexPie, which will form the basis of SimplePie 2 while being usable as a standalone (albeit very minimal) feed parser (the numbering is done to keep the two libraries at equal, corrosponding, versions).
 
 ## Authors and contributors
 ### Current
@@ -12,25 +9,15 @@ This is not your mother's SimplePie. We've ripped out fetching, caching and HTML
 ### Contributors
 For a complete list of contributors:
 
-1. Pull down the latest SimplePie code
-2. In the `simplepie` directory, run `git shortlog -ns`
+1. Pull down the latest code
+2. In the 'complexpie' directory, run `git shortlog -ns`
 
 
 ## Requirements
-* PHP 5.1.4 or newer
-* libxml2 (certain 2.7.x releases are too buggy for words, and will crash)
-* Either the iconv or mbstring extension
-* cURL or fsockopen()
+* PHP 5.3.0 or newer
+* libxml2 (early 2.7.x releases break currently because of PHP using internal libxml APIs…)
+* DOM extension
 * PCRE support
-
-
-## Pulling two-dot-oh
-Assuming you've already forked SimplePie and pulled down the `master` branch, you can pull down the 2.0 branch with:
-
-	git checkout -b two-dot-oh
-	git pull -f simplepie two-dot-oh:two-dot-oh
-
-This will create a new branch, then pull a fresh (non-fast-forward) copy of the `two-dot-oh` branch down.
 
 
 ## License
@@ -42,7 +29,7 @@ For further setup and install documentation, function references, etc., visit:
 [http://simplepie.org/wiki/](http://simplepie.org/wiki/)
 
 For bug reports and feature requests, visit:
-[http://github.com/rmccue/simplepie/issues](http://github.com/rmccue/simplepie/issues)
+[http://github.com/gsnedders/complexpie/issues](http://github.com/gsnedders/complexpie/issues)
 
 Support mailing list -- powered by users, for users.
 [http://tech.groups.yahoo.com/group/simplepie-support/](http://tech.groups.yahoo.com/group/simplepie-support/)
