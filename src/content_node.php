@@ -50,14 +50,14 @@ class Content_Node extends Content
 			$xml = '';
 			foreach ($this->node as $node)
 			{
-				$document = $node instanceof DOMDocument ? $node : $node->ownerDocument;
+				$document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
 				$xml .= $document->saveXML($node);
 			}
 			return $xml;
 		}
 		else
 		{
-			$document = $this->node instanceof DOMDocument ? $this->node : $this->node->ownerDocument;
+			$document = $this->node instanceof \DOMDocument ? $this->node : $this->node->ownerDocument;
 			return $document->saveXML($this->node);
 		}
 	}
