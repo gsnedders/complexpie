@@ -78,9 +78,9 @@ class OldTest extends PHPUnit_Framework_TestCase
     public function testOld($test)
     {
         $test->run();
-		if ($test->result instanceof SimplePie_Content)
+		if ($test->result instanceof \ComplexPie\Content)
 		{
-			if ($test->result instanceof SimplePie_Content_Node)
+			if ($test->result instanceof \ComplexPie\Content_Node)
 			{
 				$node = $test->result->get_node();
 				if (is_array($node))
@@ -96,8 +96,8 @@ class OldTest extends PHPUnit_Framework_TestCase
 			{
 				$baseURI = null;
 			}
-			$sanitizer = new SimplePie_Sanitize();
-			$test->result = $sanitizer->sanitize($test->result->to_xml(), SIMPLEPIE_CONSTRUCT_XHTML, $baseURI);
+			$sanitizer = new \ComplexPie\Sanitize();
+			$test->result = $sanitizer->dosanitize($test->result->to_xml(), SIMPLEPIE_CONSTRUCT_XHTML, $baseURI);
 		}
 		$this->assertSame($test->expected, $test->result);
     }

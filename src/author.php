@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Author
+class Author
 {
 	var $name;
 	var $link;

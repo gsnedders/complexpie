@@ -8,7 +8,7 @@ class SimplePie_Feed_Test extends SimplePie_Unit_Test2
 {
 	function feed()
 	{
-		return SimplePie($this->data);
+		return \ComplexPie\SimplePie($this->data);
 	}
 }
 
@@ -109,7 +109,7 @@ class SimplePie_Absolutize_Test extends SimplePie_Unit_Test2
 {
 	function test()
 	{
-		$this->result = SimplePie_Misc::absolutize_url($this->data['relative'], $this->data['base']);
+		$this->result = \ComplexPie\Misc::absolutize_url($this->data['relative'], $this->data['base']);
 	}
 }
 
@@ -117,7 +117,7 @@ class SimplePie_Date_Test extends SimplePie_Unit_Test2
 {
 	function test()
 	{
-		$this->result = SimplePie_Misc::parse_date($this->data);
+		$this->result = \ComplexPie\Misc::parse_date($this->data);
 	}
 }
 

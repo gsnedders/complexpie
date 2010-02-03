@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Content_String extends SimplePie_Content
+class Content_String extends Content
 {
     protected $string;
     

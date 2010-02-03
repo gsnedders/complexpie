@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Enclosure
+class Enclosure
 {
 	var $length;
 	var $link;

@@ -1,4 +1,5 @@
 <?php
+namespace ComplexPie;
 
 /**
  * Decode HTML Entities
@@ -7,7 +8,7 @@
  *
  * @package SimplePie
  */
-class SimplePie_Decode_HTML_Entities
+class Decode_HTML_Entities
 {
 	/**
 	 * Data to be parsed
@@ -168,7 +169,7 @@ class SimplePie_Decode_HTML_Entities
 					}
 					else
 					{
-						$replacement = SimplePie_Misc::codepoint_to_utf8($codepoint);
+						$replacement = Misc::codepoint_to_utf8($codepoint);
 					}
 
 					if (!in_array($this->consume(), array(';', false), true))

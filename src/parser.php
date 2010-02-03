@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Parser
+class Parser
 {
 	var $error_code;
 	var $error_string;
@@ -168,7 +169,7 @@ class SimplePie_Parser
 
 		if (isset($attribs[SIMPLEPIE_NAMESPACE_XML]['base']))
 		{
-			$this->xml_base[] = SimplePie_Misc::absolutize_url($attribs[SIMPLEPIE_NAMESPACE_XML]['base'], end($this->xml_base));
+			$this->xml_base[] = Misc::absolutize_url($attribs[SIMPLEPIE_NAMESPACE_XML]['base'], end($this->xml_base));
 			$this->xml_base_explicit[] = true;
 		}
 		else

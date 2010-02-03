@@ -1,4 +1,6 @@
 <?php
+namespace ComplexPie;
+
 /**
  * SimplePie
  *
@@ -50,15 +52,17 @@ if (extension_loaded('spl'))
 		spl_autoload_register('__autoload');
 	}
 	
-	function SimplePie__autoload($classname)
+	function autoload($classname)
     {
-        if (substr($classname, 0, 10) === 'SimplePie_')
+        if (substr($classname, 0, 11) === 'ComplexPie\\')
         {
-            require_once dirname(__FILE__) . '/' . strtolower(substr($classname, 10)) . '.php';
+        	$file = dirname(__FILE__) . '/' . str_replace('\\', '/', strtolower(substr($classname, 11))) . '.php';
+        	if (file_exists($file))
+				require_once $file;
         }
     }
 	
-	spl_autoload_register('SimplePie__autoload');
+	spl_autoload_register('ComplexPie\autoload');
 }
 else
 {
@@ -82,9 +86,9 @@ define('SIMPLEPIE_VERSION', '2.0-dev');
 
 /**
  * SimplePie Build
- * @todo Hardcode for release (there's no need to have to call SimplePie_Misc::parse_date() only every load of simplepie.inc)
+ * @todo Hardcode for release (there's no need to have to call Misc::parse_date() only every load of simplepie.inc)
  */
-define('SIMPLEPIE_BUILD', gmdate('YmdHis', SimplePie_Misc::parse_date(substr('$Date$', 7, 25)) ? SimplePie_Misc::parse_date(substr('$Date$', 7, 25)) : filemtime(__FILE__)));
+define('SIMPLEPIE_BUILD', gmdate('YmdHis', Misc::parse_date(substr('$Date$', 7, 25)) ? Misc::parse_date(substr('$Date$', 7, 25)) : filemtime(__FILE__)));
 
 /**
  * SimplePie Website URL
@@ -318,8 +322,8 @@ function SimplePie($data, $uri = null)
 	}
 
 	// Create new parser
-	$parser = new SimplePie_Parser();
-	$dom = new DOMDocument();
+	$parser = new Parser();
+	$dom = new \DOMDocument();
 	$dom->documentURI = $uri;
 
 	// If it's parsed fine
@@ -327,14 +331,14 @@ function SimplePie($data, $uri = null)
 	{
 		$parser->parse($data, 'UTF-8');
 		$tree = $parser->get_data();
-		return new SimplePie_Feed($dom->documentElement, $tree);
+		return new Feed($dom->documentElement, $tree);
 	}
 	else
 	{
-		// We have an error, just set SimplePie_Misc::error to it and quit
+		// We have an error, just set Misc::error to it and quit
 		$error = sprintf('This XML document is invalid, likely due to invalid characters. XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
 
-		SimplePie_Misc::error($error, E_USER_NOTICE, __FILE__, __LINE__);
+		Misc::error($error, E_USER_NOTICE, __FILE__, __LINE__);
 	
 		return false;
 	}

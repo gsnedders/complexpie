@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Item
+class Item
 {
 	var $feed;
 	var $data = array();
@@ -95,11 +96,11 @@ class SimplePie_Item
 		{
 			if ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'title'))
 			{
-				$this->data['title'] = $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+				$this->data['title'] = $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 			}
 			elseif ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'title'))
 			{
-				$this->data['title'] = $this->sanitize($return[0]['data'], SimplePie_Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+				$this->data['title'] = $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 			}
 			elseif ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_10, 'title'))
 			{
@@ -125,11 +126,11 @@ class SimplePie_Item
 	{
 		if ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'summary'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'summary'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_10, 'description'))
 		{
@@ -153,11 +154,11 @@ class SimplePie_Item
 	{
 		if ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'content'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_content_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_10_content_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'content'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_10_MODULES_CONTENT, 'encoded'))
 		{
@@ -207,7 +208,7 @@ class SimplePie_Item
 			{
 				$label = $this->sanitize($category['attribs']['']['label'], SIMPLEPIE_CONSTRUCT_TEXT);
 			}
-			$categories[] = new SimplePie_Category($term, $scheme, $label);
+			$categories[] = new Category($term, $scheme, $label);
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'category') as $category)
 		{
@@ -222,7 +223,7 @@ class SimplePie_Item
 			{
 				$scheme = null;
 			}
-			$categories[] = new SimplePie_Category($term, $scheme, null);
+			$categories[] = new Category($term, $scheme, null);
 		}
 
 		if (!empty($categories))
@@ -283,7 +284,7 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$contributors[] = new SimplePie_Author($name, $uri, $email);
+				$contributors[] = new Author($name, $uri, $email);
 			}
 		}
 		foreach ((array) $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'contributor') as $contributor)
@@ -305,7 +306,7 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$contributors[] = new SimplePie_Author($name, $url, $email);
+				$contributors[] = new Author($name, $url, $email);
 			}
 		}
 
@@ -341,7 +342,7 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$authors[] = new SimplePie_Author($name, $uri, $email);
+				$authors[] = new Author($name, $uri, $email);
 			}
 		}
 		if ($author = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'author'))
@@ -363,12 +364,12 @@ class SimplePie_Item
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$authors[] = new SimplePie_Author($name, $url, $email);
+				$authors[] = new Author($name, $url, $email);
 			}
 		}
 		if ($author = $this->get_item_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'author'))
 		{
-			$authors[] = new SimplePie_Author(null, null, $this->sanitize($author[0]['data'], SIMPLEPIE_CONSTRUCT_TEXT));
+			$authors[] = new Author(null, null, $this->sanitize($author[0]['data'], SIMPLEPIE_CONSTRUCT_TEXT));
 		}
 
 		if (!empty($authors))
@@ -393,7 +394,7 @@ class SimplePie_Item
 	{
 		if ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'rights'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		else
 		{
@@ -432,7 +433,7 @@ class SimplePie_Item
 
 			if (!empty($this->data['date']['raw']))
 			{
-				$parser = SimplePie_Parse_Date::get();
+				$parser = Parse_Date::get();
 				$this->data['date']['parsed'] = $parser->parse($this->data['date']['raw']);
 			}
 			else
@@ -553,7 +554,7 @@ class SimplePie_Item
 			$keys = array_keys($this->data['links']);
 			foreach ($keys as $key)
 			{
-				if (SimplePie_Misc::is_isegment_nz_nc($key))
+				if (Misc::is_isegment_nz_nc($key))
 				{
 					if (isset($this->data['links'][SIMPLEPIE_IANA_LINK_RELATIONS_REGISTRY . $key]))
 					{
@@ -655,7 +656,7 @@ class SimplePie_Item
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
-					$this->data['enclosures'][] = new SimplePie_Enclosure($url, $type, $length);
+					$this->data['enclosures'][] = new Enclosure($url, $type, $length);
 				}
 			}
 
@@ -682,7 +683,7 @@ class SimplePie_Item
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
-					$this->data['enclosures'][] = new SimplePie_Enclosure($url, $type, $length);
+					$this->data['enclosures'][] = new Enclosure($url, $type, $length);
 				}
 			}
 
@@ -709,7 +710,7 @@ class SimplePie_Item
 					}
 
 					// Since we don't have group or content for these, we'll just pass the '*_parent' variables directly to the constructor
-					$this->data['enclosures'][] = new SimplePie_Enclosure($url, $type, $length);
+					$this->data['enclosures'][] = new Enclosure($url, $type, $length);
 				}
 			}
 
@@ -729,7 +730,7 @@ class SimplePie_Item
 	{
 		if ($return = $this->get_item_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'source'))
 		{
-			return new SimplePie_Source($this, $return[0]);
+			return new Source($this, $return[0]);
 		}
 		else
 		{

@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-abstract class SimplePie_Data
+abstract class Data
 {
 	private $extensions = array();
 	

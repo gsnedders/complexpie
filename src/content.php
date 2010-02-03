@@ -1,10 +1,11 @@
 <?php
+namespace ComplexPie;
 
-abstract class SimplePie_Content
+abstract class Content
 {
 	public static function from_textcontent($root)
 	{
-		return new SimplePie_Content_String($root->textContent);
+		return new Content_String($root->textContent);
 	}
 	
 	public static function from_escaped_html($escaped_node)
@@ -14,7 +15,7 @@ abstract class SimplePie_Content
 		$dom->loadHTML('<div>' . $escaped_node->textContent);
 		$node = $dom->getElementsByTagName('div');
 		$node = $node[0];
-		return new SimplePie_Content_Node($node->childNodes);
+		return new Content_Node($node->childNodes);
 	}
 	
 	public static function from_atom_text_construct($text_construct)
@@ -52,7 +53,7 @@ abstract class SimplePie_Content
 					}
 				}
 				$element = $use_div ? $the_div : $text_construct;
-				return new SimplePie_Content_Node($element->childNodes);
+				return new Content_Node($element->childNodes);
 				
 			default:
 				return self::from_textcontent($text_construct);

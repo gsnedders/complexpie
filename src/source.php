@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Source
+class Source
 {
 	var $item;
 	var $data = array();
@@ -47,11 +48,11 @@ class SimplePie_Source
 	{
 		if ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'title'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'title'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_RSS_10, 'title'))
 		{
@@ -105,7 +106,7 @@ class SimplePie_Source
 			{
 				$label = $this->sanitize($category['attribs']['']['label'], SIMPLEPIE_CONSTRUCT_TEXT);
 			}
-			$categories[] = new SimplePie_Category($term, $scheme, $label);
+			$categories[] = new Category($term, $scheme, $label);
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'category') as $category)
 		{
@@ -120,7 +121,7 @@ class SimplePie_Source
 			{
 				$scheme = null;
 			}
-			$categories[] = new SimplePie_Category($term, $scheme, null);
+			$categories[] = new Category($term, $scheme, null);
 		}
 
 		if (!empty($categories))
@@ -168,7 +169,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$authors[] = new SimplePie_Author($name, $uri, $email);
+				$authors[] = new Author($name, $uri, $email);
 			}
 		}
 		if ($author = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'author'))
@@ -190,7 +191,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$authors[] = new SimplePie_Author($name, $url, $email);
+				$authors[] = new Author($name, $url, $email);
 			}
 		}
 
@@ -239,7 +240,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $uri !== null)
 			{
-				$contributors[] = new SimplePie_Author($name, $uri, $email);
+				$contributors[] = new Author($name, $uri, $email);
 			}
 		}
 		foreach ((array) $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'contributor') as $contributor)
@@ -261,7 +262,7 @@ class SimplePie_Source
 			}
 			if ($name !== null || $email !== null || $url !== null)
 			{
-				$contributors[] = new SimplePie_Author($name, $url, $email);
+				$contributors[] = new Author($name, $url, $email);
 			}
 		}
 
@@ -340,7 +341,7 @@ class SimplePie_Source
 			$keys = array_keys($this->data['links']);
 			foreach ($keys as $key)
 			{
-				if (SimplePie_Misc::is_isegment_nz_nc($key))
+				if (Misc::is_isegment_nz_nc($key))
 				{
 					if (isset($this->data['links'][SIMPLEPIE_IANA_LINK_RELATIONS_REGISTRY . $key]))
 					{
@@ -374,11 +375,11 @@ class SimplePie_Source
 	{
 		if ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'subtitle'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'tagline'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_RSS_10, 'description'))
 		{
@@ -402,11 +403,11 @@ class SimplePie_Source
 	{
 		if ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'rights'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_ATOM_03, 'copyright'))
 		{
-			return $this->sanitize($return[0]['data'], SimplePie_Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
+			return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
 		}
 		elseif ($return = $this->get_source_tags(SIMPLEPIE_NAMESPACE_RSS_20, 'copyright'))
 		{

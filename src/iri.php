@@ -1,11 +1,12 @@
 <?php
+namespace ComplexPie;
 
 /**
  * IRI parser/serialiser
  *
  * @package SimplePie
  */
-class SimplePie_IRI
+class IRI
 {
 	/**
 	 * Scheme
@@ -87,7 +88,7 @@ class SimplePie_IRI
 	 *
 	 * @access public
 	 * @param string $iri
-	 * @return SimplePie_IRI
+	 * @return IRI
 	 */
 	public function __construct($iri)
 	{
@@ -106,16 +107,16 @@ class SimplePie_IRI
 	/**
 	 * Create a new IRI object by resolving a relative IRI
 	 *
-	 * @param SimplePie_IRI $base Base IRI
+	 * @param IRI $base Base IRI
 	 * @param string $relative Relative IRI
-	 * @return SimplePie_IRI
+	 * @return IRI
 	 */
 	public static function absolutize($base, $relative)
 	{
 		$relative = (string) $relative;
 		if ($relative !== '')
 		{
-			$relative = new SimplePie_IRI($relative);
+			$relative = new IRI($relative);
 			if ($relative->get_scheme() !== null)
 			{
 				$target = $relative;
@@ -129,7 +130,7 @@ class SimplePie_IRI
 				}
 				else
 				{
-					$target = new SimplePie_IRI('');
+					$target = new IRI('');
 					$target->set_scheme($base->get_scheme());
 					$target->set_userinfo($base->get_userinfo());
 					$target->set_host($base->get_host());
@@ -751,7 +752,7 @@ class SimplePie_IRI
  * @author Josh Peck <jmp at joshpeck dot org>
  * @author Geoffrey Sneddon <geoffers@gmail.com>
  */
-class SimplePie_Net_IPv6
+class Net_IPv6
 {
 	/**
 	 * Removes a possible existing netmask specification of an IP address.
@@ -790,7 +791,7 @@ class SimplePie_Net_IPv6
 	 */
 	public static function Uncompress($ip)
 	{
-		$uip = SimplePie_Net_IPv6::removeNetmaskSpec($ip);
+		$uip = Net_IPv6::removeNetmaskSpec($ip);
 		$c1 = -1;
 		$c2 = -1;
 		if (strpos($ip, '::') !== false)
@@ -876,7 +877,7 @@ class SimplePie_Net_IPv6
 	 */
 	public static function SplitV64($ip)
 	{
-		$ip = SimplePie_Net_IPv6::Uncompress($ip);
+		$ip = Net_IPv6::Uncompress($ip);
 		if (strstr($ip, '.'))
 		{
 			$pos = strrpos($ip, ':');
@@ -902,7 +903,7 @@ class SimplePie_Net_IPv6
 	 */
 	public static function checkIPv6($ip)
 	{
-		$ipPart = SimplePie_Net_IPv6::SplitV64($ip);
+		$ipPart = Net_IPv6::SplitV64($ip);
 		$count = 0;
 		if (!empty($ipPart[0]))
 		{

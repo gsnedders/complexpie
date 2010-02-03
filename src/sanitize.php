@@ -1,9 +1,10 @@
 <?php
+namespace ComplexPie;
 
 /**
  * @todo Move to using an actual HTML parser (this will allow tags to be properly stripped, and to switch between HTML and XHTML), this will also make it easier to shorten a string while preserving HTML tags
  */
-class SimplePie_Sanitize
+class Sanitize
 {
 	// Private vars
 	var $base;
@@ -33,7 +34,7 @@ class SimplePie_Sanitize
 		$this->replace_url_attributes = (array) $element_attribute;
 	}
 
-	public function sanitize($data, $type, $base = '')
+	public function dosanitize($data, $type, $base = '')
 	{
 		$data = trim($data);
 		if ($data !== '' || $type & SIMPLEPIE_CONSTRUCT_IRI)
@@ -64,7 +65,7 @@ class SimplePie_Sanitize
 
 			if ($type & SIMPLEPIE_CONSTRUCT_IRI)
 			{
-				$data = SimplePie_Misc::absolutize_url($data, $base);
+				$data = Misc::absolutize_url($data, $base);
 			}
 
 			if ($type & (SIMPLEPIE_CONSTRUCT_TEXT | SIMPLEPIE_CONSTRUCT_IRI))
@@ -77,7 +78,7 @@ class SimplePie_Sanitize
 
 	public function replace_urls($data, $tag, $attributes)
 	{
-		$elements = SimplePie_Misc::get_element($tag, $data);
+		$elements = Misc::get_element($tag, $data);
 		foreach ($elements as $element)
 		{
 			if (is_array($attributes))
@@ -86,8 +87,8 @@ class SimplePie_Sanitize
 				{
 					if (isset($element['attribs'][$attribute]['data']))
 					{
-						$element['attribs'][$attribute]['data'] = SimplePie_Misc::absolutize_url($element['attribs'][$attribute]['data'], $this->base);
-						$new_element = SimplePie_Misc::element_implode($element);
+						$element['attribs'][$attribute]['data'] = Misc::absolutize_url($element['attribs'][$attribute]['data'], $this->base);
+						$new_element = Misc::element_implode($element);
 						$data = str_replace($element['full'], $new_element, $data);
 						$element['full'] = $new_element;
 					}
@@ -95,8 +96,8 @@ class SimplePie_Sanitize
 			}
 			elseif (isset($element['attribs'][$attributes]['data']))
 			{
-				$element['attribs'][$attributes]['data'] = SimplePie_Misc::absolutize_url($element['attribs'][$attributes]['data'], $this->base);
-				$data = str_replace($element['full'], SimplePie_Misc::element_implode($element), $data);
+				$element['attribs'][$attributes]['data'] = Misc::absolutize_url($element['attribs'][$attributes]['data'], $this->base);
+				$data = str_replace($element['full'], Misc::element_implode($element), $data);
 			}
 		}
 		return $data;

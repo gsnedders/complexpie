@@ -1,6 +1,7 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Category
+class Category
 {
 	var $term;
 	var $scheme;

@@ -1,11 +1,12 @@
 <?php
+namespace ComplexPie;
 
 /**
  * Date Parser
  *
  * @package SimplePie
  */
-class SimplePie_Parse_Date
+class Parse_Date
 {
 	/**
 	 * Input data
@@ -89,7 +90,7 @@ class SimplePie_Parse_Date
 	);
 
 	/**
-	 * Cached PCRE for SimplePie_Parse_Date::$day
+	 * Cached PCRE for Parse_Date::$day
 	 *
 	 * @access protected
 	 * @var string
@@ -97,7 +98,7 @@ class SimplePie_Parse_Date
 	var $day_pcre;
 
 	/**
-	 * Cached PCRE for SimplePie_Parse_Date::$month
+	 * Cached PCRE for Parse_Date::$month
 	 *
 	 * @access protected
 	 * @var string
@@ -121,7 +122,7 @@ class SimplePie_Parse_Date
 	var $user = array();
 
 	/**
-	 * Create new SimplePie_Parse_Date object, and set self::day_pcre,
+	 * Create new Parse_Date object, and set self::day_pcre,
 	 * self::month_pcre, and self::built_in
 	 *
 	 * @access private
@@ -161,7 +162,7 @@ class SimplePie_Parse_Date
 		static $object;
 		if (!$object)
 		{
-			$object = new SimplePie_Parse_Date;
+			$object = new Parse_Date;
 		}
 		return $object;
 	}

@@ -1,12 +1,13 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Content_Node extends SimplePie_Content
+class Content_Node extends Content
 {
     protected $node;
     
 	public function __construct($node)
 	{
-		if ($node instanceof DOMNodeList)
+		if ($node instanceof \DOMNodeList)
 		{
 			$new_node = array();
 			foreach ($node as $n)

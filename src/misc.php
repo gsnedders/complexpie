@@ -1,10 +1,11 @@
 <?php
+namespace ComplexPie;
 
-class SimplePie_Misc
+class Misc
 {
 	public static function absolutize_url($relative, $base)
 	{
-		$iri = SimplePie_IRI::absolutize(new SimplePie_IRI($base), $relative);
+		$iri = IRI::absolutize(new IRI($base), $relative);
 		return $iri->get_iri();
 	}
 
@@ -37,7 +38,7 @@ class SimplePie_Misc
 						{
 							$attribs[$j][2] = $attribs[$j][1];
 						}
-						$return[$i]['attribs'][strtolower($attribs[$j][1])]['data'] = SimplePie_Misc::entities_decode(end($attribs[$j]), 'UTF-8');
+						$return[$i]['attribs'][strtolower($attribs[$j][1])]['data'] = Misc::entities_decode(end($attribs[$j]), 'UTF-8');
 					}
 				}
 			}
@@ -107,7 +108,7 @@ class SimplePie_Misc
 
 	public static function parse_date($dt)
 	{
-		$parser = SimplePie_Parse_Date::get();
+		$parser = Parse_Date::get();
 		return $parser->parse($dt);
 	}
 
@@ -119,7 +120,7 @@ class SimplePie_Misc
 	 */
 	public static function entities_decode($data)
 	{
-		$decoder = new SimplePie_Decode_HTML_Entities($data);
+		$decoder = new Decode_HTML_Entities($data);
 		return $decoder->parse();
 	}
 
@@ -256,7 +257,7 @@ class SimplePie_Misc
 	public static function get_descendant($root, $query, $namespace_map = array(), $onlyfirst = false)
 	{
 		$doc = isset($root->ownerDocument) ? $root->ownerDocument : $root;
-		$xpath = new DOMXPath($doc);
+		$xpath = new \DOMXPath($doc);
 		foreach ($namespace_map as $prefix => $uri)
 		{
 			$xpath->registerNamespace($prefix, $uri);
