@@ -14,7 +14,7 @@ class Data extends Extension
         parent::add_static_extension($extpoint, $ext, $priority);
     }
     
-    public static function add_extension($extpoint, $ext, $priority)
+    public function add_extension($extpoint, $ext, $priority)
     {
         if (!is_callable($ext))
         {
