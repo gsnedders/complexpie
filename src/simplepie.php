@@ -331,7 +331,70 @@ function SimplePie($data, $uri = null)
 	{
 		$parser->parse($data, 'UTF-8');
 		$tree = $parser->get_data();
-		return new Feed($dom->documentElement, $tree);
+		switch ('{' . $dom->documentElement->namespaceURI . '}' . $dom->documentElement->localName)
+		{
+			case '{' . NAMESPACE_ATOM_10 . '}feed':
+			case '{' . NAMESPACE_ATOM_03 . '}feed':
+				$element = $dom->documentElement;
+				break;
+			
+			case '{}rss':
+				$channels = $dom->getElementsByTagName('channel');
+				foreach ($channels as $channel)
+				{
+					if ($channel->parentNode === $dom->documentElement)
+					{
+						$element = $channel;
+					}
+				}
+				if (!isset($element))
+				{
+					$channel = $dom->createElement('channel');
+					$dom->documentElement->appendChild($channel);
+					$element = $channel;
+				}
+				break;
+			
+			case '{' . NAMESPACE_RDF . '}RDF':
+				$channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_10, 'channel');
+				foreach ($channels as $channel)
+				{
+					if ($channel->parentNode === $dom->documentElement)
+					{
+						$element = $channel;
+					}
+				}
+				if (!isset($element))
+				{
+					$channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_090, 'channel');
+					foreach ($channels as $channel)
+					{
+						if ($channel->parentNode === $dom->documentElement)
+						{
+							$element = $channel;
+						}
+					}
+					if (!isset($element))
+					{
+						if ($dom->getElementsByTagNameNS(NAMESPACE_RSS_090, '*')->length >
+							$dom->getElementsByTagNameNS(NAMESPACE_RSS_10, '*')->length)
+						{
+							$channel = $dom->createElementNS(NAMESPACE_RSS_090, 'channel');
+						}
+						else
+						{
+							$channel = $dom->createElementNS(NAMESPACE_RSS_10, 'channel');
+						}
+						$dom->documentElement->appendChild($channel);
+						$element = $channel;
+					}
+				}
+				break;
+			
+			default:
+				return false;
+		}
+		return new Feed($element, $tree);
 	}
 	else
 	{
