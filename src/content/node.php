@@ -1,7 +1,7 @@
 <?php
-namespace ComplexPie;
+namespace ComplexPie\Content;
 
-class Content_Node extends Content
+class Node extends \ComplexPie\Content
 {
     protected $node;
     

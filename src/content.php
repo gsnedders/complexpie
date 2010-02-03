@@ -5,7 +5,7 @@ abstract class Content
 {
 	public static function from_textcontent($root)
 	{
-		return new Content_String($root->textContent);
+		return new Content\String($root->textContent);
 	}
 	
 	public static function from_escaped_html($escaped_node)
@@ -15,7 +15,7 @@ abstract class Content
 		$dom->loadHTML('<div>' . $escaped_node->textContent);
 		$node = $dom->getElementsByTagName('div');
 		$node = $node[0];
-		return new Content_Node($node->childNodes);
+		return new Content\Node($node->childNodes);
 	}
 	
 	public static function from_atom_text_construct($text_construct)
@@ -53,7 +53,7 @@ abstract class Content
 					}
 				}
 				$element = $use_div ? $the_div : $text_construct;
-				return new Content_Node($element->childNodes);
+				return new Content\Node($element->childNodes);
 				
 			default:
 				return self::from_textcontent($text_construct);
