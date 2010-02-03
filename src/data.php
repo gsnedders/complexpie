@@ -1,49 +1,45 @@
 <?php
 namespace ComplexPie;
 
-abstract class Data
+class Data extends Extension
 {
-	private $extensions = array();
+    protected static $static_ext = array();
+    
+    public static function add_static_extension($extpoint, $ext, $priority)
+    {
+        if (!is_callable($ext))
+        {
+            throw new Excetpion("$ext is not callable");
+        }
+        parent::add_static_extension($extpoint, $ext, $priority);
+    }
+    
+    public static function add_extension($extpoint, $ext, $priority)
+    {
+        if (!is_callable($ext))
+        {
+            throw new Excetpion("$ext is not callable");
+        }
+        parent::add_extension($extpoint, $ext, $priority);
+    }
 	
 	/**
 	 * @todo This should cope with things that return an array and merge them
 	 */
 	public function __get($name)
 	{
-		foreach ($this->extensions as $extension => $priority)
+		foreach ($this->get_extensions('get') as $extension => $priority)
 		{
-			if (is_callable($extension))
-			{
-				if (($return = $extension($this->dom, $name)) !== null)
-				{
-					return $return;
-				}
-			}
-			elseif (($return = $extension->$name) !== null)
-			{
-				return $return;
-			}
+            if (($return = $extension($this->dom, $name)) !== null)
+            {
+                return $return;
+            }
 		}
 		if (method_exists($this, "get_$name"))
 		{
 			return call_user_func(array($this, "get_$name"));
 		}
 	}
-	
-	public function add_getter($classfunc, $priority)
-	{
-		if (is_callable($classfunc))
-		{
-			$this->extensions[$classfunc] = $priority;
-		}
-		elseif (class_exists($classfunc))
-		{
-			$this->extensions[new $classfunc($this->dom)] = $priority;
-		}
-		else
-		{
-			throw new Exception('Cannot add ' . print_r($classfunc, true) . ' as getter as it is neither callable nor a class name');
-		}
-		asort($this->extensions);
-	}
 }
+
+Data::add_static_extension_point('get');
