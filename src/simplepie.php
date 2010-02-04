@@ -13,16 +13,16 @@ namespace ComplexPie;
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
  *
- * 	* Redistributions of source code must retain the above copyright notice, this list of
- * 	  conditions and the following disclaimer.
+ *     * Redistributions of source code must retain the above copyright notice, this list of
+ *       conditions and the following disclaimer.
  *
- * 	* Redistributions in binary form must reproduce the above copyright notice, this list
- * 	  of conditions and the following disclaimer in the documentation and/or other materials
- * 	  provided with the distribution.
+ *     * Redistributions in binary form must reproduce the above copyright notice, this list
+ *       of conditions and the following disclaimer in the documentation and/or other materials
+ *       provided with the distribution.
  *
- * 	* Neither the name of the SimplePie Team nor the names of its contributors may be used
- * 	  to endorse or promote products derived from this software without specific prior
- * 	  written permission.
+ *     * Neither the name of the SimplePie Team nor the names of its contributors may be used
+ *       to endorse or promote products derived from this software without specific prior
+ *       written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
@@ -47,31 +47,31 @@ namespace ComplexPie;
 
 if (extension_loaded('spl'))
 {
-	if (spl_autoload_functions() === false && function_exists('__autoload'))
-	{
-		spl_autoload_register('__autoload');
-	}
-	
-	function autoload($classname)
+    if (spl_autoload_functions() === false && function_exists('__autoload'))
+    {
+        spl_autoload_register('__autoload');
+    }
+    
+    function autoload($classname)
     {
         if (substr($classname, 0, 11) === 'ComplexPie\\')
         {
-        	$file = dirname(__FILE__) . '/' . str_replace('\\', '/', strtolower(substr($classname, 11))) . '.php';
-        	if (file_exists($file))
-				require_once $file;
+            $file = dirname(__FILE__) . '/' . str_replace('\\', '/', strtolower(substr($classname, 11))) . '.php';
+            if (file_exists($file))
+                require_once $file;
         }
     }
-	
-	spl_autoload_register('ComplexPie\autoload');
+    
+    spl_autoload_register('ComplexPie\autoload');
 }
 else
 {
-	$files = glob(dirname(__FILE__) . '/*.php');
-	foreach ($files as $file)
-	{
-		if ($file !== __FILE__)
-			require_once $file;
-	}
+    $files = glob(dirname(__FILE__) . '/*.php');
+    foreach ($files as $file)
+    {
+        if ($file !== __FILE__)
+            require_once $file;
+    }
 }
 
 /**
@@ -92,15 +92,15 @@ $foo = array();
 exec('git --help', $foo, $return);
 if ($return === 0)
 {
-	$path = __FILE__;
-	while (($path = dirname($path)) !== '/')
-	{
-		if (file_exists($path . '/.git'))
-		{
-			$build = trim(exec("git --git-dir=$path/.git log -1 --pretty=format:%H"));
-			break;
-		}
-	}
+    $path = __FILE__;
+    while (($path = dirname($path)) !== '/')
+    {
+        if (file_exists($path . '/.git'))
+        {
+            $build = trim(exec("git --git-dir=$path/.git log -1 --pretty=format:%H"));
+            break;
+        }
+    }
 }
 define('BUILD', $build);
 
@@ -318,105 +318,105 @@ define('IANA_LINK_RELATIONS_REGISTRY', 'http://www.iana.org/assignments/relation
  */
 function SimplePie($data, $uri = null)
 {
-	// Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
-	if (!extension_loaded('xmlreader'))
-	{
-		static $xml_is_sane = null;
-		if ($xml_is_sane === null)
-		{
-			$parser_check = xml_parser_create();
-			xml_parse_into_struct($parser_check, '<foo>&amp;</foo>', $values);
-			xml_parser_free($parser_check);
-			$xml_is_sane = isset($values[0]['value']);
-		}
-		if (!$xml_is_sane)
-		{
-			return false;
-		}
-	}
+    // Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
+    if (!extension_loaded('xmlreader'))
+    {
+        static $xml_is_sane = null;
+        if ($xml_is_sane === null)
+        {
+            $parser_check = xml_parser_create();
+            xml_parse_into_struct($parser_check, '<foo>&amp;</foo>', $values);
+            xml_parser_free($parser_check);
+            $xml_is_sane = isset($values[0]['value']);
+        }
+        if (!$xml_is_sane)
+        {
+            return false;
+        }
+    }
 
-	// Create new parser
-	$parser = new Parser();
-	$dom = new \DOMDocument();
-	$dom->documentURI = $uri;
+    // Create new parser
+    $parser = new Parser();
+    $dom = new \DOMDocument();
+    $dom->documentURI = $uri;
 
-	// If it's parsed fine
-	if (@$dom->loadXML($data))
-	{
-		$parser->parse($data, 'UTF-8');
-		$tree = $parser->get_data();
-		switch ('{' . $dom->documentElement->namespaceURI . '}' . $dom->documentElement->localName)
-		{
-			case '{' . NAMESPACE_ATOM_10 . '}feed':
-			case '{' . NAMESPACE_ATOM_03 . '}feed':
-				$element = $dom->documentElement;
-				break;
-			
-			case '{}rss':
-				$channels = $dom->getElementsByTagName('channel');
-				foreach ($channels as $channel)
-				{
-					if ($channel->parentNode === $dom->documentElement)
-					{
-						$element = $channel;
-					}
-				}
-				if (!isset($element))
-				{
-					$channel = $dom->createElement('channel');
-					$dom->documentElement->appendChild($channel);
-					$element = $channel;
-				}
-				break;
-			
-			case '{' . NAMESPACE_RDF . '}RDF':
-				$channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_10, 'channel');
-				foreach ($channels as $channel)
-				{
-					if ($channel->parentNode === $dom->documentElement)
-					{
-						$element = $channel;
-					}
-				}
-				if (!isset($element))
-				{
-					$channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_090, 'channel');
-					foreach ($channels as $channel)
-					{
-						if ($channel->parentNode === $dom->documentElement)
-						{
-							$element = $channel;
-						}
-					}
-					if (!isset($element))
-					{
-						if ($dom->getElementsByTagNameNS(NAMESPACE_RSS_090, '*')->length >
-							$dom->getElementsByTagNameNS(NAMESPACE_RSS_10, '*')->length)
-						{
-							$channel = $dom->createElementNS(NAMESPACE_RSS_090, 'channel');
-						}
-						else
-						{
-							$channel = $dom->createElementNS(NAMESPACE_RSS_10, 'channel');
-						}
-						$dom->documentElement->appendChild($channel);
-						$element = $channel;
-					}
-				}
-				break;
-			
-			default:
-				return false;
-		}
-		return new Feed($element, $tree);
-	}
-	else
-	{
-		// We have an error, just set Misc::error to it and quit
-		$error = sprintf('This XML document is invalid, likely due to invalid characters. XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
+    // If it's parsed fine
+    if (@$dom->loadXML($data))
+    {
+        $parser->parse($data, 'UTF-8');
+        $tree = $parser->get_data();
+        switch ('{' . $dom->documentElement->namespaceURI . '}' . $dom->documentElement->localName)
+        {
+            case '{' . NAMESPACE_ATOM_10 . '}feed':
+            case '{' . NAMESPACE_ATOM_03 . '}feed':
+                $element = $dom->documentElement;
+                break;
+            
+            case '{}rss':
+                $channels = $dom->getElementsByTagName('channel');
+                foreach ($channels as $channel)
+                {
+                    if ($channel->parentNode === $dom->documentElement)
+                    {
+                        $element = $channel;
+                    }
+                }
+                if (!isset($element))
+                {
+                    $channel = $dom->createElement('channel');
+                    $dom->documentElement->appendChild($channel);
+                    $element = $channel;
+                }
+                break;
+            
+            case '{' . NAMESPACE_RDF . '}RDF':
+                $channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_10, 'channel');
+                foreach ($channels as $channel)
+                {
+                    if ($channel->parentNode === $dom->documentElement)
+                    {
+                        $element = $channel;
+                    }
+                }
+                if (!isset($element))
+                {
+                    $channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_090, 'channel');
+                    foreach ($channels as $channel)
+                    {
+                        if ($channel->parentNode === $dom->documentElement)
+                        {
+                            $element = $channel;
+                        }
+                    }
+                    if (!isset($element))
+                    {
+                        if ($dom->getElementsByTagNameNS(NAMESPACE_RSS_090, '*')->length >
+                            $dom->getElementsByTagNameNS(NAMESPACE_RSS_10, '*')->length)
+                        {
+                            $channel = $dom->createElementNS(NAMESPACE_RSS_090, 'channel');
+                        }
+                        else
+                        {
+                            $channel = $dom->createElementNS(NAMESPACE_RSS_10, 'channel');
+                        }
+                        $dom->documentElement->appendChild($channel);
+                        $element = $channel;
+                    }
+                }
+                break;
+            
+            default:
+                return false;
+        }
+        return new Feed($element, $tree);
+    }
+    else
+    {
+        // We have an error, just set Misc::error to it and quit
+        $error = sprintf('This XML document is invalid, likely due to invalid characters. XML error: %s at line %d, column %d', $parser->get_error_string(), $parser->get_current_line(), $parser->get_current_column());
 
-		Misc::error($error, E_USER_NOTICE, __FILE__, __LINE__);
-	
-		return false;
-	}
+        Misc::error($error, E_USER_NOTICE, __FILE__, __LINE__);
+    
+        return false;
+    }
 }

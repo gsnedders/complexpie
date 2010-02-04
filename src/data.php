@@ -22,24 +22,24 @@ class Data extends Extension
         }
         parent::add_extension($extpoint, $ext, $priority);
     }
-	
-	/**
-	 * @todo This should cope with things that return an array and merge them
-	 */
-	public function __get($name)
-	{
-		foreach ($this->get_extensions('get') as $extension => $priority)
-		{
+    
+    /**
+     * @todo This should cope with things that return an array and merge them
+     */
+    public function __get($name)
+    {
+        foreach ($this->get_extensions('get') as $extension => $priority)
+        {
             if (($return = $extension($this->dom, $name)) !== null)
             {
                 return $return;
             }
-		}
-		if (method_exists($this, "get_$name"))
-		{
-			return call_user_func(array($this, "get_$name"));
-		}
-	}
+        }
+        if (method_exists($this, "get_$name"))
+        {
+            return call_user_func(array($this, "get_$name"));
+        }
+    }
 }
 
 Data::add_static_extension_point('get');

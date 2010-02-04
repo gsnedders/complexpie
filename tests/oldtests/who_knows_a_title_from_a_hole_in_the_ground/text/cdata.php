@@ -2,9 +2,9 @@
 
 class who_knows_a_title_from_a_hole_in_the_ground_text_cdata extends SimplePie_First_Item_Title_Test
 {
-	function data()
-	{
-		$this->data = 
+    function data()
+    {
+        $this->data = 
 '<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 <id>http://atomtests.philringnalda.com/tests/item/title/text-cdata.atom</id>
@@ -27,12 +27,12 @@ the less-than is escaped by being in a CDATA section.</summary>
   <category term="item title"/>
 </entry>
 </feed>';
-	}
-	
-	function expected()
-	{
-		$this->expected = '&lt;title&gt;';
-	}
+    }
+    
+    function expected()
+    {
+        $this->expected = '&lt;title&gt;';
+    }
 }
 
 ?>
