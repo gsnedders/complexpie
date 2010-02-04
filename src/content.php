@@ -10,11 +10,11 @@ abstract class Content
 	
 	public static function from_escaped_html($escaped_node)
 	{
-		$dom = new DOMDocument();
+		$dom = new \DOMDocument();
 		$dom->documentURI = $escaped_node->baseURI;
 		$dom->loadHTML('<div>' . $escaped_node->textContent);
 		$node = $dom->getElementsByTagName('div');
-		$node = $node[0];
+		$node = $node->item(0);
 		return new Content\Node($node->childNodes);
 	}
 	
