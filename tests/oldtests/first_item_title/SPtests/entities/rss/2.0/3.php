@@ -16,7 +16,7 @@ class SimplePie_First_Item_Title_Test_RSS_20_Title_3 extends SimplePie_First_Ite
     
     function expected()
     {
-        $this->expected = 'This &amp;amp;amp; this';
+        $this->expected = 'This &amp;amp; this';
     }
 }
 
