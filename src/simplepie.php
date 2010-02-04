@@ -86,9 +86,23 @@ define('VERSION', '2.0-dev');
 
 /**
  * SimplePie Build
- * @todo Hardcode for release (there's no need to have to call Misc::parse_date() only every load of simplepie.inc)
  */
-define('BUILD', gmdate('YmdHis', Misc::parse_date(substr('$Date$', 7, 25)) ? Misc::parse_date(substr('$Date$', 7, 25)) : filemtime(__FILE__)));
+$build = 'unknown';
+$foo = array();
+exec('git --help', $foo, $return);
+if ($return === 0)
+{
+	$path = __FILE__;
+	while (($path = dirname($path)) !== '/')
+	{
+		if (file_exists($path . '/.git'))
+		{
+			$build = trim(exec("git --git-dir=$path/.git log -1 --pretty=format:%H"));
+			break;
+		}
+	}
+}
+define('BUILD', $build);
 
 /**
  * SimplePie Website URL
