@@ -6,7 +6,10 @@ class Misc
     public static function absolutize_url($relative, $base)
     {
         $iri = IRI::absolutize(new IRI($base), $relative);
-        return $iri->get_iri();
+        if ($iri)
+            return $iri->iri;
+        else
+            return $relative;
     }
 
     public static function get_element($realname, $string)

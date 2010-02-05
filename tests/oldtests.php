@@ -13,7 +13,6 @@ class OldTest extends PHPUnit_Framework_TestCase
     public function getTests()
     {
         $test_folders = array(
-            'absolutize',
             'date',
             'feed_category_label',
             'feed_copyright',
