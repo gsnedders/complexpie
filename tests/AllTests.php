@@ -6,6 +6,7 @@ require_once 'ContentTest.php';
 require_once 'DOMIteratorTest.php';
 require_once 'IRITest.php';
 require_once 'NetIPv6Test.php';
+require_once 'nodeToHTMLTest.php';
 
 class AllTests
 {
@@ -18,6 +19,7 @@ class AllTests
 		$suite->addTestSuite('DOMIteratorTest');
 		$suite->addTestSuite('IRITest');
 		$suite->addTestSuite('NetIPv6Test');
+		$suite->addTestSuite('nodeToHTMLTest');
 
 		return $suite;
 	}

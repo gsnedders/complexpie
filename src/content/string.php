@@ -19,4 +19,9 @@ class String extends \ComplexPie\Content
     {
         return htmlspecialchars($this->string, ENT_QUOTES, 'UTF-8');
     }
+    
+    public function to_html()
+    {
+        return htmlspecialchars($this->string, ENT_QUOTES, 'UTF-8');
+    }
 }

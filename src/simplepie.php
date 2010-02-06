@@ -46,6 +46,7 @@ namespace ComplexPie;
  */
 
 require_once 'constants.php';
+require_once 'nodeToHTML.php';
 
 if (extension_loaded('spl'))
 {
