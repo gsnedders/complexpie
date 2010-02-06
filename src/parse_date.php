@@ -181,7 +181,9 @@ class Parse_Date
         {
             if (($returned = call_user_func($method, $date)) !== false)
             {
-                return $returned;
+                $date = new \DateTime();
+                $date->setTimestamp($returned);
+                return $date;
             }
         }
 
@@ -189,7 +191,9 @@ class Parse_Date
         {
             if (($returned = call_user_func(array(&$this, $method), $date)) !== false)
             {
-                return $returned;
+                $date = new \DateTime();
+                $date->setTimestamp($returned);
+                return $date;
             }
         }
 

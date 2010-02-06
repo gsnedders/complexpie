@@ -99,6 +99,10 @@ class OldTest extends PHPUnit_Framework_TestCase
             // The 4 below should be \ComplexPie\CONSTRUCT_XHTML, but that errors. WTF PHP?
             $test->result = $sanitizer->dosanitize($test->result->to_xml(), 4, $baseURI);
         }
+        elseif ($test->result instanceof \DateTime)
+        {
+            $test->result = $test->result->getTimestamp();
+        }
         $this->assertSame($test->expected, $test->result);
     }
 }
