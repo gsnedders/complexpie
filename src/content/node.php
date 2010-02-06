@@ -64,25 +64,11 @@ class Node extends \ComplexPie\Content
     
     public function to_html()
     {
-        $nodes = (is_array($this->node)) ? array_reverse($this->node) : array($this->node);
+        $nodes = (is_array($this->node)) ? $this->node : array($this->node);
         $html = '';
-        while ($node = array_pop($nodes))
+        foreach ($nodes as $node)
         {
-            if ($node->hasChildNodes())
-            {
-                if (extension_loaded('spl'))
-                {
-                    $nodes = array_merge($nodes, array_reverse(iterator_to_array($node->childNodes)));
-                }
-                else
-                {
-                    $children = $node->childNodes;
-                    for ($i = $children->length - 1; $i >= 0; $i--)
-                        $nodes[] = $children->item($i);
-                }
-            }
-            $document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
-            $html .= $document->saveXML($node);
+            $html .= nodeToHTML($node);
         }
         return $html;
     }

@@ -62,5 +62,5 @@ abstract class Content
     
     abstract public function to_text();
     abstract public function to_xml();
-    // abstract public function to_html();
+    abstract public function to_html();
 }
