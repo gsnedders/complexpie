@@ -181,9 +181,16 @@ class Parse_Date
         {
             if (($returned = call_user_func($method, $date)) !== false)
             {
-                $date = new \DateTime();
-                $date->setTimestamp($returned);
-                return $date;
+                if ($returned instanceof \DateTime)
+                {
+                    return $returned;
+                }
+                else
+                {
+                    $date = new \DateTime();
+                    $date->setTimestamp($returned);
+                    return $date;
+                }
             }
         }
 
@@ -191,9 +198,16 @@ class Parse_Date
         {
             if (($returned = call_user_func(array(&$this, $method), $date)) !== false)
             {
-                $date = new \DateTime();
-                $date->setTimestamp($returned);
-                return $date;
+                if ($returned instanceof \DateTime)
+                {
+                    return $returned;
+                }
+                else
+                {
+                    $date = new \DateTime();
+                    $date->setTimestamp($returned);
+                    return $date;
+                }
             }
         }
 
@@ -404,7 +418,7 @@ class Parse_Date
                 $timezone += $match[10] * 60;
                 if ($match[8] === '-')
                 {
-                    $timezone = 0 - $timezone;
+                    $timezone = -$timezone;
                 }
             }
             // Character timezone
@@ -437,8 +451,24 @@ class Parse_Date
             {
                 $second = 0;
             }
+            
+            $date = new \DateTime();
+            if ($timezone % 3600 === 0)
+            {
+                // It would appear ETC/GMT+1 is what most people would call GMT-1.
+                $tz = new \DateTimeZone(sprintf('ETC/GMT%+d', -$timezone / 3600));
+                $date->setTimezone($tz);
+            }
+            else
+            {
+                $tz = new \DateTimeZone('UTC');
+                $date->setTimezone($tz);
+                $second -= $timezone;
+            }
+            $date->setDate($match[4], $month, $match[2]);
+            $date->setTime($match[5], $match[6], $second);
 
-            return gmmktime($match[5], $match[6], $second, $month, $match[2], $match[4]) - $timezone;
+            return $date;
         }
         else
         {
