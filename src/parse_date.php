@@ -484,61 +484,7 @@ class Parse_Date
      */
     public function date_rfc850($date)
     {
-        static $pcre;
-        if (!$pcre)
-        {
-            $space = '[\x09\x20]+';
-            $day_name = $this->day_pcre;
-            $month = $this->month_pcre;
-            $day = '([0-9]{1,2})';
-            $year = $hour = $minute = $second = '([0-9]{2})';
-            $zone = '([A-Z]{1,5})';
-            $pcre = '/^' . $day_name . ',' . $space . $day . '-' . $month . '-' . $year . $space . $hour . ':' . $minute . ':' . $second . $space . $zone . '$/i';
-        }
-        if (preg_match($pcre, $date, $match))
-        {
-            /*
-            Capturing subpatterns:
-            1: Day name
-            2: Day
-            3: Month
-            4: Year
-            5: Hour
-            6: Minute
-            7: Second
-            8: Timezone
-            */
-
-            // Month
-            $month = $this->month[strtolower($match[3])];
-
-            // Character timezone
-            if (isset($this->timezone[strtoupper($match[8])]))
-            {
-                $timezone = $this->timezone[strtoupper($match[8])];
-            }
-            // Assume everything else to be -0000
-            else
-            {
-                $timezone = 0;
-            }
-
-            // Deal with 2 digit year
-            if ($match[4] < 50)
-            {
-                $match[4] += 2000;
-            }
-            else
-            {
-                $match[4] += 1900;
-            }
-
-            return gmmktime($match[5], $match[6], $match[7], $month, $match[2], $match[4]) - $timezone;
-        }
-        else
-        {
-            return false;
-        }
+        return \DateTime::createFromFormat(\DateTime::RFC850, $date);
     }
 
     /**
@@ -549,38 +495,7 @@ class Parse_Date
      */
     public function date_asctime($date)
     {
-        static $pcre;
-        if (!$pcre)
-        {
-            $space = '[\x09\x20]+';
-            $wday_name = $this->day_pcre;
-            $mon_name = $this->month_pcre;
-            $day = '([0-9]{1,2})';
-            $hour = $sec = $min = '([0-9]{2})';
-            $year = '([0-9]{4})';
-            $terminator = '\x0A?\x00?';
-            $pcre = '/^' . $wday_name . $space . $mon_name . $space . $day . $space . $hour . ':' . $min . ':' . $sec . $space . $year . $terminator . '$/i';
-        }
-        if (preg_match($pcre, $date, $match))
-        {
-            /*
-            Capturing subpatterns:
-            1: Day name
-            2: Month
-            3: Day
-            4: Hour
-            5: Minute
-            6: Second
-            7: Year
-            */
-
-            $month = $this->month[strtolower($match[2])];
-            return gmmktime($match[4], $match[5], $match[6], $month, $match[3], $match[7]);
-        }
-        else
-        {
-            return false;
-        }
+        return \DateTime::createFromFormat('!D M j H:i:s Y', $date);
     }
 
     /**
@@ -600,5 +515,16 @@ class Parse_Date
         {
             return $strtotime;
         }
+        /*
+        // Something weird happens with the below. See the test suite.
+        try
+        {
+            return new \DateTime($date);
+        }
+        catch (Exception $e)
+        {
+            return false;
+        }
+        */
     }
 }
