@@ -39,6 +39,10 @@ class nodeToHTMLTest extends PHPUnit_Framework_TestCase
             array(
                 '<a href="http://example.com">Test</a>',
                 '<a href="http://example.com">Test</a>'
+            ),
+            array(
+                '<a><!--foo--></a>',
+                '<a><!--foo--></a>'
             )
         );
     }
