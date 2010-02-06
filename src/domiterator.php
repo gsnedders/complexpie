@@ -40,14 +40,18 @@ class DOMIterator implements \Iterator
         {
             $this->node = $this->node->nextSibling;
         }
-        elseif ($this->node->parentNode &&
-                $this->node->parentNode !== $this->root &&
-                $this->node->parentNode->nextSibling)
-        {
-            $this->node = $this->node->parentNode->nextSibling;
-        }
         else
         {
+            $parent = $this->node;
+            while (($parent = $parent->parentNode) &&
+                   $parent !== $this->root)
+            {
+                if ($parent->nextSibling)
+                {
+                    $this->node = $parent->nextSibling;
+                    return;
+                }
+            }
             $this->node = null;
         }
     }
