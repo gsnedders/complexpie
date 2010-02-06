@@ -562,7 +562,7 @@ class Parse_Date
     public function date_strtotime($date)
     {
         $strtotime = strtotime($date);
-        if ($strtotime === -1 || $strtotime === false)
+        if ($strtotime === false)
         {
             return false;
         }
