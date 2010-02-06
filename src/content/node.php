@@ -68,7 +68,7 @@ class Node extends \ComplexPie\Content
         $html = '';
         foreach ($nodes as $node)
         {
-            $html .= nodeToHTML($node);
+            $html .= \ComplexPie\nodeToHTML($node);
         }
         return $html;
     }
