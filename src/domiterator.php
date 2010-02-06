@@ -36,6 +36,10 @@ class DOMIterator implements \Iterator
         {
             $this->node = $this->node->firstChild;
         }
+        elseif ($this->node === $this->root)
+        {
+            $this->node = null;
+        }
         elseif ($this->node->nextSibling)
         {
             $this->node = $this->node->nextSibling;

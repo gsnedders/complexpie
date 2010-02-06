@@ -76,6 +76,23 @@ class DOMIteratorTest extends PHPUnit_Framework_TestCase
         );
         $tests[] = array($dom->documentElement->firstChild, $expected);
         
+        $dom = new \DOMDocument;
+        $dom->loadXML('<foo><a><b/></a>Test</foo>');
+        $expected = array(
+            $dom->documentElement->firstChild,
+            $dom->documentElement->firstChild->firstChild,
+        );
+        $tests[] = array($dom->documentElement->firstChild, $expected);
+        
+        $dom = new \DOMDocument;
+        $dom->loadXML('<foo><a><b><c/></b></a>Test</foo>');
+        $expected = array(
+            $dom->documentElement->firstChild,
+            $dom->documentElement->firstChild->firstChild,
+            $dom->documentElement->firstChild->firstChild->firstChild,
+        );
+        $tests[] = array($dom->documentElement->firstChild, $expected);
+        
         return $tests;
     }
     
