@@ -68,6 +68,7 @@ class DOMIteratorTest extends PHPUnit_Framework_TestCase
             $dom->documentElement->lastChild
         );
         $tests[] = array($dom, $expected);
+        
         return $tests;
     }
     
@@ -82,6 +83,28 @@ class DOMIteratorTest extends PHPUnit_Framework_TestCase
             $got[$key] = $node;
         }
         $this->assertSame($expected, $got);
+    }
+    
+    /**
+     * @dataProvider basicData
+     */
+    public function testRootElementAsRoot($root, $expected)
+    {
+        if ($root instanceof \DOMDocument)
+        {
+            if ($root->documentElement)
+            {
+                while ($expected[0] !== $root->documentElement)
+                    array_shift($expected);
+                
+                $got = array();
+                foreach (new \ComplexPie\DOMIterator($root->documentElement) as $key => $node)
+                {
+                    $got[$key] = $node;
+                }
+                $this->assertSame($expected, $got);
+            }
+        }
     }
 }
 
