@@ -167,9 +167,9 @@ class IRI
         {
             return false;
         }
-        elseif (method_exists($this, 'get_' . $name))
+        elseif (method_exists($this, "get_$name"))
         {
-            $return = call_user_func(array($this, 'get_' . $name));
+            $return = $this->{"get_$name"}();
         }
         elseif (isset($this->$name))
         {
