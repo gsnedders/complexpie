@@ -126,7 +126,7 @@ class IRI
      */
     public function __toString()
     {
-        return $this->iri;
+        return $this->get_iri();
     }
 
     /**
@@ -252,13 +252,13 @@ class IRI
         }
         if ($base->scheme !== null)
         {
-            if ($relative->iri !== '' && $relative->iri !== null)
+            if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
             {
                 if ($relative->scheme !== null)
                 {
                     $target = clone $relative;
                 }
-                elseif ($relative->iauthority !== null)
+                elseif ($relative->get_iauthority() !== null)
                 {
                     $target = clone $relative;
                     $target->scheme = $base->scheme;
@@ -1087,7 +1087,7 @@ class IRI
         {
             $iri .= $this->scheme . ':';
         }
-        if (($iauthority = $this->iauthority) !== null)
+        if (($iauthority = $this->get_iauthority()) !== null)
         {
             $iri .= '//' . $iauthority;
         }
@@ -1122,7 +1122,7 @@ class IRI
      */
     private function get_uri()
     {
-        $iri = $this->iri;
+        $iri = $this->get_iri();
         if (is_string($iri))
             return $this->to_uri($iri);
         else
@@ -1167,7 +1167,7 @@ class IRI
      */
     private function get_authority()
     {
-        $iauthority = $this->iauthority;
+        $iauthority = $this->get_iauthority();
         if (is_string($iauthority))
             return $this->to_uri($iauthority);
         else
