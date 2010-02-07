@@ -123,24 +123,15 @@ class Parse_Date
     {
         $this->day_pcre = '(' . implode(array_keys($this->day), '|') . ')';
         $this->month_pcre = '(' . implode(array_keys($this->month), '|') . ')';
+        
+        $all_methods = get_class_methods($this);
 
-        static $cache;
-        if (!isset($cache[get_class($this)]))
+        foreach ($all_methods as $method)
         {
-            $all_methods = get_class_methods($this);
-
-            foreach ($all_methods as $method)
+            if (strtolower(substr($method, 0, 5)) === 'date_')
             {
-                if (strtolower(substr($method, 0, 5)) === 'date_')
-                {
-                    $cache[get_class($this)][] = $method;
-                }
+                $this->built_in[] = $method;
             }
-        }
-
-        foreach ($cache[get_class($this)] as $method)
-        {
-            $this->built_in[] = $method;
         }
     }
 
@@ -165,7 +156,7 @@ class Parse_Date
         
         foreach ($parser->built_in as $method)
         {
-            if (($returned = call_user_func(array(&$parser, $method), $date)) !== false)
+            if (($returned = call_user_func(array($parser, $method), $date)) !== false)
             {
                 if ($returned instanceof \DateTime)
                 {
