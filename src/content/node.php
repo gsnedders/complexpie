@@ -54,16 +54,8 @@ class Node extends \ComplexPie\Content
                                 $newValue = \ComplexPie\IRI::absolutize($child->baseURI, $child->getAttribute($attribute));
                                 if ($newValue)
                                 {
-                                    //var_dump($newValue->iri);
                                     $child->setAttribute($attribute, $newValue->iri);
                                 }
-                                /*else
-                                {
-                                    var_dump(1);
-                                    var_dump($document->documentURI);
-                                    var_dump($e->baseURI);
-                                    var_dump($document->saveXML());
-                                }*/
                             }
                         }
                     }
