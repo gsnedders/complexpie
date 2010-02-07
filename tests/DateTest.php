@@ -278,10 +278,6 @@ class DateTest extends PHPUnit_Framework_TestCase
                 '1994-11-05T13:15:30+00:00',
                 '1994-11-05T13:15:30Z',
             ),
-            array(
-                '1994-11-05T13:15:30+00:00',
-                'Saturday, 05-Nov-94 13:15:30 GMT',
-            ),
         );
     }
     

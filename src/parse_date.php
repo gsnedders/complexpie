@@ -459,28 +459,6 @@ class Parse_Date
     }
 
     /**
-     * Parse RFC850's date format
-     *
-     * @access protected
-     * @return int Timestamp
-     */
-    public function date_rfc850($date)
-    {
-        return \DateTime::createFromFormat(\DateTime::RFC850, $date);
-    }
-
-    /**
-     * Parse C99's asctime()'s date format
-     *
-     * @access protected
-     * @return int Timestamp
-     */
-    public function date_asctime($date)
-    {
-        return \DateTime::createFromFormat('!D M j H:i:s Y', $date);
-    }
-
-    /**
      * Parse dates using strtotime()
      *
      * @return \DateTime|false Parsed date
