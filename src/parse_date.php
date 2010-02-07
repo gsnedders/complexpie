@@ -319,7 +319,6 @@ class Parse_Date
             $wsp = '[\x09\x20]';
             $fws = '(?:' . $wsp . '+|' . $wsp . '*(?:\x0D\x0A' . $wsp . '+)+)';
             $optional_fws = $fws . '?';
-            $day_name = $this->day_pcre;
             $month = $this->month_pcre;
             $day = '([0-9]{1,2})';
             $hour = $minute = $second = '([0-9]{2})';
@@ -327,42 +326,41 @@ class Parse_Date
             $num_zone = '([+\-])([0-9]{2})([0-9]{2})';
             $character_zone = '([A-Z]{1,5})';
             $zone = '(?:' . $num_zone . '|' . $character_zone . ')';
-            $pcre = '/(?:' . $optional_fws . $day_name . $optional_fws . ',)?' . $optional_fws . $day . $fws . $month . $fws . $year . $fws . $hour . $optional_fws . ':' . $optional_fws . $minute . '(?:' . $optional_fws . ':' . $optional_fws . $second . ')?' . $fws . $zone . '/i';
+            $pcre = '/' . $day . $fws . $month . $fws . $year . $fws . $hour . $optional_fws . ':' . $optional_fws . $minute . '(?:' . $optional_fws . ':' . $optional_fws . $second . ')?' . $fws . $zone . '/i';
         }
         if (preg_match($pcre, $this->remove_rfc2822_comments($date), $match))
         {
             /*
             Capturing subpatterns:
-            1: Day name
-            2: Day
-            3: Month
-            4: Year
-            5: Hour
-            6: Minute
-            7: Second
-            8: Timezone ±
-            9: Timezone hours
-            10: Timezone minutes
-            11: Alphabetic timezone
+            1: Day
+            2: Month
+            3: Year
+            4: Hour
+            5: Minute
+            6: Second
+            7: Timezone ±
+            8: Timezone hours
+            9: Timezone minutes
+            10: Alphabetic timezone
             */
 
             // Find the month number
-            $month = $this->month[strtolower($match[3])];
+            $month = $this->month[strtolower($match[2])];
 
             // Numeric timezone
-            if ($match[8] !== '')
+            if ($match[7] !== '')
             {
-                $timezone = $match[9] * 3600;
-                $timezone += $match[10] * 60;
-                if ($match[8] === '-')
+                $timezone = $match[8] * 3600;
+                $timezone += $match[9] * 60;
+                if ($match[7] === '-')
                 {
                     $timezone = -$timezone;
                 }
             }
             // Character timezone
-            elseif (isset($this->timezone[strtoupper($match[11])]))
+            elseif (isset($this->timezone[strtoupper($match[10])]))
             {
-                $timezone = $this->timezone[strtoupper($match[11])];
+                $timezone = $this->timezone[strtoupper($match[10])];
             }
             // Assume everything else to be -0000
             else
@@ -371,19 +369,19 @@ class Parse_Date
             }
 
             // Deal with 2/3 digit years
-            if ($match[4] < 50)
+            if ($match[3] < 50)
             {
-                $match[4] += 2000;
+                $match[3] += 2000;
             }
-            elseif ($match[4] < 1000)
+            elseif ($match[3] < 1000)
             {
-                $match[4] += 1900;
+                $match[3] += 1900;
             }
 
             // Second is optional, if it is empty set it to zero
-            if ($match[7] !== '')
+            if ($match[6] !== '')
             {
-                $second = $match[7];
+                $second = $match[6];
             }
             else
             {
@@ -403,8 +401,8 @@ class Parse_Date
                 $date->setTimezone($tz);
                 $second -= $timezone;
             }
-            $date->setDate($match[4], $month, $match[2]);
-            $date->setTime($match[5], $match[6], $second);
+            $date->setDate($match[3], $month, $match[1]);
+            $date->setTime($match[4], $match[5], $second);
 
             return $date;
         }
