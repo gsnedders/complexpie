@@ -111,8 +111,7 @@ class Misc
 
     public static function parse_date($dt)
     {
-        $parser = Parse_Date::get();
-        return $parser->parse($dt);
+        return Parse_Date::parse($dt);
     }
 
     /**

@@ -145,33 +145,27 @@ class Parse_Date
     }
 
     /**
-     * Get the object
-     *
-     * @access public
-     */
-    public static function get()
-    {
-        static $object;
-        if (!$object)
-        {
-            $object = new Parse_Date;
-        }
-        return $object;
-    }
-
-    /**
      * Parse a date
      *
-     * @final
-     * @access public
      * @param string $date Date to parse
      * @return int Timestamp corresponding to date string, or false on failure
      */
-    public function parse($date)
+    public static function parse($date)
     {
-        foreach ($this->built_in as $method)
+        static $objs = array();
+        $class = get_called_class();
+        if (isset($objs[$class]))
         {
-            if (($returned = call_user_func(array(&$this, $method), $date)) !== false)
+            $parser = $objs[$class];
+        }
+        else
+        {
+            $parser = $objs[$class] = new $class();
+        }
+        
+        foreach ($parser->built_in as $method)
+        {
+            if (($returned = call_user_func(array(&$parser, $method), $date)) !== false)
             {
                 if ($returned instanceof \DateTime)
                 {

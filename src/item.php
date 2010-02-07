@@ -433,8 +433,7 @@ class Item
 
             if (!empty($this->data['date']['raw']))
             {
-                $parser = Parse_Date::get();
-                $this->data['date']['parsed'] = $parser->parse($this->data['date']['raw']);
+                $this->data['date']['parsed'] = Parse_Date::parse($this->data['date']['raw']);
             }
             else
             {
