@@ -483,30 +483,17 @@ class Parse_Date
     /**
      * Parse dates using strtotime()
      *
-     * @access protected
-     * @return int Timestamp
+     * @return \DateTime|false Parsed date
      */
-    public function date_strtotime($date)
+    protected function date_strtotime($date)
     {
-        $strtotime = strtotime($date);
-        if ($strtotime === false)
-        {
-            return false;
-        }
-        else
-        {
-            return $strtotime;
-        }
-        /*
-        // Something weird happens with the below. See the test suite.
         try
         {
             return new \DateTime($date);
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             return false;
         }
-        */
     }
 }
