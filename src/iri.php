@@ -240,83 +240,90 @@ class IRI
      *
      * Returns false if $base is not absolute, otherwise an IRI.
      *
-     * @param IRI $base (Absolute) Base IRI
+     * @param IRI|string $base (Absolute) Base IRI
      * @param IRI|string $relative Relative IRI
      * @return IRI|false
      */
-    public static function absolutize(IRI $base, $relative)
+    public static function absolutize($base, $relative)
     {
         if (!($relative instanceof IRI))
         {
             $relative = new IRI($relative);
         }
-        if ($base->scheme !== null)
+        if ($relative->scheme !== null)
         {
-            if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
-            {
-                if ($relative->scheme !== null)
-                {
-                    $target = clone $relative;
-                }
-                elseif ($relative->get_iauthority() !== null)
-                {
-                    $target = clone $relative;
-                    $target->scheme = $base->scheme;
-                }
-                else
-                {
-                    $target = new IRI;
-                    $target->scheme = $base->scheme;
-                    $target->iuserinfo = $base->iuserinfo;
-                    $target->ihost = $base->ihost;
-                    $target->port = $base->port;
-                    if ($relative->ipath !== '')
-                    {
-                        if ($relative->ipath[0] === '/')
-                        {
-                            $target->ipath = $relative->ipath;
-                        }
-                        elseif (($base->iuserinfo !== null || $base->ihost !== null || $base->port !== null) && $base->ipath === null)
-                        {
-                            $target->ipath = '/' . $relative->ipath;
-                        }
-                        elseif (($last_segment = strrpos($base->ipath, '/')) !== false)
-                        {
-                            $target->ipath = substr($base->ipath, 0, $last_segment + 1) . $relative->ipath;
-                        }
-                        else
-                        {
-                            $target->ipath = $relative->ipath;
-                        }
-                        $target->ipath = $target->remove_dot_segments($target->ipath);
-                        $target->iquery = $relative->iquery;
-                    }
-                    else
-                    {
-                        $target->ipath = $base->ipath;
-                        if ($relative->iquery !== null)
-                        {
-                            $target->iquery = $relative->iquery;
-                        }
-                        elseif ($base->iquery !== null)
-                        {
-                            $target->iquery = $base->iquery;
-                        }
-                    }
-                    $target->ifragment = $relative->ifragment;
-                }
-            }
-            else
-            {
-                $target = clone $base;
-                $target->ifragment = null;
-            }
-            $target->scheme_normalization();
-            return $target;
+            return clone $relative;
         }
         else
         {
-            return false;
+            if (!($base instanceof IRI))
+            {
+                $base = new IRI($base);
+            }
+            if ($base->scheme !== null)
+            {
+                if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
+                {
+                    if ($relative->get_iauthority() !== null)
+                    {
+                        $target = clone $relative;
+                        $target->scheme = $base->scheme;
+                    }
+                    else
+                    {
+                        $target = new IRI;
+                        $target->scheme = $base->scheme;
+                        $target->iuserinfo = $base->iuserinfo;
+                        $target->ihost = $base->ihost;
+                        $target->port = $base->port;
+                        if ($relative->ipath !== '')
+                        {
+                            if ($relative->ipath[0] === '/')
+                            {
+                                $target->ipath = $relative->ipath;
+                            }
+                            elseif (($base->iuserinfo !== null || $base->ihost !== null || $base->port !== null) && $base->ipath === null)
+                            {
+                                $target->ipath = '/' . $relative->ipath;
+                            }
+                            elseif (($last_segment = strrpos($base->ipath, '/')) !== false)
+                            {
+                                $target->ipath = substr($base->ipath, 0, $last_segment + 1) . $relative->ipath;
+                            }
+                            else
+                            {
+                                $target->ipath = $relative->ipath;
+                            }
+                            $target->ipath = $target->remove_dot_segments($target->ipath);
+                            $target->iquery = $relative->iquery;
+                        }
+                        else
+                        {
+                            $target->ipath = $base->ipath;
+                            if ($relative->iquery !== null)
+                            {
+                                $target->iquery = $relative->iquery;
+                            }
+                            elseif ($base->iquery !== null)
+                            {
+                                $target->iquery = $base->iquery;
+                            }
+                        }
+                        $target->ifragment = $relative->ifragment;
+                    }
+                }
+                else
+                {
+                    $target = clone $base;
+                    $target->ifragment = null;
+                }
+                $target->scheme_normalization();
+                return $target;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

@@ -5,7 +5,7 @@ class Misc
 {
     public static function absolutize_url($relative, $base)
     {
-        $iri = IRI::absolutize(new IRI($base), $relative);
+        $iri = IRI::absolutize($base, $relative);
         if ($iri)
             return $iri->iri;
         else
