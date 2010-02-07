@@ -4,15 +4,15 @@ namespace ComplexPie\Content;
 class Node extends \ComplexPie\Content
 {
     public static $replaceURLAttributes = array(
-        'a' => 'href',
-        'area' => 'href',
-        'blockquote' => 'cite',
-        'del' => 'cite',
-        'form' => 'action',
+        'a' => array('href'),
+        'area' => array('href'),
+        'blockquote' => array('cite'),
+        'del' => array('cite'),
+        'form' => array('action'),
         'img' => array('longdesc', 'src'),
-        'input' => 'src',
-        'ins' => 'cite',
-        'q' => 'cite'
+        'input' => array('src'),
+        'ins' => array('cite'),
+        'q' => array('cite')
     );
     protected $node;
     
@@ -36,32 +36,35 @@ class Node extends \ComplexPie\Content
     protected function replaceURLs()
     {
         $nodes = (is_array($this->node)) ? $this->node : array($this->node);
+        $replaceURLAttributes = self::$replaceURLAttributes;
         foreach ($nodes as $node)
         {
-            $document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
-            foreach (self::$replaceURLAttributes as $element => $attributes)
+            if ($node->nodeType === XML_ELEMENT_NODE)
             {
-                $attributes = (is_array($attributes)) ? $attributes : array($attributes);
-                $elements = $document->getElementsByTagName($element);
-                foreach ($elements as $e)
+                $children = $node->getElementsByTagName('*');
+                foreach ($children as $child)
                 {
-                    foreach ($attributes as $attribute)
+                    if (isset($replaceURLAttributes[$child->tagName]))
                     {
-                        if ($e->hasAttribute($attribute))
+                        $attributes = $replaceURLAttributes[$child->tagName];
+                        foreach ($attributes as $attribute)
                         {
-                            $newValue = \ComplexPie\IRI::absolutize($e->baseURI, $e->getAttribute($attribute));
-                            if ($newValue)
+                            if ($child->hasAttribute($attribute))
                             {
-                                //var_dump($newValue->iri);
-                                $e->setAttribute($attribute, $newValue->iri);
+                                $newValue = \ComplexPie\IRI::absolutize($child->baseURI, $child->getAttribute($attribute));
+                                if ($newValue)
+                                {
+                                    //var_dump($newValue->iri);
+                                    $child->setAttribute($attribute, $newValue->iri);
+                                }
+                                /*else
+                                {
+                                    var_dump(1);
+                                    var_dump($document->documentURI);
+                                    var_dump($e->baseURI);
+                                    var_dump($document->saveXML());
+                                }*/
                             }
-                            /*else
-                            {
-                                var_dump(1);
-                                var_dump($document->documentURI);
-                                var_dump($e->baseURI);
-                                var_dump($document->saveXML());
-                            }*/
                         }
                     }
                 }
