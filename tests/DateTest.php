@@ -47,6 +47,22 @@ class DateTest extends PHPUnit_Framework_TestCase
                 'Fri, 05 Nov 94 13:15:30 GMT',
             ),
             array(
+                '2010-11-05T13:15:30+00:00',
+                'Fri, 05 Nov 10 13:15:30 GMT',
+            ),
+            array(
+                '1990-11-05T13:15:30+00:00',
+                'Mon, 05 Nov 90 13:15:30 GMT',
+            ),
+            array(
+                '2049-11-05T13:15:30+00:00',
+                'Sat, 05 Nov 49 13:15:30 GMT',
+            ),
+            array(
+                '1950-11-05T13:15:30+00:00',
+                'Sat, 05 Nov 50 13:15:30 GMT',
+            ),
+            array(
                 '1994-11-05T13:15:30+00:00',
                 '05 Nov 94 13:15:30 GMT',
             ),
@@ -209,6 +225,14 @@ class DateTest extends PHPUnit_Framework_TestCase
             array(
                 '1994-11-05T13:15:30+00:00',
                 'Fri, 05 Nov 94 12:15:30 -0100',
+            ),
+            array(
+                '1994-11-05T13:15:30+00:00',
+                'Fri, 05 Nov 94 13:45:30 +0030',
+            ),
+            array(
+                '1994-11-05T13:15:30+00:00',
+                'Fri, 05 Nov 94 12:45:30 -0030',
             ),
             array(
                 '1994-11-05T13:15:30+00:00',
