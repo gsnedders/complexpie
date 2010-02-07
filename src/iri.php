@@ -996,14 +996,8 @@ class IRI
         }
         else
         {
-            $ipath = explode('/', $ipath);
-            $this->ipath = '';
-            foreach ($ipath as $segment)
-            {
-                $this->ipath .= $this->replace_invalid_with_pct_encoding($segment, '!$&\'()*+,;=@:');
-                $this->ipath .= '/';
-            }
-            $this->ipath = substr($this->ipath, 0, -1);
+            // It's safe to include / here as only iunreserved are decoded.
+            $this->ipath = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
             if ($this->scheme !== null)
             {
                 $this->ipath = $this->remove_dot_segments($this->ipath);
