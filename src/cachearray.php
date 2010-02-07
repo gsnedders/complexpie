@@ -20,7 +20,7 @@ class CacheArray extends \ArrayObject
     
     public function offsetSet($index, $newval)
     {
-        if (count($this) % self::MAX_CACHE_SIZE === 0)
+        if (count($this) === self::MAX_CACHE_SIZE)
         {
             $this->gc();
         }
