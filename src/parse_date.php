@@ -9,37 +9,6 @@ namespace ComplexPie;
 class Parse_Date
 {
     /**
-     * Input data
-     *
-     * @access protected
-     * @var string
-     */
-    var $date;
-
-    /**
-     * List of days, calendar day name => ordinal day number in the week
-     *
-     * @access protected
-     * @var array
-     */
-    var $day = array(
-        'mon' => 1,
-        'monday' => 1,
-        'tue' => 2,
-        'tuesday' => 2,
-        'wed' => 3,
-        'wednesday' => 3,
-        'thu' => 4,
-        'thursday' => 4,
-        'fri' => 5,
-        'friday' => 5,
-        'sat' => 6,
-        'saturday' => 6,
-        'sun' => 7,
-        'sunday' => 7,
-    );
-
-    /**
      * List of months, calendar month name => calendar month number
      *
      * @access protected
@@ -90,14 +59,6 @@ class Parse_Date
     );
 
     /**
-     * Cached PCRE for Parse_Date::$day
-     *
-     * @access protected
-     * @var string
-     */
-    var $day_pcre;
-
-    /**
      * Cached PCRE for Parse_Date::$month
      *
      * @access protected
@@ -114,14 +75,13 @@ class Parse_Date
     var $built_in = array();
 
     /**
-     * Create new Parse_Date object, and set self::day_pcre,
-     * self::month_pcre, and self::built_in
+     * Create new Parse_Date object, and set self::month_pcre and
+     * self::built_in
      *
      * @access private
      */
     public function __construct()
     {
-        $this->day_pcre = '(' . implode(array_keys($this->day), '|') . ')';
         $this->month_pcre = '(' . implode(array_keys($this->month), '|') . ')';
         
         $all_methods = get_class_methods($this);
