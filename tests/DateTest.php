@@ -286,7 +286,7 @@ class DateTest extends PHPUnit_Framework_TestCase
      */
     public function testBasic($expected, $date)
     {
-        $parsed = \ComplexPie\Misc::parse_date($date);
+        $parsed = \ComplexPie\Parse_Date::parse($date);
         if ($parsed)
         {
             $tz = new \DateTimeZone('UTC');

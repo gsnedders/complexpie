@@ -109,11 +109,6 @@ class Misc
         return $message;
     }
 
-    public static function parse_date($dt)
-    {
-        return Parse_Date::parse($dt);
-    }
-
     /**
      * Decode HTML entities
      *
