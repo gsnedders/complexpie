@@ -45,6 +45,9 @@ abstract class Content extends \ComplexPie\Content
         }
     }
     
+    /**
+     * @todo Cope with @src somehow
+     */
     public static function from_content($content)
     {
         switch ($content->getAttribute('type'))
@@ -108,7 +111,8 @@ abstract class Content extends \ComplexPie\Content
                         }
                         else
                         {
-                            return new \ComplexPie\Content\Binary(base64_decode(trim($content->textContent, "\x09\x0A\x0C\x0D\x20")), $type);
+                            $data = base64_decode(trim($content->textContent, "\x09\x0A\x0C\x0D\x20"), true);
+                            return new \ComplexPie\Content\Binary($data, $type);
                         }
                 }
         }
