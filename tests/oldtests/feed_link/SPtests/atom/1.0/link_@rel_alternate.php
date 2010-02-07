@@ -12,7 +12,7 @@ class SimplePie_Feed_Link_Test_Atom_10_Link_Relative_IRI extends SimplePie_Feed_
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

@@ -12,7 +12,7 @@ class SimplePie_Feed_Image_URL_Test_Atom_10_Logo extends SimplePie_Feed_Image_UR
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

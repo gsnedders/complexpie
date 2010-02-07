@@ -14,7 +14,7 @@ class SimplePie_First_Item_Permalink_Test_Atom_10_Link extends SimplePie_First_I
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

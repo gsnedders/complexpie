@@ -17,7 +17,7 @@ class SimplePie_First_Item_Permalink_Test_RSS_091_Netscape_Link extends SimplePi
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

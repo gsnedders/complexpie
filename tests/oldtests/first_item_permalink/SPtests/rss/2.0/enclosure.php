@@ -16,7 +16,7 @@ class SimplePie_First_Item_Permalink_Test_RSS_20_Enclosure extends SimplePie_Fir
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

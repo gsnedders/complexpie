@@ -14,7 +14,7 @@ class SimplePie_Feed_Link_Test_RSS_20_Atom_10_Link extends SimplePie_Feed_Link_T
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

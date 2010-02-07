@@ -14,7 +14,7 @@ class SimplePie_First_Item_Permalink_Test_RSS_090_Atom_10_Link extends SimplePie
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

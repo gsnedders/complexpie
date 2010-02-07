@@ -16,7 +16,7 @@ class SimplePie_First_Item_Permalink_Test_RSS_091_Userland_Link extends SimplePi
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

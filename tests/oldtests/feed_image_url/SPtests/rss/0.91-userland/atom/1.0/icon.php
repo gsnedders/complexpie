@@ -14,7 +14,7 @@ class SimplePie_Feed_Image_URL_Test_RSS_091_Userland_Atom_10_Icon extends Simple
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

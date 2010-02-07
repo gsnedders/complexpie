@@ -16,7 +16,7 @@ class SimplePie_First_Item_Permalink_Test_Bug_156_Test_0 extends SimplePie_First
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

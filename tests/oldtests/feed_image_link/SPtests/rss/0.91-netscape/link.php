@@ -17,7 +17,7 @@ class SimplePie_Feed_Image_Link_Test_RSS_091_Netscape_Link extends SimplePie_Fee
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

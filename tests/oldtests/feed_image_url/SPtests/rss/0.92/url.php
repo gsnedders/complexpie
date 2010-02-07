@@ -16,7 +16,7 @@ class SimplePie_Feed_Image_URL_Test_RSS_092_URL extends SimplePie_Feed_Image_URL
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

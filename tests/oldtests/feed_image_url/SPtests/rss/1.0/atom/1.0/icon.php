@@ -14,7 +14,7 @@ class SimplePie_Feed_Image_URL_Test_RSS_10_Atom_10_Icon extends SimplePie_Feed_I
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

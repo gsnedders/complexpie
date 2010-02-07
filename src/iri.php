@@ -286,7 +286,7 @@ class IRI
                             {
                                 $target->ipath = $relative->ipath;
                             }
-                            elseif (($base->iuserinfo !== null || $base->ihost !== null || $base->port !== null) && $base->ipath === null)
+                            elseif (($base->iuserinfo !== null || $base->ihost !== null || $base->port !== null) && $base->ipath === '')
                             {
                                 $target->ipath = '/' . $relative->ipath;
                             }
@@ -745,7 +745,7 @@ class IRI
         }
         if (isset($this->normalization[$this->scheme]['ipath']) && $this->ipath === $this->normalization[$this->scheme]['ipath'])
         {
-            $this->ipath = null;
+            $this->ipath = '';
         }
         if (isset($this->normalization[$this->scheme]['iquery']) && $this->iquery === $this->normalization[$this->scheme]['iquery'])
         {

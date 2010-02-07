@@ -12,7 +12,7 @@ class SimplePie_Feed_Link_Test_Atom_03_Link_Alternate extends SimplePie_Feed_Lin
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 

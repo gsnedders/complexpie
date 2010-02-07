@@ -15,7 +15,7 @@ class SimplePie_Feed_Image_URL_Test_RSS_091_Netscape_Atom_10_Logo extends Simple
     
     function expected()
     {
-        $this->expected = 'http://example.com/';
+        $this->expected = 'http://example.com';
     }
 }
 
