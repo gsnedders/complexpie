@@ -935,27 +935,38 @@ class IRI
         }
         else
         {
-            $ihost = $this->replace_invalid_with_pct_encoding($ihost, '!$&\'()*+,;=');
+            // A cache here makes sense as it's likely a lot of the IRIs will
+            // have the same host name, even if they otherwise differ.
+            static $cache;
+            if (!$cache)
+                $cache = new CacheArray();
             
-            // Lowercase, but ignore pct-encoded sections (as they should
-            // remain uppercase). This must be done after the previous step
-            // as that can add unescaped characters.
-            $position = 0;
-            $strlen = strlen($ihost);
-            while (($position += strcspn($ihost, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ%', $position)) < $strlen)
+            if (!isset($cache[$ihost]))
             {
-                if ($ihost[$position] === '%')
+                $ihost = $this->replace_invalid_with_pct_encoding($ihost, '!$&\'()*+,;=');
+                
+                // Lowercase, but ignore pct-encoded sections (as they should
+                // remain uppercase). This must be done after the previous step
+                // as that can add unescaped characters.
+                $position = 0;
+                $strlen = strlen($ihost);
+                while (($position += strcspn($ihost, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ%', $position)) < $strlen)
                 {
-                    $position += 3;
+                    if ($ihost[$position] === '%')
+                    {
+                        $position += 3;
+                    }
+                    else
+                    {
+                        $ihost[$position] = strtolower($ihost[$position]);
+                        $position++;
+                    }
                 }
-                else
-                {
-                    $ihost[$position] = strtolower($ihost[$position]);
-                    $position++;
-                }
+                
+                $cache[$ihost] = $ihost;
             }
             
-            $this->ihost = $ihost;
+            $this->ihost = $cache[$ihost];
         }
         
         $this->scheme_normalization();
