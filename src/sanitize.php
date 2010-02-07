@@ -78,28 +78,10 @@ class Sanitize
 
     public function replace_urls($data, $tag, $attributes)
     {
-        $elements = Misc::get_element($tag, $data);
-        foreach ($elements as $element)
-        {
-            if (is_array($attributes))
-            {
-                foreach ($attributes as $attribute)
-                {
-                    if (isset($element['attribs'][$attribute]['data']))
-                    {
-                        $element['attribs'][$attribute]['data'] = Misc::absolutize_url($element['attribs'][$attribute]['data'], $this->base);
-                        $new_element = Misc::element_implode($element);
-                        $data = str_replace($element['full'], $new_element, $data);
-                        $element['full'] = $new_element;
-                    }
-                }
-            }
-            elseif (isset($element['attribs'][$attributes]['data']))
-            {
-                $element['attribs'][$attributes]['data'] = Misc::absolutize_url($element['attribs'][$attributes]['data'], $this->base);
-                $data = str_replace($element['full'], Misc::element_implode($element), $data);
-            }
-        }
-        return $data;
+        $node = new \stdClass;
+        $node->textContent = $data;
+        $node->baseURI = $this->base;
+        //var_dump($this->base);
+        return Content::from_escaped_html($node)->to_html();
     }
 }

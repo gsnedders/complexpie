@@ -3,6 +3,17 @@ namespace ComplexPie\Content;
 
 class Node extends \ComplexPie\Content
 {
+    public static $replaceURLAttributes = array(
+        'a' => 'href',
+        'area' => 'href',
+        'blockquote' => 'cite',
+        'del' => 'cite',
+        'form' => 'action',
+        'img' => array('longdesc', 'src'),
+        'input' => 'src',
+        'ins' => 'cite',
+        'q' => 'cite'
+    );
     protected $node;
     
     public function __construct($node)
@@ -19,6 +30,43 @@ class Node extends \ComplexPie\Content
             $node = $node[0];
         }
         $this->node = $node;
+        $this->replaceURLs();
+    }
+    
+    protected function replaceURLs()
+    {
+        $nodes = (is_array($this->node)) ? $this->node : array($this->node);
+        foreach ($nodes as $node)
+        {
+            $document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
+            foreach (self::$replaceURLAttributes as $element => $attributes)
+            {
+                $attributes = (is_array($attributes)) ? $attributes : array($attributes);
+                $elements = $document->getElementsByTagName($element);
+                foreach ($elements as $e)
+                {
+                    foreach ($attributes as $attribute)
+                    {
+                        if ($e->hasAttribute($attribute))
+                        {
+                            $newValue = \ComplexPie\IRI::absolutize($e->baseURI, $e->getAttribute($attribute));
+                            if ($newValue)
+                            {
+                                //var_dump($newValue->iri);
+                                $e->setAttribute($attribute, $newValue->iri);
+                            }
+                            /*else
+                            {
+                                var_dump(1);
+                                var_dump($document->documentURI);
+                                var_dump($e->baseURI);
+                                var_dump($document->saveXML());
+                            }*/
+                        }
+                    }
+                }
+            }
+        }
     }
     
     public function get_node()
