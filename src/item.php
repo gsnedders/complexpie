@@ -444,16 +444,17 @@ class Item
         if ($this->data['date'])
         {
             $date_format = (string) $date_format;
-            switch ($date_format)
+            if ($date_format === '')
             {
-                case '':
-                    return $this->sanitize($this->data['date']['raw'], CONSTRUCT_TEXT);
-
-                case 'U':
-                    return $this->data['date']['parsed'];
-
-                default:
-                    return date($date_format, $this->data['date']['parsed']);
+                return $this->sanitize($this->data['date']['raw'], CONSTRUCT_TEXT);
+            }
+            elseif ($this->data['date']['parsed'])
+            {
+                return $this->data['date']['parsed']->format($date_format);
+            }
+            else
+            {
+                return false;
             }
         }
         else
