@@ -250,7 +250,11 @@ class IRI
         {
             $relative = new IRI($relative);
         }
-        if ($relative->scheme !== null)
+        if (!$relative->is_valid())
+        {
+            return false;
+        }
+        elseif ($relative->scheme !== null)
         {
             return clone $relative;
         }
@@ -260,7 +264,7 @@ class IRI
             {
                 $base = new IRI($base);
             }
-            if ($base->scheme !== null)
+            if ($base->scheme !== null && $base->scheme !== false)
             {
                 if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
                 {
