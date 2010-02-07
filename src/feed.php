@@ -229,7 +229,7 @@ class Feed extends Data
     {
         if ($return = Misc::get_descendant($this->dom, 'atom:title', array('atom' => NAMESPACE_ATOM_10), true))
         {
-            return Content::from_atom_text_construct($return);
+            return Atom10\Content::from_text_construct($return);
         }
         elseif ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'title'))
         {
