@@ -114,14 +114,6 @@ class Parse_Date
     var $built_in = array();
 
     /**
-     * Array of user-added callback methods
-     *
-     * @access private
-     * @var array
-     */
-    var $user = array();
-
-    /**
      * Create new Parse_Date object, and set self::day_pcre,
      * self::month_pcre, and self::built_in
      *
@@ -177,23 +169,6 @@ class Parse_Date
      */
     public function parse($date)
     {
-        foreach ($this->user as $method)
-        {
-            if (($returned = call_user_func($method, $date)) !== false)
-            {
-                if ($returned instanceof \DateTime)
-                {
-                    return $returned;
-                }
-                else
-                {
-                    $date = new \DateTime();
-                    $date->setTimestamp($returned);
-                    return $date;
-                }
-            }
-        }
-
         foreach ($this->built_in as $method)
         {
             if (($returned = call_user_func(array(&$this, $method), $date)) !== false)
@@ -212,25 +187,6 @@ class Parse_Date
         }
 
         return false;
-    }
-
-    /**
-     * Add a callback method to parse a date
-     *
-     * @final
-     * @access public
-     * @param callback $callback
-     */
-    public function add_callback($callback)
-    {
-        if (is_callable($callback))
-        {
-            $this->user[] = $callback;
-        }
-        else
-        {
-            trigger_error('User-supplied function must be a valid callback', E_USER_WARNING);
-        }
     }
 
     /**
