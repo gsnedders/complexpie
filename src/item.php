@@ -450,7 +450,14 @@ class Item
             }
             elseif ($this->data['date']['parsed'])
             {
-                return $this->data['date']['parsed']->format($date_format);
+                if ($date_format === 'U')
+                {
+                    return $this->data['date']['parsed']->getTimestamp();
+                }
+                else
+                {
+                    return $this->data['date']['parsed']->format($date_format);
+                }
             }
             else
             {
