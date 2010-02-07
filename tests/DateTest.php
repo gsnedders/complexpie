@@ -216,6 +216,26 @@ class DateTest extends PHPUnit_Framework_TestCase
             ),
             array(
                 '1994-11-05T13:15:30+00:00',
+                'Fri(d(a)y), 05 Nov 94 13:15:30 GMT',
+            ),
+            array(
+                false,
+                'Friday, 05 Nov\\(ember) 94 13:15:30 GMT',
+            ),
+            array(
+                '1994-11-05T13:15:30+00:00',
+                'Fri(da\\)y), 05 Nov 94 13:15:30 GMT',
+            ),
+            array(
+                '1994-11-05T13:15:30+00:00',
+                'Fri(day\\\\), 05 Nov 94 13:15:30 GMT',
+            ),
+            array(
+                false,
+                'Fri, 05 Nov( 94 13:15:30 GMT',
+            ),
+            array(
+                '1994-11-05T13:15:30+00:00',
                 'Fri(day), 05 Nov(ember) 94 13:15:30 A',
             ),
             array(

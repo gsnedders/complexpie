@@ -309,11 +309,10 @@ class Parse_Date
     /**
      * Remove RFC822 comments
      *
-     * @access protected
      * @param string $data Data to strip comments from
      * @return string Comment stripped string
      */
-    public function remove_rfc2822_comments($string)
+    protected function remove_rfc2822_comments($string)
     {
         $string = (string) $string;
         $position = 0;
@@ -326,40 +325,23 @@ class Parse_Date
         {
             $output .= substr($string, $position, $pos - $position);
             $position = $pos + 1;
-            if ($string[$pos - 1] !== '\\')
+            $depth++;
+            while ($depth && ($position += strcspn($string, '()\\', $position)) < $length)
             {
-                $depth++;
-                while ($depth && $position < $length)
+                switch ($string[$position++])
                 {
-                    $position += strcspn($string, '()', $position);
-                    if ($string[$position - 1] === '\\')
-                    {
-                        $position++;
-                        continue;
-                    }
-                    elseif (isset($string[$position]))
-                    {
-                        switch ($string[$position])
-                        {
-                            case '(':
-                                $depth++;
-                                break;
-
-                            case ')':
-                                $depth--;
-                                break;
-                        }
-                        $position++;
-                    }
-                    else
-                    {
+                    case '(':
+                        $depth++;
                         break;
-                    }
+
+                    case ')':
+                        $depth--;
+                        break;
+                    
+                    case '\\':
+                        $position++;
+                        break;
                 }
-            }
-            else
-            {
-                $output .= '(';
             }
         }
         $output .= substr($string, $position);
