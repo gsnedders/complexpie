@@ -776,8 +776,17 @@ class IRI
      */
     private function set_iri($iri)
     {
-        static $cache = array();
-        if (isset($cache[$iri]))
+        static $cache;
+        if (!$cache)
+        {
+            $cache = new CacheArray();
+        }
+        
+        if ($iri === null)
+        {
+            return true;
+        }
+        elseif (isset($cache[$iri]))
         {
             list($this->scheme,
                  $this->iuserinfo,
@@ -798,7 +807,7 @@ class IRI
                 && $this->set_path($parsed['path'])
                 && $this->set_query($parsed['query'])
                 && $this->set_fragment($parsed['fragment']);
-                
+            
             $cache[$iri] = array($this->scheme,
                                  $this->iuserinfo,
                                  $this->ihost,
