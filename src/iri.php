@@ -49,49 +49,49 @@ class IRI
      *
      * @var string
      */
-    private $scheme;
+    private $scheme = null;
 
     /**
      * User Information
      *
      * @var string
      */
-    private $iuserinfo;
+    private $iuserinfo = null;
 
     /**
      * ihost
      *
      * @var string
      */
-    private $ihost;
+    private $ihost = null;
 
     /**
      * Port
      *
      * @var string
      */
-    private $port;
+    private $port = null;
 
     /**
      * ipath
      *
      * @var string
      */
-    private $ipath;
+    private $ipath = '';
 
     /**
      * iquery
      *
      * @var string
      */
-    private $iquery;
+    private $iquery = null;
 
     /**
      * ifragment
      *
      * @var string
      */
-    private $ifragment;
+    private $ifragment = null;
     
     /**
      * Normalization database
@@ -267,7 +267,7 @@ class IRI
             }
             if ($base->scheme !== null && $base->is_valid())
             {
-                if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
+                if ($relative->get_iri() !== '')
                 {
                     if ($relative->iuserinfo !== null || $relative->ihost !== null || $relative->port !== null)
                     {
@@ -767,9 +767,9 @@ class IRI
     public function is_valid()
     {
         $isauthority = $this->iuserinfo !== null || $this->ihost !== null || $this->port !== null;
-        if ($this->ipath !== null &&
+        if ($this->ipath !== '' &&
             (
-                $isauthority && $this->ipath !== '' && (
+                $isauthority && (
                     $this->ipath[0] !== '/' ||
                     substr($this->ipath, 0, 2) === '//'
                 ) ||
@@ -1030,38 +1030,32 @@ class IRI
      */
     private function set_path($ipath)
     {
-        if ($ipath === null)
+        static $cache;
+        if (!$cache)
         {
-            $this->ipath = null;
-            return true;
+            $cache = new CacheArray();
         }
-        else
+        
+        $ipath = (string) $ipath;
+        
+        if (!isset($cache[$ipath]))
         {
-            static $cache;
-            if (!$cache)
+            $valid = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
+            if (strpos($valid, './') !== false || strpos($valid, '/.') !== false || $valid === '.' || $valid === '..')
             {
-                $cache = new CacheArray();
+                $removed = $this->remove_dot_segments($valid);
             }
-            
-            if (!isset($cache[$ipath]))
+            else
             {
-                $valid = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
-                if (strpos($valid, './') !== false || strpos($valid, '/.') !== false || $valid === '.' || $valid === '..')
-                {
-                    $removed = $this->remove_dot_segments($valid);
-                }
-                else
-                {
-                    $removed = $valid;
-                }
-                $cache[$ipath] = array($valid, $removed);
+                $removed = $valid;
             }
-            
-            $this->ipath = $cache[$ipath][(int) ($this->scheme !== null)];
-            
-            $this->scheme_normalization();
-            return true;
+            $cache[$ipath] = array($valid, $removed);
         }
+        
+        $this->ipath = $cache[$ipath][(int) ($this->scheme !== null)];
+        
+        $this->scheme_normalization();
+        return true;
     }
 
     /**
@@ -1138,7 +1132,6 @@ class IRI
         }
         
         $iri = '';
-        $defined = false;
         if ($this->scheme !== null)
         {
             $iri .= $this->scheme . ':';
@@ -1147,11 +1140,7 @@ class IRI
         {
             $iri .= '//' . $iauthority;
         }
-        if ($this->ipath !== null)
-        {
-            $iri .= $this->ipath;
-            $defined = true;
-        }
+        $iri .= $this->ipath;
         if ($this->iquery !== null)
         {
             $iri .= '?' . $this->iquery;
@@ -1161,14 +1150,7 @@ class IRI
             $iri .= '#' . $this->ifragment;
         }
 
-        if ($iri !== '' || $defined)
-        {
-            return $iri;
-        }
-        else
-        {
-            return null;
-        }
+        return $iri;
     }
 
     /**
@@ -1178,11 +1160,7 @@ class IRI
      */
     private function get_uri()
     {
-        $iri = $this->get_iri();
-        if (is_string($iri))
-            return $this->to_uri($iri);
-        else
-            return $iri;
+        return $this->to_uri($this->get_iri());
     }
 
     /**
