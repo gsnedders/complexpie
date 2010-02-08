@@ -14,22 +14,23 @@ class Node extends \ComplexPie\Content
         'ins' => array('cite'),
         'q' => array('cite')
     );
-    protected $nodes;
+    protected $nodes = array();
     
     public function __construct($nodes)
     {
         if ($nodes instanceof \DOMNodeList)
         {
-            $new_node = array();
-            foreach ($nodes as $n)
-                $new_node[] = $n;
-            $nodes = $new_node;
+            foreach ($nodes as $node)
+                $this->nodes[] = $node;
         }
-        if (!is_array($nodes))
+        elseif (is_array($nodes))
         {
-            $nodes = array($nodes);
+            $this->nodes = $nodes;
         }
-        $this->nodes = $nodes;
+        else
+        {
+            $this->nodes = array($nodes);
+        }
         $this->replaceURLs();
     }
     
