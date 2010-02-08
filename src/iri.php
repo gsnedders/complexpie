@@ -267,9 +267,9 @@ class IRI
             }
             if ($base->scheme !== null && $base->is_valid())
             {
-                if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
+                if ($relative->get_iri())
                 {
-                    if ($relative->get_iauthority() !== null)
+                    if ($relative->iuserinfo !== null || $relative->ihost !== null || $relative->port !== null)
                     {
                         $target = clone $relative;
                         $target->scheme = $base->scheme;
