@@ -14,30 +14,29 @@ class Node extends \ComplexPie\Content
         'ins' => array('cite'),
         'q' => array('cite')
     );
-    protected $node;
+    protected $nodes;
     
-    public function __construct($node)
+    public function __construct($nodes)
     {
-        if ($node instanceof \DOMNodeList)
+        if ($nodes instanceof \DOMNodeList)
         {
             $new_node = array();
-            foreach ($node as $n)
+            foreach ($nodes as $n)
                 $new_node[] = $n;
-            $node = $new_node;
+            $nodes = $new_node;
         }
-        if (is_array($node) && count($node) === 1)
+        if (!is_array($nodes))
         {
-            $node = $node[0];
+            $nodes = array($nodes);
         }
-        $this->node = $node;
+        $this->nodes = $nodes;
         $this->replaceURLs();
     }
     
     protected function replaceURLs()
     {
-        $nodes = (is_array($this->node)) ? $this->node : array($this->node);
         $replaceURLAttributes = self::$replaceURLAttributes;
-        foreach ($nodes as $node)
+        foreach ($this->nodes as $node)
         {
             if ($node->nodeType === XML_ELEMENT_NODE)
             {
@@ -46,8 +45,7 @@ class Node extends \ComplexPie\Content
                 {
                     if (isset($replaceURLAttributes[$child->tagName]))
                     {
-                        $attributes = $replaceURLAttributes[$child->tagName];
-                        foreach ($attributes as $attribute)
+                        foreach ($replaceURLAttributes[$child->tagName] as $attribute)
                         {
                             if ($child->hasAttribute($attribute))
                             {
@@ -66,50 +64,34 @@ class Node extends \ComplexPie\Content
     
     public function get_node()
     {
-        return $this->node;
+        return $this->nodes;
     }
     
     public function to_text()
     {
-        if (is_array($this->node))
+        $text = '';
+        foreach ($this->nodes as $node)
         {
-            $text = '';
-            foreach ($this->node as $node)
-            {
-                $text .= $node->textContent;
-            }
-            return $text;
+            $text .= $node->textContent;
         }
-        else
-        {
-            return $this->node->textContent;
-        }
+        return $text;
     }
     
     public function to_xml()
     {
-        if (is_array($this->node))
+        $xml = '';
+        foreach ($this->nodes as $node)
         {
-            $xml = '';
-            foreach ($this->node as $node)
-            {
-                $document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
-                $xml .= $document->saveXML($node);
-            }
-            return $xml;
+            $document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
+            $xml .= $document->saveXML($node);
         }
-        else
-        {
-            $document = $this->node instanceof \DOMDocument ? $this->node : $this->node->ownerDocument;
-            return $document->saveXML($this->node);
-        }
+        return $xml;
     }
     
     public function to_html()
     {
-        $nodes = (is_array($this->node)) ? $this->node : array($this->node);
         $html = '';
-        foreach ($nodes as $node)
+        foreach ($this->nodes as $node)
         {
             $html .= \ComplexPie\nodeToHTML($node);
         }
