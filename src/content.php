@@ -11,7 +11,7 @@ abstract class Content
     public static function from_escaped_html($escaped_node)
     {
         $content = $escaped_node->textContent;
-        if (strpos($content, '<') === false && strpos($content, '&') === false)
+        if (strcspn($content, '<&') === strlen($content))
         {
             return new Content\String($content);
         }
