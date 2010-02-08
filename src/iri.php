@@ -352,19 +352,9 @@ class IRI
     private function parse_iri($iri)
     {
         $iri = trim($iri, "\x20\x09\x0A\x0C\x0D");
-        if ($iri === '')
+        if (preg_match('/^((?P<scheme>[^:\/?#]+):)?(\/\/(?P<authority>[^\/?#]*))?(?P<path>[^?#]*)(\?(?P<query>[^#]*))?(#(?P<fragment>.*))?$/', $iri, $match))
         {
-            return array(
-                'scheme' => null,
-                'authority' => null,
-                'path' => '',
-                'query' => null,
-                'fragment' => null
-            );
-        }
-        elseif (preg_match('/^((?P<scheme>[^:\/?#]+):)?(\/\/(?P<authority>[^\/?#]*))?(?P<path>[^?#]*)(\?(?P<query>[^#]*))?(#(?P<fragment>.*))?$/', $iri, $match))
-        {
-            if (!isset($match[1]) || $match[1] === '')
+            if ($match[1] === '')
             {
                 $match['scheme'] = null;
             }
@@ -372,7 +362,7 @@ class IRI
             {
                 $match['authority'] = null;
             }
-            if (!isset($match[5]) || $match[5] === '')
+            if (!isset($match[5]))
             {
                 $match['path'] = '';
             }
