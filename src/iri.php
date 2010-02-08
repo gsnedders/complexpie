@@ -406,7 +406,7 @@ class IRI
             // B: if the input buffer begins with a prefix of "/./" or "/.", where "." is a complete path segment, then replace that prefix with "/" in the input buffer; otherwise,
             elseif (strpos($input, '/./') === 0)
             {
-                $input = substr_replace($input, '/', 0, 3);
+                $input = substr($input, 2);
             }
             elseif ($input === '/.')
             {
@@ -415,7 +415,7 @@ class IRI
             // C: if the input buffer begins with a prefix of "/../" or "/..", where ".." is a complete path segment, then replace that prefix with "/" in the input buffer and remove the last segment and its preceding "/" (if any) from the output buffer; otherwise,
             elseif (strpos($input, '/../') === 0)
             {
-                $input = substr_replace($input, '/', 0, 4);
+                $input = substr($input, 3);
                 $output = substr_replace($output, '', strrpos($output, '/'));
             }
             elseif ($input === '/..')
