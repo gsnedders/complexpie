@@ -464,11 +464,11 @@ class IRI
      */
     private function replace_invalid_with_pct_encoding($string, $extra_chars, $iprivate = false)
     {
-        // Replace invalid percent characters
-        $string = preg_replace('/%($|[^A-Fa-f0-9]|[A-Fa-f0-9][^A-Fa-f0-9])/', '%25\1', $string);
-        
         // Normalize as many pct-encoded sections as possible
         $string = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array(&$this, 'remove_iunreserved_percent_encoded'), $string);
+        
+        // Replace invalid percent characters
+        $string = preg_replace('/%($|[^A-Fa-f0-9]|[A-Fa-f0-9][^A-Fa-f0-9])/', '%25\1', $string);
         
         // Add unreserved and % to $extra_chars (the latter is safe because all
         // pct-encoded sections are now valid).
