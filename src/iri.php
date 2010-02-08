@@ -1037,12 +1037,28 @@ class IRI
         }
         else
         {
-            // It's safe to include / here as only iunreserved are decoded.
-            $this->ipath = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
-            if ($this->scheme !== null)
+            static $cache;
+            if (!$cache)
             {
-                $this->ipath = $this->remove_dot_segments($this->ipath);
+                $cache = new CacheArray();
             }
+            
+            if (!isset($cache[$ipath]))
+            {
+                $valid = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
+                if (strpos($valid, './') !== false || strpos($valid, '/.') !== false || $valid === '.' || $valid === '..')
+                {
+                    $removed = $this->remove_dot_segments($valid);
+                }
+                else
+                {
+                    $removed = $valid;
+                }
+                $cache[$ipath] = array($valid, $removed);
+            }
+            
+            $this->ipath = $cache[$ipath][(int) ($this->scheme !== null)];
+            
             $this->scheme_normalization();
             return true;
         }
