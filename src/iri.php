@@ -767,10 +767,18 @@ class IRI
     public function is_valid()
     {
         $isauthority = $this->iuserinfo !== null || $this->ihost !== null || $this->port !== null;
-        if ($this->ipath !== null && (
-               substr($this->ipath, 0, 2) === '//' && $isauthority
-            || $this->ipath !== '' && $this->ipath[0] !== '/' && $isauthority
-            || strpos($this->ipath, ':') !== false && (strpos($this->ipath, '/') === false ? true : strpos($this->ipath, ':') < strpos($this->ipath, '/')) && $this->scheme === null && $this->get_iauthority() === null
+        if ($this->ipath !== null &&
+            (
+                $isauthority && $this->ipath !== '' && (
+                    $this->ipath[0] !== '/' ||
+                    substr($this->ipath, 0, 2) === '//'
+                ) ||
+                (
+                    $this->scheme === null &&
+                    !$isauthority &&
+                    strpos($this->ipath, ':') !== false &&
+                    (strpos($this->ipath, '/') === false ? true : strpos($this->ipath, ':') < strpos($this->ipath, '/'))
+                )
             )
         )
         {
