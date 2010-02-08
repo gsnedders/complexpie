@@ -163,11 +163,12 @@ class IRI
      */
     public function __get($name)
     {
-        if (!$this->is_valid())
-        {
-            return false;
-        }
-        elseif (method_exists($this, "get_$name"))
+        if (
+            $name === 'iri' ||
+            $name === 'uri' ||
+            $name === 'iauthority' ||
+            $name === 'authority'
+        )
         {
             $return = $this->{"get_$name"}();
         }
@@ -264,7 +265,7 @@ class IRI
             {
                 $base = new IRI($base);
             }
-            if ($base->scheme !== null && $base->scheme !== false)
+            if ($base->scheme !== null && $base->is_valid())
             {
                 if ($relative->get_iri() !== '' && $relative->get_iri() !== null)
                 {
@@ -765,9 +766,10 @@ class IRI
      */
     public function is_valid()
     {
+        $isauthority = $this->iuserinfo !== null || $this->ihost !== null || $this->port !== null;
         if ($this->ipath !== null && (
-               substr($this->ipath, 0, 2) === '//' && $this->get_iauthority() === null
-            || substr($this->ipath, 0, 1) !== '/' && $this->ipath !== '' && $this->get_iauthority() !== null
+               substr($this->ipath, 0, 2) === '//' && $isauthority
+            || $this->ipath !== '' && $this->ipath[0] !== '/' && $isauthority
             || strpos($this->ipath, ':') !== false && (strpos($this->ipath, '/') === false ? true : strpos($this->ipath, ':') < strpos($this->ipath, '/')) && $this->scheme === null && $this->get_iauthority() === null
             )
         )
@@ -1106,6 +1108,11 @@ class IRI
      */
     private function get_iri()
     {
+        if (!$this->is_valid())
+        {
+            return false;
+        }
+        
         $iri = '';
         $defined = false;
         if ($this->scheme !== null)
