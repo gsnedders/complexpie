@@ -14,7 +14,9 @@ class Node extends \ComplexPie\Content
         'ins' => array('cite'),
         'q' => array('cite')
     );
+    
     protected $nodes = array();
+    protected $document;
     
     public function __construct($nodes)
     {
@@ -31,6 +33,7 @@ class Node extends \ComplexPie\Content
         {
             $this->nodes = array($nodes);
         }
+        $this->document = $this->nodes[0] instanceof \DOMDocument ? $this->nodes[0] : $this->nodes[0]->ownerDocument;
         $this->replaceURLs();
     }
     
@@ -83,8 +86,7 @@ class Node extends \ComplexPie\Content
         $xml = '';
         foreach ($this->nodes as $node)
         {
-            $document = $node instanceof \DOMDocument ? $node : $node->ownerDocument;
-            $xml .= $document->saveXML($node);
+            $xml .= $this->document->saveXML($node);
         }
         return $xml;
     }
@@ -95,6 +97,8 @@ class Node extends \ComplexPie\Content
         foreach ($this->nodes as $node)
         {
             $html .= \ComplexPie\nodeToHTML($node);
+            // If my patch makes it in, we can just do:
+            // $html .= $this->document->saveHTML($node);
         }
         return $html;
     }
