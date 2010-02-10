@@ -97,7 +97,7 @@ class Node extends \ComplexPie\Content
         foreach ($this->nodes as $node)
         {
             $html .= \ComplexPie\nodeToHTML($node);
-            // If my patch makes it in, we can just do:
+            // If http://pastebin.ca/1792855 makes it in, we can just do:
             // $html .= $this->document->saveHTML($node);
         }
         return $html;
