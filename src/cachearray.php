@@ -76,7 +76,6 @@ class CacheArray extends \ArrayObject
          * result in nothing being removed when rounding to nearest.
          */
         
-        $keep = array();
         foreach ($this->access_count as $key => $count)
         {
             if ($count < $keep_threshold)
