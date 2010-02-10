@@ -54,10 +54,7 @@ class Sanitize
             {
                 // Replace relative URLs
                 $this->base = $base;
-                foreach ($this->replace_url_attributes as $element => $attributes)
-                {
-                    $data = $this->replace_urls($data, $element, $attributes);
-                }
+                $data = $this->replace_urls($data);
 
                 // Having (possibly) taken stuff out, there may now be whitespace at the beginning/end of the data
                 $data = trim($data);
@@ -76,7 +73,7 @@ class Sanitize
         return $data;
     }
 
-    public function replace_urls($data, $tag, $attributes)
+    public function replace_urls($data)
     {
         $node = new \stdClass;
         $node->textContent = $data;
