@@ -39,6 +39,8 @@ class Data extends Extension
         {
             return call_user_func(array($this, "get_$name"));
         }
+        trigger_error('Undefined property: ' . get_class($this) . '::' . $name, E_USER_NOTICE);
+        return null;
     }
 }
 
