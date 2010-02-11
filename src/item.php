@@ -380,7 +380,7 @@ class Item
         {
             return $authors;
         }
-        elseif ($authors = $this->feed->get_authors())
+        elseif ($authors = $this->feed->authors)
         {
             return $authors;
         }

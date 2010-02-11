@@ -13,7 +13,7 @@ class Feed extends Data
             $this->dom->ownerDocument->documentURI = html_entity_decode($links[0], ENT_QUOTES, 'UTF-8');
     }
     
-    public function get_type()
+    protected function get_type()
     {
         if (!isset($this->data['type']))
         {
@@ -93,7 +93,7 @@ class Feed extends Data
         return $this->data['type'];
     }
 
-    public function get_feed_tags($namespace, $tag)
+    protected function get_feed_tags($namespace, $tag)
     {
         $type = $this->get_type();
         if ($type & TYPE_ATOM_10)
@@ -127,7 +127,7 @@ class Feed extends Data
         return null;
     }
 
-    public function get_channel_tags($namespace, $tag)
+    protected function get_channel_tags($namespace, $tag)
     {
         $type = $this->get_type();
         if ($type & TYPE_ATOM_ALL)
@@ -170,7 +170,7 @@ class Feed extends Data
         return null;
     }
 
-    public function get_image_tags($namespace, $tag)
+    protected function get_image_tags($namespace, $tag)
     {
         $type = $this->get_type();
         if ($type & TYPE_RSS_10)
@@ -228,7 +228,7 @@ class Feed extends Data
         return $this->sanitize->dosanitize($data, $type, $base);
     }
 
-    public function get_title()
+    protected function get_title()
     {
         if ($return = Misc::get_descendant($this->dom, 'atom:title', array('atom' => NAMESPACE_ATOM_10), true))
         {
@@ -256,7 +256,7 @@ class Feed extends Data
         }
     }
 
-    public function get_categories()
+    protected function get_categories()
     {
         $categories = array();
 
@@ -305,7 +305,7 @@ class Feed extends Data
         }
     }
 
-    public function get_authors()
+    protected function get_authors()
     {
         $authors = array();
         foreach ((array) $this->get_channel_tags(NAMESPACE_ATOM_10, 'author') as $author)
@@ -363,7 +363,7 @@ class Feed extends Data
         }
     }
 
-    public function get_contributors()
+    protected function get_contributors()
     {
         $contributors = array();
         foreach ((array) $this->get_channel_tags(NAMESPACE_ATOM_10, 'contributor') as $contributor)
@@ -421,7 +421,7 @@ class Feed extends Data
         }
     }
 
-    public function get_links($rel = 'alternate')
+    protected function get_links($rel = 'alternate')
     {
         if (!isset($this->data['links']))
         {
@@ -495,7 +495,7 @@ class Feed extends Data
         }
     }
 
-    public function get_description()
+    protected function get_description()
     {
         if ($return = $this->get_channel_tags(NAMESPACE_ATOM_10, 'subtitle'))
         {
@@ -523,7 +523,7 @@ class Feed extends Data
         }
     }
 
-    public function get_copyright()
+    protected function get_copyright()
     {
         if ($return = $this->get_channel_tags(NAMESPACE_ATOM_10, 'rights'))
         {
@@ -543,7 +543,7 @@ class Feed extends Data
         }
     }
 
-    public function get_language()
+    protected function get_language()
     {
         if ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'language'))
         {
@@ -571,7 +571,7 @@ class Feed extends Data
         }
     }
 
-    public function get_image_title()
+    protected function get_image_title()
     {
         if ($return = $this->get_image_tags(NAMESPACE_RSS_10, 'title'))
         {
@@ -591,7 +591,7 @@ class Feed extends Data
         }
     }
 
-    public function get_image_url()
+    protected function get_image_url()
     {
         if ($return = $this->get_channel_tags(NAMESPACE_ATOM_10, 'logo'))
         {
@@ -619,7 +619,7 @@ class Feed extends Data
         }
     }
 
-    public function get_image_link()
+    protected function get_image_link()
     {
         if ($return = $this->get_image_tags(NAMESPACE_RSS_10, 'link'))
         {
@@ -639,7 +639,7 @@ class Feed extends Data
         }
     }
 
-    public function get_image_width()
+    protected function get_image_width()
     {
         if ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'width'))
         {
@@ -655,7 +655,7 @@ class Feed extends Data
         }
     }
 
-    public function get_image_height()
+    protected function get_image_height()
     {
         if ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'height'))
         {
@@ -671,7 +671,7 @@ class Feed extends Data
         }
     }
 
-    public function get_items()
+    protected function get_items()
     {
         if (!isset($this->data['items']))
         {
