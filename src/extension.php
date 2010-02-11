@@ -14,7 +14,7 @@ abstract class Extension
         }
         else
         {
-            static::$static_ext[$extpoint][$priority][] = $ext;
+            static::$static_ext[$extpoint][(int) $priority][] = $ext;
         }
     }
     
@@ -52,7 +52,7 @@ abstract class Extension
         }
         else
         {
-            $this->object_ext[$extpoint][$priority][] = $ext;
+            $this->object_ext[$extpoint][(int) $priority][] = $ext;
         }
     }
     
