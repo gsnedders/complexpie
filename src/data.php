@@ -28,7 +28,7 @@ class Data extends Extension
      */
     public function __get($name)
     {
-        foreach ($this->get_extensions('get') as $extension => $priority)
+        foreach ($this->get_extensions('get') as $extension)
         {
             if (($return = $extension($this->dom, $name)) !== null)
             {
