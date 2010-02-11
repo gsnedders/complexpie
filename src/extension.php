@@ -14,7 +14,7 @@ abstract class Extension
         }
         else
         {
-            static::$static_ext[$extpoint][$ext] = (int) $priority;
+            static::$static_ext[$extpoint][$priority][] = $ext;
         }
     }
     
@@ -52,7 +52,7 @@ abstract class Extension
         }
         else
         {
-            $this->object_ext[$extpoint][$ext] = (int) $priority;
+            $this->object_ext[$extpoint][$priority][] = $ext;
         }
     }
     
@@ -82,7 +82,7 @@ abstract class Extension
                 // Note the order of arguments: the superclass is first so that
                 // the subclass's extensions' priorities will override it in
                 // case of conflicts.
-                $extensions = array_merge($current::$static_ext[$extpoint], $extensions);
+                $extensions = array_merge_recursive($current::$static_ext[$extpoint], $extensions);
                 $extpoint_exists = true;
             }
         } while ($current = get_parent_class($current));
@@ -91,15 +91,22 @@ abstract class Extension
         // Again, watch argument order here; per-object should override -class.
         if (isset($this->object_ext[$extpoint]))
         {
-            $extensions = array_merge($extensions, $this->object_ext[$extpoint]);
+            $extensions = array_merge_recursive($extensions, $this->object_ext[$extpoint]);
             $extpoint_exists = true;
         }
         
         if ($extpoint_exists)
         {
-            // Sort by priority (where lower is higher priority).
-            asort($extensions, SORT_NUMERIC);
-            return array_keys($extensions);
+            if ($extensions)
+            {
+                // Sort by priority (where lower is higher priority).
+                ksort($extensions, SORT_NUMERIC);
+                return call_user_func_array('array_merge', $extensions);
+            }
+            else
+            {
+                return array();
+            }
         }
         else
         {
