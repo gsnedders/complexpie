@@ -61,7 +61,13 @@ if (extension_loaded('spl'))
         {
             $file = dirname(__FILE__) . '/' . str_replace('\\', '/', strtolower(substr($classname, 11))) . '.php';
             if (file_exists($file))
+            {
+                $init = dirname($file) . '/_init.php';
+                if (file_exists($init))
+                    require_once $init;
+                
                 require_once $file;
+            }
         }
     }
     
