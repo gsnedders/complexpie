@@ -9,7 +9,7 @@ class Data extends Extension
     {
         if ($extpoint === 'get' && !is_callable($ext))
         {
-            throw new Excetpion("$ext is not callable");
+            throw new \InvalidArgumentException("$ext is not callable");
         }
         parent::add_static_extension($extpoint, $ext, $priority);
     }
@@ -18,7 +18,7 @@ class Data extends Extension
     {
         if ($extpoint === 'get' && !is_callable($ext))
         {
-            throw new Excetpion("$ext is not callable");
+            throw new \InvalidArgumentException("$ext is not callable");
         }
         parent::add_extension($extpoint, $ext, $priority);
     }
