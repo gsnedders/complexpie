@@ -6,6 +6,7 @@ require_once 'CacheArrayTest.php';
 require_once 'ContentTest.php';
 require_once 'DateTest.php';
 require_once 'DOMIteratorTest.php';
+require_once 'ExtensionTest.php';
 require_once 'IRITest.php';
 require_once 'NetIPv6Test.php';
 require_once 'nodeToHTMLTest.php';
@@ -21,6 +22,7 @@ class AllTests
 		$suite->addTestSuite('ContentTest');
 		$suite->addTestSuite('DateTest');
 		$suite->addTestSuite('DOMIteratorTest');
+		$suite->addTestSuite('ExtensionTest');
 		$suite->addTestSuite('IRITest');
 		$suite->addTestSuite('NetIPv6Test');
 		$suite->addTestSuite('nodeToHTMLTest');
