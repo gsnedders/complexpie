@@ -33,7 +33,7 @@ class SimplePie_Feed_Category_Test extends SimplePie_Feed_Test
     function category()
     {
         $feed = $this->feed();
-        if ($category = $feed->get_category())
+        if ($category = $feed->category)
         {
             return $category;
         }
@@ -137,7 +137,7 @@ class SimplePie_Feed_Copyright_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_copyright();
+        $this->result = $feed->copyright;
     }
 }
 
@@ -146,7 +146,7 @@ class SimplePie_Feed_Description_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_description();
+        $this->result = $feed->description;
     }
 }
 
@@ -155,7 +155,7 @@ class SimplePie_Feed_Image_Height_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_image_height();
+        $this->result = $feed->image_height;
     }
 }
 
@@ -164,7 +164,7 @@ class SimplePie_Feed_Image_Link_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_image_link();
+        $this->result = $feed->image_link;
     }
 }
 
@@ -173,7 +173,7 @@ class SimplePie_Feed_Image_Title_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_image_title();
+        $this->result = $feed->image_title;
     }
 }
 
@@ -182,7 +182,7 @@ class SimplePie_Feed_Image_URL_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_image_url();
+        $this->result = $feed->image_url;
     }
 }
 
@@ -191,7 +191,7 @@ class SimplePie_Feed_Image_Width_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_image_width();
+        $this->result = $feed->image_width;
     }
 }
 
@@ -200,7 +200,7 @@ class SimplePie_Feed_Language_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_language();
+        $this->result = $feed->language;
     }
 }
 
@@ -209,7 +209,7 @@ class SimplePie_Feed_Link_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_link();
+        $this->result = $feed->link;
     }
 }
 
@@ -218,7 +218,7 @@ class SimplePie_Feed_Title_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->get_title();
+        $this->result = $feed->title;
     }
 }
 
@@ -343,7 +343,7 @@ class diveintomark_Atom_Autodiscovery extends SimplePie_Unit_Test2
         $feed->set_file($this->data['file']);
         $feed->enable_cache(false);
         $feed->init();
-        $this->result = $feed->get_link();
+        $this->result = $feed->link;
     }
     
     function result()
