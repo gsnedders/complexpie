@@ -33,7 +33,7 @@ class SimplePie_Feed_Category_Test extends SimplePie_Feed_Test
     function category()
     {
         $feed = $this->feed();
-        if ($category = $feed->category)
+        if (list($category) = $feed->categories)
         {
             return $category;
         }
@@ -49,7 +49,7 @@ class SimplePie_First_Item_Test extends SimplePie_Feed_Test
     function first_item()
     {
         $feed = $this->feed();
-        if ($item = $feed->get_item(0))
+        if (list($item) = $feed->items)
         {
             return $item;
         }
@@ -209,7 +209,7 @@ class SimplePie_Feed_Link_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        $this->result = $feed->link;
+        list($this->result) = $feed->links;
     }
 }
 

@@ -8,7 +8,9 @@ class Feed extends Data
         $this->dom = $dom;
         $this->data = $oldtree;
         $this->sanitize = new Sanitize();
-        $this->dom->ownerDocument->documentURI = html_entity_decode($this->get_link(), ENT_QUOTES, 'UTF-8');
+        $links = $this->links;
+        if ($links)
+            $this->dom->ownerDocument->documentURI = html_entity_decode($links[0], ENT_QUOTES, 'UTF-8');
     }
     
     public function get_type()
@@ -206,13 +208,14 @@ class Feed extends Data
 
     public function get_base($element = array())
     {
+        $links = $this->get_links();
         if (!($this->get_type() & TYPE_RSS_SYNDICATION) && !empty($element['xml_base_explicit']) && isset($element['xml_base']))
         {
             return $element['xml_base'];
         }
-        elseif ($this->get_link() !== null)
+        elseif ($links !== null)
         {
-            return $this->get_link();
+            return $links[0];
         }
         else
         {
@@ -246,19 +249,6 @@ class Feed extends Data
         elseif ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'title'))
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_category($key = 0)
-    {
-        $categories = $this->get_categories();
-        if (isset($categories[$key]))
-        {
-            return $categories[$key];
         }
         else
         {
@@ -308,19 +298,6 @@ class Feed extends Data
         if (!empty($categories))
         {
             return array_unique($categories);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_author($key = 0)
-    {
-        $authors = $this->get_authors();
-        if (isset($authors[$key]))
-        {
-            return $authors[$key];
         }
         else
         {
@@ -386,19 +363,6 @@ class Feed extends Data
         }
     }
 
-    public function get_contributor($key = 0)
-    {
-        $contributors = $this->get_contributors();
-        if (isset($contributors[$key]))
-        {
-            return $contributors[$key];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public function get_contributors()
     {
         $contributors = array();
@@ -455,27 +419,6 @@ class Feed extends Data
         {
             return null;
         }
-    }
-
-    public function get_link($key = 0, $rel = 'alternate')
-    {
-        $links = $this->get_links($rel);
-        if (isset($links[$key]))
-        {
-            return $links[$key];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Added for parity between the parent-level and the item/entry-level.
-     */
-    public function get_permalink()
-    {
-        return $this->get_link(0);
     }
 
     public function get_links($rel = 'alternate')
@@ -721,33 +664,6 @@ class Feed extends Data
         elseif ($this->get_type() & TYPE_RSS_SYNDICATION && $this->get_image_tags(NAMESPACE_RSS_20, 'url'))
         {
             return 31.0;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_item_quantity($max = 0)
-    {
-        $max = (int) $max;
-        $qty = count($this->get_items());
-        if ($max === 0)
-        {
-            return $qty;
-        }
-        else
-        {
-            return ($qty > $max) ? $max : $qty;
-        }
-    }
-
-    public function get_item($key = 0)
-    {
-        $items = $this->get_items();
-        if (isset($items[$key]))
-        {
-            return $items[$key];
         }
         else
         {
