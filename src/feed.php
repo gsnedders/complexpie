@@ -230,11 +230,7 @@ class Feed extends Data
 
     protected function get_title()
     {
-        if ($return = Misc::get_descendant($this->dom, 'atom:title', array('atom' => NAMESPACE_ATOM_10), true))
-        {
-            return Atom10\Content::from_text_construct($return);
-        }
-        elseif ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'title'))
+        if ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'title'))
         {
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
@@ -728,3 +724,5 @@ class Feed extends Data
         }
     }
 }
+
+Feed::add_static_extension('get', new Atom10\Feed, 10);
