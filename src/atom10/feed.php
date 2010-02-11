@@ -5,14 +5,14 @@ class Feed
 {
     private static $elements = array(
         'title' => array(
-            'atom:title',
-            'atomTextConstruct',
-            true
+            'element' => 'atom:title',
+            'type' => 'atomTextConstruct',
+            'single' => true
         ),
         'subtitle' => array(
-            'atom:subtitle',
-            'atomTextConstruct',
-            true
+            'element' => 'atom:subtitle',
+            'type' => 'atomTextConstruct',
+            'single' => true
         ),
     );
     
@@ -27,9 +27,9 @@ class Feed
     private function elements_table($dom, $name)
     {
         $element = self::$elements[$name];
-        if ($return = \ComplexPie\Misc::get_descendant($dom, $element[0], array('atom' => XMLNS), $element[2]))
+        if ($return = \ComplexPie\Misc::get_descendant($dom, $element['element'], array('atom' => XMLNS), $element['single']))
         {
-            switch ($element[1])
+            switch ($element['type'])
             {
                 case 'atomTextConstruct':
                     return Content::from_text_construct($return);
