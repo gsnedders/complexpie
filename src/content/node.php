@@ -93,13 +93,32 @@ class Node extends \ComplexPie\Content
     
     public function to_html()
     {
-        $html = '';
-        foreach ($this->nodes as $node)
+        // Check if http://bugs.php.net/?id=50973 is fixed
+        static $usefulSaveHTML;
+        if ($usefulSaveHTML === null)
         {
-            $html .= \ComplexPie\nodeToHTML($node);
-            // If http://pastebin.ca/1792855 makes it in, we can just do:
-            // $html .= $this->document->saveHTML($node);
+            $dom = new \DOMDocument;
+            $el = $dom->createElement('div');
+            $usefulSaveHTML = substr(@$dom->saveHTML($el), 0, 4) === '<div';
         }
+        
+        $html = '';
+        
+        if ($usefulSaveHTML)
+        {
+            foreach ($this->nodes as $node)
+            {
+                $html .= $this->document->saveHTML($node);
+            }
+        }
+        else
+        {
+            foreach ($this->nodes as $node)
+            {
+                $html .= \ComplexPie\nodeToHTML($node);
+            }
+        }
+        
         return $html;
     }
 }
