@@ -7,7 +7,7 @@ class Data extends Extension
     
     public static function add_static_extension($extpoint, $ext, $priority)
     {
-        if (!is_callable($ext))
+        if ($extpoint === 'get' && !is_callable($ext))
         {
             throw new Excetpion("$ext is not callable");
         }
@@ -16,7 +16,7 @@ class Data extends Extension
     
     public function add_extension($extpoint, $ext, $priority)
     {
-        if (!is_callable($ext))
+        if ($extpoint === 'get' && !is_callable($ext))
         {
             throw new Excetpion("$ext is not callable");
         }
