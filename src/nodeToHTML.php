@@ -3,12 +3,33 @@ namespace ComplexPie;
 
 function nodeToHTML($root)
 {
+    // Work out whether to treat null as the HTML namespace
+    if (isset($root->ownerDocument))
+    {
+        $documentElement = $root->ownerDocument->documentElement;
+    }
+    else
+    {
+        $documentElement = $root->documentElement;
+    }
+    if ($documentElement->namespaceURI === null && $documentElement->localName === 'html')
+    {
+        $htmlns = null;
+    }
+    else
+    {
+        $htmlns = 'http://www.w3.org/1999/xhtml';
+    }
+    
+    // Output var
+    $html = '';
+    
+    // Serializer state
     $iterator = new DOMIterator($root);
     $stack = array();
     $raw_text = false;
     $rcdata = false;
     $void = false;
-    $html = '';
     foreach ($iterator as $node)
     {
         if ($stack)
@@ -16,7 +37,7 @@ function nodeToHTML($root)
             while (end($stack) !== $node->parentNode)
             {
                 $end = array_pop($stack);
-                if ($end->namespaceURI === 'http://www.w3.org/1999/xhtml' &&
+                if ($end->namespaceURI === $htmlns &&
                     isset(Constants::$voidElements[$end->localName]))
                 {
                     $void = false;
@@ -37,7 +58,7 @@ function nodeToHTML($root)
                 {
                     throw new SerializerError('Raw text, RCDATA, and void elements cannot contain other tags');
                 }
-                if ($node->namespaceURI === 'http://www.w3.org/1999/xhtml')
+                if ($node->namespaceURI === $htmlns)
                 {
                     if (isset(Constants::$rawTextElements[$node->localName]))
                     {
@@ -91,7 +112,7 @@ function nodeToHTML($root)
     }
     while ($end = array_pop($stack))
     {
-        if ($end->namespaceURI === 'http://www.w3.org/1999/xhtml' &&
+        if ($end->namespaceURI === $htmlns &&
             isset(Constants::$voidElements[$end->localName]))
         {
             $void = false;
