@@ -20,9 +20,7 @@ abstract class Content
             $data = sprintf('<meta http-equiv="content-type" content="text/html;charset=utf-8"><base href="%s"><div>%s', htmlspecialchars($escaped_node->baseURI, ENT_QUOTES, 'UTF-8'), $content);
             $parser = new HTMLParser($data);
             $dom = $parser->parse();
-            $dom->documentURI = $escaped_node->baseURI; // Useless?
-            $node = $dom->getElementsByTagName('div');
-            $node = $node->item(0);
+            $node = $dom->getElementsByTagName('div')->item(0);
             return new Content\Node($node->childNodes);
         }
     }
