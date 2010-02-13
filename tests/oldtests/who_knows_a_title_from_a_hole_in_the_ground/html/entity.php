@@ -31,7 +31,7 @@ replacing the ampersand with a character entity reference.</summary>
     
     function expected()
     {
-        $this->expected = '&lt;title>';
+        $this->expected = '&lt;title&gt;';
     }
 }
 

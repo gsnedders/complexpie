@@ -31,7 +31,7 @@ in a CDATA section.</summary>
     
     function expected()
     {
-        $this->expected = '&lt;title>';
+        $this->expected = '&lt;title&gt;';
     }
 }
 
