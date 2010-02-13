@@ -493,11 +493,7 @@ class Feed extends Data
 
     protected function get_description()
     {
-        if ($return = $this->get_channel_tags(NAMESPACE_ATOM_10, 'subtitle'))
-        {
-            return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
-        }
-        elseif ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'tagline'))
+        if ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'tagline'))
         {
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }

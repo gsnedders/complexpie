@@ -3,6 +3,11 @@ namespace ComplexPie\Atom10;
 
 class Feed
 {
+    private static $aliases = array(
+        'description' => 'subtitle',
+        'tagline' => 'subtitle'
+    );
+    
     private static $elements = array(
         'title' => array(
             'element' => 'atom:title',
@@ -21,6 +26,10 @@ class Feed
         if (isset(self::$elements[$name]))
         {
             return $this->elements_table($dom, $name);
+        }
+        elseif (isset(self::$aliases[$name]))
+        {
+            return $this->__invoke($dom, self::$aliases[$name]);
         }
     }
     
