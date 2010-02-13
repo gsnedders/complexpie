@@ -135,6 +135,20 @@ EOF
             array(
 <<<EOF
 <feed xmlns="http://www.w3.org/2005/Atom">
+    <title>&#x3C;a href="http://example.com">Test&#x3C;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[<a href="http://example.com">Test</a>]]></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
     <title type="HTML">&lt;a href="http://example.com">Test&lt;/a></title>
 </feed>
 EOF
@@ -186,6 +200,20 @@ EOF
 <<<EOF
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title type="html">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html">&#x3C;a href="http://example.com">Test&#x3C;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html"><![CDATA[<a href="http://example.com">Test</a>]]></title>
 </feed>
 EOF
             ),
