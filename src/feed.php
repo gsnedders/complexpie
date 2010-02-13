@@ -517,11 +517,7 @@ class Feed extends Data
 
     protected function get_copyright()
     {
-        if ($return = $this->get_channel_tags(NAMESPACE_ATOM_10, 'rights'))
-        {
-            return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
-        }
-        elseif ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'copyright'))
+        if ($return = $this->get_channel_tags(NAMESPACE_ATOM_03, 'copyright'))
         {
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
@@ -540,18 +536,6 @@ class Feed extends Data
         if ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'language'))
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
-        }
-        elseif (isset($this->data['child'][NAMESPACE_ATOM_10]['feed'][0]['xml_lang']))
-        {
-            return $this->sanitize($this->data['child'][NAMESPACE_ATOM_10]['feed'][0]['xml_lang'], CONSTRUCT_TEXT);
-        }
-        elseif (isset($this->data['child'][NAMESPACE_ATOM_03]['feed'][0]['xml_lang']))
-        {
-            return $this->sanitize($this->data['child'][NAMESPACE_ATOM_03]['feed'][0]['xml_lang'], CONSTRUCT_TEXT);
-        }
-        elseif (isset($this->data['child'][NAMESPACE_RDF]['RDF'][0]['xml_lang']))
-        {
-            return $this->sanitize($this->data['child'][NAMESPACE_RDF]['RDF'][0]['xml_lang'], CONSTRUCT_TEXT);
         }
         elseif (isset($this->data['headers']['content-language']))
         {
@@ -722,3 +706,4 @@ class Feed extends Data
 }
 
 Feed::add_static_extension('get', new Atom10\Feed, 10);
+Feed::add_static_extension('get', '\\ComplexPie\\xmllang', 10);

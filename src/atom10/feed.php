@@ -5,7 +5,8 @@ class Feed
 {
     private static $aliases = array(
         'description' => 'subtitle',
-        'tagline' => 'subtitle'
+        'tagline' => 'subtitle',
+        'copyright' => 'rights',
     );
     
     private static $elements = array(
@@ -16,6 +17,11 @@ class Feed
         ),
         'subtitle' => array(
             'element' => 'atom:subtitle',
+            'type' => 'atomTextConstruct',
+            'single' => true
+        ),
+        'rights' => array(
+            'element' => 'atom:rights',
             'type' => 'atomTextConstruct',
             'single' => true
         ),
