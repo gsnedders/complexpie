@@ -94,6 +94,115 @@ EOF
         $feed = \ComplexPie\ComplexPie($input);
         $this->assertSame('PASS', $feed->title->to_text());
     }
+    
+    public function looksLikeHtmlTitleData()
+    {
+        return array(
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="HTML">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="htMl">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type=" html ">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="htm">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="totallybogus">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+        );
+    }
+    
+    /**
+     * @dataProvider looksLikeHtmlTitleData
+     */
+    public function testLooksLikeHtmlTitle($input)
+    {
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('<a href="http://example.com">Test</a>', $feed->title->to_text());
+    }
+    
+    public function htmlTitleData()
+    {
+        return array(
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html">&lt;a href="http://example.com">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html" xml:base="http://example.com">&lt;a href="/">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="http://example.com">
+    <title type="html">&lt;a href="/">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <link href="http://example.com"/>
+    <title type="html">&lt;a href="/">Test&lt;/a></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html">&lt;a href="/">Test&lt;/a></title>
+    <link href="http://example.com"/>
+</feed>
+EOF
+            ),
+        );
+    }
+    
+    /**
+     * @dataProvider htmlTitleData
+     */
+    public function testhtmlTitle($input)
+    {
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('<a href="http://example.com">Test</a>', $feed->title->to_html());
+    }
 }
 
 ?>
