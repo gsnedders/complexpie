@@ -40,11 +40,14 @@ class Node extends \ComplexPie\Content
     protected function replaceURLs()
     {
         $replaceURLAttributes = self::$replaceURLAttributes;
+        $xpath = new \DOMXPath($this->document);
         foreach ($this->nodes as $node)
         {
+            // Although this is implied by the XPath query, it's quicker to
+            // check this explicitly here.
             if ($node->nodeType === XML_ELEMENT_NODE)
             {
-                $children = $node->getElementsByTagName('*');
+                $children = $xpath->query('descendant-or-self::*', $node);
                 foreach ($children as $child)
                 {
                     if (isset($replaceURLAttributes[$child->tagName]))
