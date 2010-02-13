@@ -198,10 +198,21 @@ EOF
     /**
      * @dataProvider htmlTitleData
      */
-    public function testhtmlTitle($input)
+    public function testHtmlTitle($input)
     {
         $feed = \ComplexPie\ComplexPie($input);
         $this->assertSame('<a href="http://example.com">Test</a>', $feed->title->to_html());
+    }
+    
+    public function testHtmlInDivTitle()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="html">&lt;div>&lt;a href="http://example.com">Test&lt;/a>&lt;/div></title>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('<div><a href="http://example.com">Test</a></div>', $feed->title->to_html());
     }
 }
 
