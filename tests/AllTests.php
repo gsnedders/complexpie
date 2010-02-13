@@ -1,6 +1,7 @@
 <?php
 
 require_once 'PHPUnit/Framework.php';
+require_once 'atom10/AllTests.php';
 require_once 'oldtests.php';
 require_once 'CacheArrayTest.php';
 require_once 'ContentTest.php';
@@ -16,7 +17,9 @@ class AllTests
 	public static function suite()
 	{
 		$suite = new PHPUnit_Framework_TestSuite('ComplexPie');
-
+		
+        $suite->addTest(Atom10_AllTests::suite());
+        
 		$suite->addTestSuite('OldTest');
 		$suite->addTestSuite('CacheArrayTest');
 		$suite->addTestSuite('ContentTest');
