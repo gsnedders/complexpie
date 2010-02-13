@@ -4,7 +4,7 @@ date_default_timezone_set('UTC');
 error_reporting(E_ALL | E_STRICT);
 
 require_once 'PHPUnit/Framework.php';
-require_once '../src/simplepie.php';
+require_once '../src/complexpie.php';
 require_once 'oldtests/compat_test_harness.php';
 require_once 'oldtests/functions.php';
 

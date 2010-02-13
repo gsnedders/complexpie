@@ -8,7 +8,7 @@ class SimplePie_Feed_Test extends SimplePie_Unit_Test2
 {
     function feed()
     {
-        return \ComplexPie\SimplePie($this->data);
+        return \ComplexPie\ComplexPie($this->data);
     }
 }
 

@@ -88,7 +88,7 @@ else
  *
  * @package SimplePie
  */
-function SimplePie($data, $uri = null)
+function ComplexPie($data, $uri = null)
 {
     // Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
     if (!extension_loaded('xmlreader'))

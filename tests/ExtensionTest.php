@@ -1,7 +1,7 @@
 <?php
 
 require_once 'PHPUnit/Framework.php';
-require_once '../src/simplepie.php';
+require_once '../src/complexpie.php';
 
 class ExtensionTest extends PHPUnit_Framework_TestCase
 {
