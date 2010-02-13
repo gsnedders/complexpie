@@ -5,6 +5,13 @@ require_once dirname(__FILE__) . '/../../src/complexpie.php';
 
 class FeedTest extends PHPUnit_Framework_TestCase
 {
+    public function testNoTitle()
+    {
+        $input = '<feed xmlns="http://www.w3.org/2005/Atom"></feed>';
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame(null, $feed->title);
+    }
+    
     public function basicTitleData()
     {
         return array(
@@ -31,6 +38,26 @@ EOF
     <foo xmlns="http://example.com">
         <title>FAIL</title>
     </foo>
+    <title>PASS</title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>PASS</title>
+    <foo:bar xmlns:foo="http://example.com">
+        <title>FAIL</title>
+    </foo:bar>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <foo:bar xmlns:foo="http://example.com">
+        <title>FAIL</title>
+    </foo:bar>
     <title>PASS</title>
 </feed>
 EOF
