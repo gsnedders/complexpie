@@ -208,7 +208,7 @@ EOF
     {
         $input = <<<EOF
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title type="html">&lt;div>&lt;a href="http://example.com">Test&lt;/a>&lt;/div></title>
+    <title type="html" xml:base="http://example.com">&lt;div>&lt;a href="/">Test&lt;/a>&lt;/div></title>
 </feed>
 EOF;
         $feed = \ComplexPie\ComplexPie($input);
