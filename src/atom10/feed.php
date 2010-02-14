@@ -42,16 +42,21 @@ class Feed
     private function elements_table($dom, $name)
     {
         $element = self::$elements[$name];
-        $return = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => XMLNS));
-        if ($return->length !== 0)
+        $nodes = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => XMLNS));
+        if ($nodes->length !== 0)
         {
             if ($element['single'])
             {
-                return call_user_func($element['contentConstructor'], $return->item(0));
+                return call_user_func($element['contentConstructor'], $nodes->item(0));
             }
             else
             {
-                return array_walk($return, $element['contentConstructor']);
+                $return = array();
+                foreach ($nodes as $node)
+                {
+                    $return[] = call_user_func($element['contentConstructor'], $node);
+                }
+                return $return;
             }
         }
     }
