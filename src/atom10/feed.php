@@ -42,9 +42,17 @@ class Feed
     private function elements_table($dom, $name)
     {
         $element = self::$elements[$name];
-        if ($return = \ComplexPie\Misc::get_descendant($dom, $element['element'], array('atom' => XMLNS), $element['single']))
+        $return = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => XMLNS));
+        if ($return->length !== 0)
         {
-            return call_user_func($element['contentConstructor'], $return);
+            if ($element['single'])
+            {
+                return call_user_func($element['contentConstructor'], $return->item(0));
+            }
+            else
+            {
+                return array_walk($return, $element['contentConstructor']);
+            }
         }
     }
 }
