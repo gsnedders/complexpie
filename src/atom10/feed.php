@@ -12,17 +12,17 @@ class Feed
     private static $elements = array(
         'title' => array(
             'element' => 'atom:title',
-            'type' => 'atomTextConstruct',
+            'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
         'subtitle' => array(
             'element' => 'atom:subtitle',
-            'type' => 'atomTextConstruct',
+            'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
         'rights' => array(
             'element' => 'atom:rights',
-            'type' => 'atomTextConstruct',
+            'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
     );
@@ -44,14 +44,7 @@ class Feed
         $element = self::$elements[$name];
         if ($return = \ComplexPie\Misc::get_descendant($dom, $element['element'], array('atom' => XMLNS), $element['single']))
         {
-            switch ($element['type'])
-            {
-                case 'atomTextConstruct':
-                    return Content::from_text_construct($return);
-                
-                default:
-                    throw new \Exception('Um, this shouldn\'t happen');
-            }
+            return call_user_func($element['contentConstructor'], $return);
         }
     }
 }
