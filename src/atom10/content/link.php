@@ -11,7 +11,11 @@ class Link extends \ComplexPie\Content\IRI
     
     public function __construct($node)
     {
-        parent::__construct(new \ComplexPie\IRI($node->getAttribute('href')));
+        $iriref = new \ComplexPie\IRI($node->getAttribute('href'));
+        if ($iri = \ComplexPie\IRI::absolutize($node->baseURI, $iriref))
+            $iriref = $iri;
+        
+        parent::__construct($iriref);
         
         if ($node->hasAttribute('rel'))
         {
