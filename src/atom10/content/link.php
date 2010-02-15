@@ -54,7 +54,13 @@ class Link extends \ComplexPie\Content\IRI
     
     public function __get($name)
     {
-        if (isset($this->$name))
+        if (
+            $name === 'rel' ||
+            $name === 'type' ||
+            $name === 'hreflang' ||
+            $name === 'title' ||
+            $name === 'length'
+        )
         {
             return $this->$name;
         }
