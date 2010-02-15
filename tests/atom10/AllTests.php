@@ -1,7 +1,7 @@
 <?php
 
 require_once 'PHPUnit/Framework.php';
-require_once 'FeedTitleTest.php';
+require_once 'FeedTests.php';
 
 class Atom10_AllTests
 {
@@ -9,7 +9,7 @@ class Atom10_AllTests
 	{
 		$suite = new PHPUnit_Framework_TestSuite('ComplexPie Atom 1.0');
 
-		$suite->addTestSuite('FeedTitleTest');
+        $suite->addTest(Atom10_FeedTests::suite());
 
 		return $suite;
 	}
