@@ -441,17 +441,6 @@ class Feed extends Data
         if (!isset($this->data['links']))
         {
             $this->data['links'] = array();
-            if ($links = $this->get_channel_tags(NAMESPACE_ATOM_10, 'link'))
-            {
-                foreach ($links as $link)
-                {
-                    if (isset($link['attribs']['']['href']))
-                    {
-                        $link_rel = (isset($link['attribs']['']['rel'])) ? $link['attribs']['']['rel'] : 'alternate';
-                        $this->data['links'][$link_rel][] = $this->sanitize($link['attribs']['']['href'], CONSTRUCT_IRI, $this->get_base($link));
-                    }
-                }
-            }
             if ($links = $this->get_channel_tags(NAMESPACE_ATOM_03, 'link'))
             {
                 foreach ($links as $link)
