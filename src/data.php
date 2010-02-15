@@ -23,24 +23,32 @@ class Data extends Extension
         parent::add_extension($extpoint, $ext, $priority);
     }
     
-    /**
-     * @todo This should cope with things that return an array and merge them
-     */
     public function __get($name)
     {
+        $return = array();
         foreach ($this->get_extensions('get') as $extension)
         {
-            if (($return = $extension($this->dom, $name)) !== null)
+            if (($extreturn = $extension($this->dom, $name)) !== null)
             {
-                return $return;
+                if (is_array($extreturn))
+                {
+                    $return = array_merge($extreturn, $return);
+                }
+                else
+                {
+                    return $extreturn;
+                }
             }
         }
+        if ($return)
+        {
+            return $return;
+        }
+        
         if (method_exists($this, "get_$name"))
         {
             return call_user_func(array($this, "get_$name"));
         }
-        trigger_error('Undefined property: ' . get_class($this) . '::' . $name, E_USER_NOTICE);
-        return null;
     }
 }
 
