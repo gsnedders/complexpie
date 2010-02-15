@@ -11,7 +11,7 @@ abstract class Content extends \ComplexPie\Content
                 return self::from_escaped_html($text_construct);
             
             case 'xhtml':
-                $use_div = (bool) $text_construct->childNodes->length;
+                $can_use_div = true;
                 foreach ($text_construct->childNodes as $child)
                 {
                     switch ($child->nodeType)
@@ -33,11 +33,11 @@ abstract class Content extends \ComplexPie\Content
                             }
                         
                         default:
-                            $use_div = false;
+                            $can_use_div = false;
                             break 2;
                     }
                 }
-                $element = $use_div ? $the_div : $text_construct;
+                $element = $can_use_div && isset($the_div) ? $the_div : $text_construct;
                 return new \ComplexPie\Content\Node($element->childNodes);
                 
             default:
