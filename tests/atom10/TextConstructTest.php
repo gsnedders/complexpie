@@ -10,6 +10,7 @@ abstract class TextConstructTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array('<%1$s>PASS</%1$s>'),
+            array('<%1$s type="image/gif">PASS</%1$s>'),
             array(
 <<<EOF
 <%1\$s>PASS</%1\$s>
@@ -63,6 +64,7 @@ EOF
             array('<%1$s type="htMl">&lt;a href="http://example.com">Test&lt;/a></%1$s>'),
             array('<%1$s type=" html ">&lt;a href="http://example.com">Test&lt;/a></%1$s>'),
             array('<%1$s type="htm">&lt;a href="http://example.com">Test&lt;/a></%1$s>'),
+            array('<%1$s type="text/html">&lt;a href="http://example.com">Test&lt;/a></%1$s>'),
             array('<%1$s type="totallybogus">&lt;a href="http://example.com">Test&lt;/a></%1$s>'),
         );
     }
@@ -107,6 +109,12 @@ EOF
             array('<%1$s type="xhtMl"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
             array('<%1$s type=" xhtml "><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
             array('<%1$s type="xht"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
+            array('<%1$s type="application/xml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
+            array('<%1$s type="text/xml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
+            array('<%1$s type="image/xml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
+            array('<%1$s type="application/xhtml+xml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
+            array('<%1$s type="image/svg+xml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
+            array('<%1$s type="x-foo/bar+xml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
             array('<%1$s type="totallybogus"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
         );
     }
