@@ -27,27 +27,27 @@ class Link extends \ComplexPie\Content\IRI
             $this->rel = new \ComplexPie\Content\String($rel);
         }
         
-        if ($node->hatAttribute('type'))
+        if ($node->hasAttribute('type'))
         {
-            $type = $node->getAttribute('type')
+            $type = $node->getAttribute('type');
             $this->type = new \ComplexPie\Content\String($type);
         }
         
-        if ($node->hatAttribute('hreflang'))
+        if ($node->hasAttribute('hreflang'))
         {
-            $hreflang = $node->getAttribute('hreflang')
+            $hreflang = $node->getAttribute('hreflang');
             $this->hreflang = new \ComplexPie\Content\String($hreflang);
         }
         
-        if ($node->hatAttribute('title'))
+        if ($node->hasAttribute('title'))
         {
-            $title = $node->getAttribute('title')
+            $title = $node->getAttribute('title');
             $this->title = new \ComplexPie\Content\String($title);
         }
         
-        if ($node->hatAttribute('length'))
+        if ($node->hasAttribute('length'))
         {
-            $length = $node->getAttribute('length')
+            $length = $node->getAttribute('length');
             $this->type = new \ComplexPie\Content\String($length);
         }
     }
