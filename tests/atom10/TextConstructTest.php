@@ -183,6 +183,12 @@ EOF
         $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_text());
     }
     
+    public function testXhtmlImportantWhitespace()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><span>Hello,</span> <span>world!</span></div></%1$s>';
+        $this->assertSame('<span>Hello,</span> <span>world!</span>', $this->getContent($input)->to_html());
+    }
+    
     public function testXhtmlOnlyWhitespace()
     {
         $input = '<%1$s type="xhtml"> </%1$s>';

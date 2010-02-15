@@ -20,11 +20,40 @@ class Node extends \ComplexPie\Content
     
     public function __construct($nodes)
     {
+        // Iterate over the traversable $nodes, adding all nodes apart from
+        // leading whitespace to $this->nodes.
+        $seen_non_whitespace = false;
         foreach ($nodes as $node)
-            $this->nodes[] = $node;
+        {
+            if (
+                $seen_non_whitespace ||
+                $node->nodeType !== XML_TEXT_NODE ||
+                strspn($node->data, "\x09\x0A\x0D\x20") !== strlen($node->data)
+            )
+            {
+                $seen_non_whitespace = true;
+                $this->nodes[] = $node;
+            }
+        }
         
-        $this->document = $this->nodes[0] instanceof \DOMDocument ? $this->nodes[0] : $this->nodes[0]->ownerDocument;
-        $this->replaceURLs();
+        // Remove trailing whitespace nodes (yes, this is horribly big for).
+        for (
+            $i = count($this->nodes) - 1;
+                $i >= 0 && $this->nodes[$i]->nodeType === XML_TEXT_NODE &&
+                strspn($this->nodes[$i]->data, "\x09\x0A\x0D\x20") === strlen($this->nodes[$i]->data);
+            $i--
+        )
+        {
+            unset($this->nodes[$i]);
+        }
+        
+        // Now we have the final nodes array, do the init dance if it is not
+        // empty.
+        if ($this->nodes)
+        {
+            $this->document = $this->nodes[0] instanceof \DOMDocument ? $this->nodes[0] : $this->nodes[0]->ownerDocument;
+            $this->replaceURLs();
+        }
     }
     
     protected function replaceURLs()
