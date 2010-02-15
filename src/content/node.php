@@ -20,19 +20,9 @@ class Node extends \ComplexPie\Content
     
     public function __construct($nodes)
     {
-        if ($nodes instanceof \DOMNodeList)
-        {
-            foreach ($nodes as $node)
-                $this->nodes[] = $node;
-        }
-        elseif (is_array($nodes))
-        {
-            $this->nodes = $nodes;
-        }
-        else
-        {
-            $this->nodes = array($nodes);
-        }
+        foreach ($nodes as $node)
+            $this->nodes[] = $node;
+        
         $this->document = $this->nodes[0] instanceof \DOMDocument ? $this->nodes[0] : $this->nodes[0]->ownerDocument;
         $this->replaceURLs();
     }
