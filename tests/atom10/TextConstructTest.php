@@ -189,6 +189,12 @@ EOF
         $this->assertSame('', $this->getContent($input)->to_html());
     }
     
+    public function testXhtmlOnlyComment()
+    {
+        $input = '<%1$s type="xhtml"><!--foo--></%1$s>';
+        $this->assertSame('<!--foo-->', $this->getContent($input)->to_html());
+    }
+    
     public function testXhtmlMultipleDiv()
     {
         $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
