@@ -25,6 +25,11 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
+        'links' => array(
+            'element' => 'atom:link',
+            'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Link',
+            'single' => false
+        ),
     );
     
     public function __invoke($dom, $name)
@@ -47,14 +52,31 @@ class Feed
         {
             if ($element['single'])
             {
-                return call_user_func($element['contentConstructor'], $nodes->item(0));
+                if (class_exists($element['contentConstructor']))
+                {
+                    return new $element['contentConstructor']($nodes->item(0));
+                }
+                else
+                {
+                    return call_user_func($element['contentConstructor'], $nodes->item(0));
+                }
             }
             else
             {
                 $return = array();
-                foreach ($nodes as $node)
+                if (class_exists($element['contentConstructor']))
                 {
-                    $return[] = call_user_func($element['contentConstructor'], $node);
+                    foreach ($nodes as $node)
+                    {
+                        $return[] = new $element['contentConstructor']($node);
+                    }
+                }
+                else
+                {
+                    foreach ($nodes as $node)
+                    {
+                        $return[] = call_user_func($element['contentConstructor'], $node);
+                    }
                 }
                 return $return;
             }
