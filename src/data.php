@@ -32,7 +32,7 @@ class Data extends Extension
             {
                 if (is_array($extreturn))
                 {
-                    $return = array_merge($extreturn, $return);
+                    $return = array_merge_recursive($extreturn, $return);
                 }
                 elseif (!$return)
                 {
