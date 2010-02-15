@@ -91,23 +91,6 @@ else
  */
 function ComplexPie($data, $uri = null)
 {
-    // Check the xml extension is sane (i.e., libxml 2.7.x issue on PHP < 5.2.9 and libxml 2.7.0 to 2.7.2 on any version) if we don't have xmlreader.
-    if (!extension_loaded('xmlreader'))
-    {
-        static $xml_is_sane = null;
-        if ($xml_is_sane === null)
-        {
-            $parser_check = xml_parser_create();
-            xml_parse_into_struct($parser_check, '<foo>&amp;</foo>', $values);
-            xml_parser_free($parser_check);
-            $xml_is_sane = isset($values[0]['value']);
-        }
-        if (!$xml_is_sane)
-        {
-            return false;
-        }
-    }
-
     // Create new parser
     $parser = new Parser();
     $dom = new \DOMDocument();
