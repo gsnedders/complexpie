@@ -20,7 +20,7 @@ abstract class Content extends \ComplexPie\Content
                             break;
                         
                         case XML_TEXT_NODE:
-                            if (strspn("\x09\x0A\x0D\x20", $child->data) === strlen($child->data))
+                            if (strspn($child->data, "\x09\x0A\x0D\x20") === strlen($child->data))
                                 break;
                         
                         case XML_ELEMENT_NODE:
