@@ -8,8 +8,17 @@ class Feed extends Data
         $this->dom = $dom;
         $this->data = $oldtree;
         $this->sanitize = new Sanitize();
-        $links = $this->links;
-        if ($links)
+        
+        // For some odd reason documentURI defaults to $cwd below.
+        $cwd = getcwd();
+        if (substr($cwd, -1) !== \DIRECTORY_SEPARATOR)
+        {
+            $cwd .= \DIRECTORY_SEPARATOR;
+        }
+        
+        // If we don't have a documentURI and we have links, set it to be the
+        // first alternate link so that baseURI magically becomes valid.
+        if ($this->dom->ownerDocument->documentURI === $cwd && $links = $this->links)
         {
             $link = $links[0];
             if (is_string($link))
