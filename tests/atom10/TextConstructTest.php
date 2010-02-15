@@ -148,6 +148,7 @@ EOF
 </%1\$s>
 EOF
             ),
+            array('<%1$s type="xhtml">&#x20;<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>&#x20;</%1$s>'),
             array('<%1$s type="xhtml"><!--foo--><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>'),
         );
     }
@@ -175,6 +176,72 @@ EOF
     public function testEscapedXhtml($input)
     {
         $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_text());
+    }
+    
+    public function testXhtmlMultipleDiv()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_html());
+    }
+    
+    public function testXhtmlDivAfterText()
+    {
+        $input = '<%1$s type="xhtml">foobar<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
+        $this->assertSame('foobar<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_html());
+    }
+    
+    public function testXhtmlDivBeforeText()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>foobar</%1$s>';
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>foobar', $this->getContent($input)->to_html());
+    }
+    
+    public function testXhtmlDivAfterTextStartingWithWhitespace()
+    {
+        $input = '<%1$s type="xhtml">foobar<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
+        $this->assertSame('foobar<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_html());
+    }
+    
+    public function testXhtmlDivBeforeTextStartingWithWhitespace()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div> foobar</%1$s>';
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div> foobar', $this->getContent($input)->to_html());
+    }
+    
+    public function testXhtmlDivAfterCDATA()
+    {
+        $input = '<%1$s type="xhtml"><![CDATA[foobar]]><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
+        $this->assertSame('<![CDATA[foobar]]><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_xml());
+    }
+    
+    public function testXhtmlDivBeforeCDATA()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><![CDATA[foobar]]></%1$s>';
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><![CDATA[foobar]]>', $this->getContent($input)->to_xml());
+    }
+    
+    public function testXhtmlDivAfterCDATAStartingWithWhitespace()
+    {
+        $input = '<%1$s type="xhtml"><![CDATA[foobar]]><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
+        $this->assertSame('<![CDATA[foobar]]><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_xml());
+    }
+    
+    public function testXhtmlDivBeforeCDATAStartingWithWhitespace()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><![CDATA[ foobar]]></%1$s>';
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><![CDATA[ foobar]]>', $this->getContent($input)->to_xml());
+    }
+    
+    public function testXhtmlDivAfterPI()
+    {
+        $input = '<%1$s type="xhtml"><?foo?><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></%1$s>';
+        $this->assertSame('<?foo?><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_xml());
+    }
+    
+    public function testXhtmlDivBeforePI()
+    {
+        $input = '<%1$s type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><?foo?></%1$s>';
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div><?foo?>', $this->getContent($input)->to_xml());
     }
 }
 
