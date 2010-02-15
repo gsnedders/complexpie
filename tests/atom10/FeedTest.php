@@ -269,6 +269,178 @@ EOF;
         $feed = \ComplexPie\ComplexPie($input);
         $this->assertSame('<div><a href="http://example.com">Test</a></div>', $feed->title->to_html());
     }
+    
+    public function looksLikeXhtmlTitleData()
+    {
+        return array(
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="XHTML"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtMl"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type=" xhtml "><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xht"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="totallybogus"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+        );
+    }
+    
+    /**
+     * @dataProvider looksLikeXhtmlTitleData
+     */
+    public function testLooksLikeXhtmlTitle($input)
+    {
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('Test', $feed->title->to_xml());
+    }
+
+    public function xhtmlTitleData()
+    {
+        return array(
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml" xml:base="http://example.com"><div xmlns="http://www.w3.org/1999/xhtml"><a href="/">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom" xml:base="http://example.com">
+    <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="/">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <link href="http://example.com"/>
+    <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="/">Test</a></div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml"><a href="/">Test</a></div></title>
+    <link href="http://example.com"/>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml">
+        <div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>
+    </title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml">
+        <div xmlns="http://www.w3.org/1999/xhtml">
+            <a href="http://example.com">Test</a>
+        </div>
+    </title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml"><!--foo--><div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div></title>
+</feed>
+EOF
+            ),
+        );
+    }
+    
+    /**
+     * @dataProvider xhtmlTitleData
+     */
+    public function testXhtmlTitle($input)
+    {
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('<a href="http://example.com">Test</a>', $feed->title->to_html());
+    }
+
+    public function escapedXhtmlTitleData()
+    {
+        return array(
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml">&lt;div xmlns="http://www.w3.org/1999/xhtml">&lt;a href="http://example.com">Test&lt;/a>&lt;/div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml">&#x3C;div xmlns="http://www.w3.org/1999/xhtml">&#x3C;a href="http://example.com">Test&#x3C;/a>&#x3C;/div></title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title type="xhtml"><![CDATA[<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>]]></title>
+</feed>
+EOF
+            ),
+        );
+    }
+    
+    /**
+     * @dataProvider escapedXhtmlTitleData
+     */
+    public function testEscapedXhtmlTitle($input)
+    {
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $feed->title->to_text());
+    }
 }
 
 ?>
