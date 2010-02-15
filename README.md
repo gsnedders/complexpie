@@ -15,9 +15,9 @@ For a complete list of contributors:
 
 ## Requirements
 * PHP 5.3.0 or newer
-* libxml2 (early 2.7.x releases break currently because of PHP using internal libxml APIs…)
 * DOM extension
-* PCRE support
+* PCRE extension
+* SPL extension
 
 
 ## License
