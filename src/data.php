@@ -34,7 +34,7 @@ class Data extends Extension
                 {
                     $return = array_merge($extreturn, $return);
                 }
-                else
+                elseif (!$return)
                 {
                     return $extreturn;
                 }
