@@ -10,7 +10,17 @@ class Feed extends Data
         $this->sanitize = new Sanitize();
         $links = $this->links;
         if ($links)
-            $this->dom->ownerDocument->documentURI = html_entity_decode($links[0], ENT_QUOTES, 'UTF-8');
+        {
+            $link = $links[0];
+            if (is_string($link))
+            {
+                $this->dom->ownerDocument->documentURI = html_entity_decode($link, ENT_QUOTES, 'UTF-8');
+            }
+            else
+            {
+                $this->dom->ownerDocument->documentURI = $link->get_iri()->uri;
+            }
+        }
     }
     
     protected function get_type()
