@@ -54,6 +54,11 @@ EOF
         $this->assertSame('PASS', $this->getContent($input)->to_text());
     }
     
+    public function testEmpty()
+    {
+        $this->assertSame('', $this->getContent('<%1$s/>')->to_text());
+    }
+    
     public function looksLikeHtmlData()
     {
         return array(
@@ -176,6 +181,12 @@ EOF
     public function testEscapedXhtml($input)
     {
         $this->assertSame('<div xmlns="http://www.w3.org/1999/xhtml"><a href="http://example.com">Test</a></div>', $this->getContent($input)->to_text());
+    }
+    
+    public function testXhtmlOnlyWhitespace()
+    {
+        $input = '<%1$s type="xhtml"> </%1$s>';
+        $this->assertSame('', $this->getContent($input)->to_html());
     }
     
     public function testXhtmlMultipleDiv()
