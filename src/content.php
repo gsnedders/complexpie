@@ -25,6 +25,11 @@ abstract class Content
         }
     }
     
+    public static function from_date_in_textcontent($node)
+    {
+        return Parse_Date::parse($node->textContent);
+    }
+    
     abstract public function to_text();
     abstract public function to_xml();
     abstract public function to_html();

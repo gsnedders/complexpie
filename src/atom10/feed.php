@@ -25,6 +25,11 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
+        'updated' => array(
+            'element' => 'atom:updated',
+            'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
+            'single' => true
+        ),
     );
     
     public function __invoke($dom, $name)
