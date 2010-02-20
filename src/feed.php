@@ -20,13 +20,14 @@ class Feed extends Data
         // first alternate link so that baseURI magically becomes valid.
         if ($this->dom->ownerDocument->documentURI === $cwd && $links = $this->links)
         {
-            if (isset($this->links['alternate']))
+            $links = $this->links;
+            if (isset($links['alternate']))
             {
-                $link = $this->links['alternate'][0];
+                $link = $links['alternate'][0];
             }
-            elseif (isset($this->links[0]))
+            elseif (isset($links[0]))
             {
-                $link = $this->links[0];
+                $link = $links[0];
             }
             else
             {
