@@ -20,7 +20,19 @@ class Feed extends Data
         // first alternate link so that baseURI magically becomes valid.
         if ($this->dom->ownerDocument->documentURI === $cwd && $links = $this->links)
         {
-            $link = $links[0];
+            if (isset($this->links['alternate']))
+            {
+                $link = $this->links['alternate'][0];
+            }
+            elseif (isset($this->links[0]))
+            {
+                $link = $this->links[0];
+            }
+            else
+            {
+                $link = '';
+            }
+            
             if (is_string($link))
             {
                 $this->dom->ownerDocument->documentURI = html_entity_decode($link, ENT_QUOTES, 'UTF-8');

@@ -209,7 +209,14 @@ class SimplePie_Feed_Link_Test extends SimplePie_Feed_Test
     function test()
     {
         $feed = $this->feed();
-        list($this->result) = $feed->links;
+        if (isset($feed->links['alternate']))
+        {
+            list($this->result) = $feed->links['alternate'];
+        }
+        else
+        {
+            list($this->result) = $feed->links;
+        }
     }
 }
 

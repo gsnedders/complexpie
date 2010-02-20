@@ -26,6 +26,10 @@ class Link extends \ComplexPie\Content\IRI
             }
             $this->rel = new \ComplexPie\Content\String($rel);
         }
+        else
+        {
+            $this->rel = new \ComplexPie\Content\String('http://www.iana.org/assignments/relation/alternate');
+        }
         
         if ($node->hasAttribute('type'))
         {

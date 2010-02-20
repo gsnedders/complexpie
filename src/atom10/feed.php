@@ -25,16 +25,34 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
-        'links' => array(
-            'element' => 'atom:link',
-            'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Link',
-            'single' => false
-        ),
     );
     
     public function __invoke($dom, $name)
     {
-        if (isset(self::$elements[$name]))
+        if ($name === 'links')
+        {
+            $nodes = \ComplexPie\Misc::xpath($dom,'atom:link', array('atom' => XMLNS));
+            if ($nodes->length !== 0)
+            {
+                $return = array();
+                foreach ($nodes as $node)
+                {
+                    $link = new Content\Link($node);
+                    $rel = $link->rel->to_text();
+                    if (!isset($return[$rel]))
+                    {
+                        $return[$rel] = array();
+                        if (substr($rel, 0, 41) === 'http://www.iana.org/assignments/relation/')
+                        {
+                            $return[substr($rel, 41)] =& $return[$rel];
+                        }
+                    }
+                    $return[$rel][] = $link;
+                }
+                return $return;
+            }
+        }
+        elseif (isset(self::$elements[$name]))
         {
             return $this->elements_table($dom, $name);
         }
