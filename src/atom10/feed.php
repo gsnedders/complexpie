@@ -30,6 +30,13 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
             'single' => true
         ),
+        'id' => array(
+            'element' => 'atom:id',
+            // Yes, not an IRI. atom:id is an opaque non-normalizable IRI,
+            // which is nothing more than an opaque string.
+            'contentConstructor' => 'ComplexPie\\Content::from_textcontent',
+            'single' => true
+        ),
     );
     
     public function __invoke($dom, $name)
