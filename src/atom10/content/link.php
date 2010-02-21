@@ -48,7 +48,7 @@ class Link extends \ComplexPie\Content\IRINode
         if ($node->hasAttribute('length'))
         {
             $length = $node->getAttribute('length');
-            $this->type = new \ComplexPie\Content\String($length);
+            $this->length = new \ComplexPie\Content\String($length);
         }
     }
     
