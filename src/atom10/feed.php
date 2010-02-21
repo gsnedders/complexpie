@@ -43,7 +43,7 @@ class Feed
     {
         if ($name === 'links')
         {
-            $nodes = \ComplexPie\Misc::xpath($dom,'atom:link', array('atom' => XMLNS));
+            $nodes = \ComplexPie\Misc::xpath($dom,'atom:link[@href]', array('atom' => XMLNS));
             if ($nodes->length !== 0)
             {
                 $return = array();
