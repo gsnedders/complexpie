@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie\Atom10\Content;
 
-class Link extends \ComplexPie\Content\IRI
+class Link extends \ComplexPie\Content\IRINode
 {
     protected $rel;
     protected $type;
@@ -11,11 +11,7 @@ class Link extends \ComplexPie\Content\IRI
     
     public function __construct($node)
     {
-        $iriref = new \ComplexPie\IRI($node->getAttribute('href'));
-        if ($iri = \ComplexPie\IRI::absolutize($node->baseURI, $iriref))
-            $iriref = $iri;
-        
-        parent::__construct($iriref);
+        parent::__construct($node->getAttributeNode('href'));
         
         if ($node->hasAttribute('rel'))
         {
