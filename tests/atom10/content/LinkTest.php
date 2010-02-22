@@ -65,6 +65,43 @@ class ContentLinkTest extends PHPUnit_Framework_TestCase
         $this->assertSame($expected, $link->rel->to_text());
     }
     
+    public function typeData()
+    {
+        return array(
+            array(
+                null,
+                'href=""',
+            ),
+            array(
+                'text/plain',
+                'href="" type="text/plain"',
+            ),
+            array(
+                'totally bogus and invalid string',
+                'href="" type="totally bogus and invalid string"',
+            ),
+        );
+    }
+    
+    /**
+     * @dataProvider typeData
+     */
+    public function testType($expected, $input)
+    {
+        $dom = new \DOMDocument();
+        $dom->loadXML('<link xmlns="http://www.w3.org/2005/Atom" ' . $input . '/>');
+        $dom->documentURI = null;
+        $link = new \ComplexPie\Atom10\Content\Link($dom->documentElement);
+        if ($expected)
+        {
+            $this->assertSame($expected, $link->type->to_text());
+        }
+        else
+        {
+            $this->assertSame($expected, $link->type);
+        }
+    }
+    
     public function hreflangData()
     {
         return array(
