@@ -13,19 +13,19 @@ class Person
     {
         $this->node = $node;
         
-        $names = \ComplexPie\Misc::xpath($node, 'atom:name', array('atom' => XMLNS));
+        $names = \ComplexPie\Misc::xpath($node, 'atom:name', array('atom' => \ComplexPie\Atom10\XMLNS));
         if ($names->length)
         {
             $this->name = \ComplexPie\Content::from_textcontent($names->item(0));
         }
         
-        $uris = \ComplexPie\Misc::xpath($node, 'atom:name', array('atom' => XMLNS));
+        $uris = \ComplexPie\Misc::xpath($node, 'atom:uri', array('atom' => \ComplexPie\Atom10\XMLNS));
         if ($uris->length)
         {
             $this->uri = new \ComplexPie\Content\IRINode($uris->item(0));
         }
         
-        $emails = \ComplexPie\Misc::xpath($node, 'atom:email', array('atom' => XMLNS));
+        $emails = \ComplexPie\Misc::xpath($node, 'atom:email', array('atom' => \ComplexPie\Atom10\XMLNS));
         if ($emails->length)
         {
             $this->email = \ComplexPie\Content::from_textcontent($emails->item(0));

@@ -3,6 +3,7 @@
 require_once 'PHPUnit/Framework.php';
 
 require_once 'LinkTest.php';
+require_once 'PersonTest.php';
 
 class Atom10_Content_AllTests
 {
@@ -11,6 +12,7 @@ class Atom10_Content_AllTests
 		$suite = new PHPUnit_Framework_TestSuite('ComplexPie Atom 1.0 Content');
 
 		$suite->addTestSuite('ContentLinkTest');
+		$suite->addTestSuite('ContentPersonTest');
 
 		return $suite;
 	}
