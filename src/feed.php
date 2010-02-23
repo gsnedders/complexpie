@@ -288,25 +288,6 @@ class Feed extends Data
     {
         $categories = array();
 
-        foreach ((array) $this->get_channel_tags(NAMESPACE_ATOM_10, 'category') as $category)
-        {
-            $term = null;
-            $scheme = null;
-            $label = null;
-            if (isset($category['attribs']['']['term']))
-            {
-                $term = $this->sanitize($category['attribs']['']['term'], CONSTRUCT_TEXT);
-            }
-            if (isset($category['attribs']['']['scheme']))
-            {
-                $scheme = $this->sanitize($category['attribs']['']['scheme'], CONSTRUCT_TEXT);
-            }
-            if (isset($category['attribs']['']['label']))
-            {
-                $label = $this->sanitize($category['attribs']['']['label'], CONSTRUCT_TEXT);
-            }
-            $categories[] = new Category($term, $scheme, $label);
-        }
         foreach ((array) $this->get_channel_tags(NAMESPACE_RSS_20, 'category') as $category)
         {
             // This is really the label, but keep this as the term also for BC.
@@ -336,28 +317,6 @@ class Feed extends Data
     protected function get_authors()
     {
         $authors = array();
-        foreach ((array) $this->get_channel_tags(NAMESPACE_ATOM_10, 'author') as $author)
-        {
-            $name = null;
-            $uri = null;
-            $email = null;
-            if (isset($author['child'][NAMESPACE_ATOM_10]['name'][0]['data']))
-            {
-                $name = $this->sanitize($author['child'][NAMESPACE_ATOM_10]['name'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if (isset($author['child'][NAMESPACE_ATOM_10]['uri'][0]['data']))
-            {
-                $uri = $this->sanitize($author['child'][NAMESPACE_ATOM_10]['uri'][0]['data'], CONSTRUCT_IRI, $this->get_base($author['child'][NAMESPACE_ATOM_10]['uri'][0]));
-            }
-            if (isset($author['child'][NAMESPACE_ATOM_10]['email'][0]['data']))
-            {
-                $email = $this->sanitize($author['child'][NAMESPACE_ATOM_10]['email'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if ($name !== null || $email !== null || $uri !== null)
-            {
-                $authors[] = new Author($name, $uri, $email);
-            }
-        }
         if ($author = $this->get_channel_tags(NAMESPACE_ATOM_03, 'author'))
         {
             $name = null;
@@ -394,28 +353,6 @@ class Feed extends Data
     protected function get_contributors()
     {
         $contributors = array();
-        foreach ((array) $this->get_channel_tags(NAMESPACE_ATOM_10, 'contributor') as $contributor)
-        {
-            $name = null;
-            $uri = null;
-            $email = null;
-            if (isset($contributor['child'][NAMESPACE_ATOM_10]['name'][0]['data']))
-            {
-                $name = $this->sanitize($contributor['child'][NAMESPACE_ATOM_10]['name'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if (isset($contributor['child'][NAMESPACE_ATOM_10]['uri'][0]['data']))
-            {
-                $uri = $this->sanitize($contributor['child'][NAMESPACE_ATOM_10]['uri'][0]['data'], CONSTRUCT_IRI, $this->get_base($contributor['child'][NAMESPACE_ATOM_10]['uri'][0]));
-            }
-            if (isset($contributor['child'][NAMESPACE_ATOM_10]['email'][0]['data']))
-            {
-                $email = $this->sanitize($contributor['child'][NAMESPACE_ATOM_10]['email'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if ($name !== null || $email !== null || $uri !== null)
-            {
-                $contributors[] = new Author($name, $uri, $email);
-            }
-        }
         foreach ((array) $this->get_channel_tags(NAMESPACE_ATOM_03, 'contributor') as $contributor)
         {
             $name = null;
