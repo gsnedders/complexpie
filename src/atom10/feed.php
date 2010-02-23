@@ -26,7 +26,11 @@ class Feed
             'single' => false
         ),
         // XXX: generator
-        // XXX: icon
+        'icon' => array(
+            'element' => 'atom:icon',
+            'contentConstructor' => 'ComplexPie\\Content\\IRINode',
+            'single' => true
+        ),
         'id' => array(
             'element' => 'atom:id',
             // Yes, not an IRI. atom:id is an opaque non-normalizable IRI,
@@ -35,7 +39,11 @@ class Feed
             'single' => true
         ),
         // link is special cased, see below in __invoke.
-        // XXX: logo
+        'logo' => array(
+            'element' => 'atom:logo',
+            'contentConstructor' => 'ComplexPie\\Content\\IRINode',
+            'single' => true
+        ),
         'rights' => array(
             'element' => 'atom:rights',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
