@@ -10,13 +10,13 @@ class Feed
     );
     
     private static $elements = array(
-        'author' => array(
+        'authors' => array(
             'element' => 'atom:author',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
             'single' => false
         ),
-        // XXX: category
-        'contributor' => array(
+        // XXX: categories
+        'contributors' => array(
             'element' => 'atom:contributor',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
             'single' => false
