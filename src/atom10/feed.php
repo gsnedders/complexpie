@@ -20,8 +20,15 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
             'single' => false
         ),
-        'title' => array(
-            'element' => 'atom:title',
+        'id' => array(
+            'element' => 'atom:id',
+            // Yes, not an IRI. atom:id is an opaque non-normalizable IRI,
+            // which is nothing more than an opaque string.
+            'contentConstructor' => 'ComplexPie\\Content::from_textcontent',
+            'single' => true
+        ),
+        'rights' => array(
+            'element' => 'atom:rights',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
@@ -30,21 +37,14 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
-        'rights' => array(
-            'element' => 'atom:rights',
+        'title' => array(
+            'element' => 'atom:title',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
             'single' => true
         ),
         'updated' => array(
             'element' => 'atom:updated',
             'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
-            'single' => true
-        ),
-        'id' => array(
-            'element' => 'atom:id',
-            // Yes, not an IRI. atom:id is an opaque non-normalizable IRI,
-            // which is nothing more than an opaque string.
-            'contentConstructor' => 'ComplexPie\\Content::from_textcontent',
             'single' => true
         ),
     );
