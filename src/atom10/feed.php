@@ -15,11 +15,14 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
             'single' => false
         ),
+        // XXX: category
         'contributor' => array(
             'element' => 'atom:contributor',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
             'single' => false
         ),
+        // XXX: generator
+        // XXX: icon
         'id' => array(
             'element' => 'atom:id',
             // Yes, not an IRI. atom:id is an opaque non-normalizable IRI,
@@ -27,6 +30,8 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Content::from_textcontent',
             'single' => true
         ),
+        // link is special cased, see below in __invoke.
+        // XXX: logo
         'rights' => array(
             'element' => 'atom:rights',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
@@ -47,6 +52,7 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
             'single' => true
         ),
+        // XXX: entry
     );
     
     public function __invoke($dom, $name)
