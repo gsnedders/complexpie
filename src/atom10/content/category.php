@@ -13,22 +13,21 @@ class Category
     {
         $this->node = $node;
         
-        $terms = \ComplexPie\Misc::xpath($node, 'atom:term', array('atom' => \ComplexPie\Atom10\XMLNS));
-        if ($terms->length)
+        if ($node->hasAttribute('term'))
         {
-            $this->term = \ComplexPie\Content::from_textcontent($terms->item(0));
+            $this->term = \ComplexPie\Content::from_textcontent($node->getAttributeNode('term'));
+            // And default the label to the term
+            $this->label = $this->term;
         }
         
-        $schemes = \ComplexPie\Misc::xpath($node, 'atom:scheme', array('atom' => \ComplexPie\Atom10\XMLNS));
-        if ($schemes->length)
+        if ($node->hasAttribute('scheme'))
         {
-            $this->scheme = new \ComplexPie\Content\IRINode($schemes->item(0));
+            $this->scheme = new \ComplexPie\Content\IRINode($node->getAttributeNode('scheme'));
         }
         
-        $labels = \ComplexPie\Misc::xpath($node, 'atom:label', array('atom' => \ComplexPie\Atom10\XMLNS));
-        if ($labels->length)
+        if ($node->hasAttribute('label'))
         {
-            $this->label = \ComplexPie\Content::from_textcontent($labels->item(0));
+            $this->label = \ComplexPie\Content::from_textcontent($node->getAttributeNode('label'));
         }
     }
     

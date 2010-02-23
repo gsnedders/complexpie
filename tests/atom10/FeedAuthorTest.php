@@ -46,7 +46,7 @@ class FeedAuthorTest extends PHPUnit_Framework_TestCase
     {
         $input = sprintf('<feed xmlns="http://www.w3.org/2005/Atom"><author>%s</author></feed>', $input);
         $feed = \ComplexPie\ComplexPie($input);
-        list($person) = $feed->author;
+        list($person) = $feed->authors;
         if ($expected !== null)
         {
             $this->assertSame($expected, $person->name->to_text());
@@ -90,7 +90,7 @@ class FeedAuthorTest extends PHPUnit_Framework_TestCase
     {
         $input = sprintf('<feed xmlns="http://www.w3.org/2005/Atom"><author>%s</author></feed>', $input);
         $feed = \ComplexPie\ComplexPie($input);
-        list($person) = $feed->author;
+        list($person) = $feed->authors;
         if ($expected !== null)
         {
             $this->assertSame($expected, $person->uri->to_text());
@@ -138,7 +138,7 @@ class FeedAuthorTest extends PHPUnit_Framework_TestCase
     {
         $input = sprintf('<feed xmlns="http://www.w3.org/2005/Atom"><author>%s</author></feed>', $input);
         $feed = \ComplexPie\ComplexPie($input);
-        list($person) = $feed->author;
+        list($person) = $feed->authors;
         if ($expected !== null)
         {
             $this->assertSame($expected, $person->email->to_text());

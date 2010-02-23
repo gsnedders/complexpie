@@ -10,27 +10,19 @@ class ContentCategoryTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 'Foobar',
-                '<term>Foobar</term>',
-            ),
-            array(
-                'Foobar',
-                '<term xmlns="http://example.com">FAIL</term><term>Foobar</term>',
-            ),
-            array(
-                'Foobar',
-                '<term>Foobar</term><term xmlns="http://example.com">FAIL</term>',
+                'term="Foobar"',
             ),
             array(
                 'Foo&bar',
-                '<term>Foo&amp;bar</term>',
+                'term="Foo&amp;bar"',
             ),
             array(
                 'Foo&amp;bar',
-                '<term>Foo&amp;amp;bar</term>',
+                'term="Foo&amp;amp;bar"',
             ),
             array(
                 '<span>Foobar</span>',
-                '<term>&lt;span>Foobar&lt;/span></term>',
+                'term="&lt;span>Foobar&lt;/span>"',
             ),
             array(
                 null,
@@ -45,7 +37,7 @@ class ContentCategoryTest extends PHPUnit_Framework_TestCase
     public function testTerm($expected, $input)
     {
         $dom = new \DOMDocument();
-        $dom->loadXML('<category xmlns="http://www.w3.org/2005/Atom">' . $input . '</category>');
+        $dom->loadXML(sprintf('<category xmlns="http://www.w3.org/2005/Atom" %s />', $input));
         $dom->documentURI = null;
         $category = new \ComplexPie\Atom10\Content\Category($dom->documentElement);
         if ($expected !== null)
@@ -63,19 +55,19 @@ class ContentCategoryTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 'http://example.com',
-                '<scheme>http://example.com</scheme>',
+                'scheme="http://example.com"',
             ),
             array(
                 'http://example.com',
-                '<scheme xml:base="http://example.com">/</scheme>',
+                'xml:base="http://example.com" scheme="/"',
             ),
             array(
                 'http://example.com?foo&bar',
-                '<scheme>http://example.com?foo&amp;bar</scheme>',
+                'scheme="http://example.com?foo&amp;bar"',
             ),
             array(
                 '/',
-                '<scheme>/</scheme>',
+                'scheme="/"',
             ),
             array(
                 null,
@@ -90,7 +82,7 @@ class ContentCategoryTest extends PHPUnit_Framework_TestCase
     public function testScheme($expected, $input)
     {
         $dom = new \DOMDocument();
-        $dom->loadXML('<category xmlns="http://www.w3.org/2005/Atom">' . $input . '</category>');
+        $dom->loadXML(sprintf('<category xmlns="http://www.w3.org/2005/Atom" %s />', $input));
         $dom->documentURI = null;
         $category = new \ComplexPie\Atom10\Content\Category($dom->documentElement);
         if ($expected !== null)
@@ -108,23 +100,23 @@ class ContentCategoryTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 'foobar@example.com',
-                '<label>foobar@example.com</label>',
+                'label="foobar@example.com"',
             ),
             array(
                 'Invalid bogus string',
-                '<label>Invalid bogus string</label>',
+                'label="Invalid bogus string"',
             ),
             array(
                 'Foo&bar',
-                '<label>Foo&amp;bar</label>',
+                'label="Foo&amp;bar"',
             ),
             array(
                 'Foo&amp;bar',
-                '<label>Foo&amp;amp;bar</label>',
+                'label="Foo&amp;amp;bar"',
             ),
             array(
                 '<span>Foobar</span>',
-                '<label>&lt;span>Foobar&lt;/span></label>',
+                'label="&lt;span>Foobar&lt;/span>"',
             ),
             array(
                 null,
@@ -139,7 +131,7 @@ class ContentCategoryTest extends PHPUnit_Framework_TestCase
     public function testLabel($expected, $input)
     {
         $dom = new \DOMDocument();
-        $dom->loadXML('<category xmlns="http://www.w3.org/2005/Atom">' . $input . '</category>');
+        $dom->loadXML(sprintf('<category xmlns="http://www.w3.org/2005/Atom" %s />', $input));
         $dom->documentURI = null;
         $category = new \ComplexPie\Atom10\Content\Category($dom->documentElement);
         if ($expected !== null)

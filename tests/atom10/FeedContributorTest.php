@@ -46,7 +46,7 @@ class FeedContributorTest extends PHPUnit_Framework_TestCase
     {
         $input = sprintf('<feed xmlns="http://www.w3.org/2005/Atom"><contributor>%s</contributor></feed>', $input);
         $feed = \ComplexPie\ComplexPie($input);
-        list($person) = $feed->contributor;
+        list($person) = $feed->contributors;
         if ($expected !== null)
         {
             $this->assertSame($expected, $person->name->to_text());
@@ -90,7 +90,7 @@ class FeedContributorTest extends PHPUnit_Framework_TestCase
     {
         $input = sprintf('<feed xmlns="http://www.w3.org/2005/Atom"><contributor>%s</contributor></feed>', $input);
         $feed = \ComplexPie\ComplexPie($input);
-        list($person) = $feed->contributor;
+        list($person) = $feed->contributors;
         if ($expected !== null)
         {
             $this->assertSame($expected, $person->uri->to_text());
@@ -138,7 +138,7 @@ class FeedContributorTest extends PHPUnit_Framework_TestCase
     {
         $input = sprintf('<feed xmlns="http://www.w3.org/2005/Atom"><contributor>%s</contributor></feed>', $input);
         $feed = \ComplexPie\ComplexPie($input);
-        list($person) = $feed->contributor;
+        list($person) = $feed->contributors;
         if ($expected !== null)
         {
             $this->assertSame($expected, $person->email->to_text());

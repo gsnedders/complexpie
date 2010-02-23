@@ -15,7 +15,11 @@ class Feed
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
             'single' => false
         ),
-        // XXX: categories
+        'categories' => array(
+            'element' => 'atom:category',
+            'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Category',
+            'single' => false
+        ),
         'contributors' => array(
             'element' => 'atom:contributor',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',

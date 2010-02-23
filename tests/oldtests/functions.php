@@ -127,7 +127,14 @@ class SimplePie_Feed_Category_Label_Test extends SimplePie_Feed_Category_Test
     {
         if ($category = $this->category())
         {
-            $this->result = $category->get_label();
+            if ($category->label)
+            {
+                $this->result = $category->label->to_html();
+            }
+            else
+            {
+                $this->result = $category->label;
+            }
         }
     }
 }
@@ -235,7 +242,7 @@ class SimplePie_First_Item_Author_Name_Test extends SimplePie_First_Item_Author_
     {
         if ($author = $this->author())
         {
-            $this->result = $author->get_name();
+            $this->result = $author->name;
         }
     }
 }
