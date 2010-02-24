@@ -25,30 +25,36 @@ class Data extends Extension
     
     public function __get($name)
     {
-        $return = array();
         $extensions = $this->get_extensions('get');
         if (method_exists($this, "get_$name"))
         {
             $extensions[] = array($this, "get_$name");
         }
         
+        $return = array();
+        $returnarray = false;
         foreach ($extensions as $extension)
         {
             if (($extreturn = call_user_func($extension, $this->dom, $name)) !== null)
             {
                 if (is_array($extreturn))
                 {
+                    $returnarray = true;
                     $return = array_merge_recursive($extreturn, $return);
                 }
-                elseif (!$return)
+                else
                 {
-                    return $extreturn;
+                    $return[] = $extreturn;
                 }
             }
         }
+        
         if ($return)
         {
-            return $return;
+            if ($returnarray)
+                return $return;
+            else
+                return $return[0];
         }
     }
 }
