@@ -245,9 +245,9 @@ class Feed extends Data
         {
             return $element['xml_base'];
         }
-        elseif ($links !== null)
+        elseif (isset($links['alternate']))
         {
-            return $links[0];
+            return $links['alternate'][0];
         }
         else
         {
@@ -439,9 +439,9 @@ class Feed extends Data
             }
         }
 
-        if (isset($this->data['links']['alternate']))
+        if (isset($this->data['links']))
         {
-            return $this->data['links']['alternate'];
+            return $this->data['links'];
         }
         else
         {
