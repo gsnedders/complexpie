@@ -148,6 +148,42 @@ class FeedContributorTest extends PHPUnit_Framework_TestCase
             $this->assertSame($expected, $person->email);
         }
     }
+    
+    public function testMultipleContributors()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <contributor>
+        <name>Contributor 1</name>
+    </contributor>
+    <contributor>
+        <name>Contributor 2</name>
+    </contributor>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $contributors = $feed->contributors;
+        $this->assertSame('Contributor 1', $contributors[0]->name->to_text());
+        $this->assertSame('Contributor 2', $contributors[1]->name->to_text());
+    }
+    
+    public function testMultipleContributorsConstantOrder()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <contributor>
+        <name>Contributor 1</name>
+    </contributor>
+    <contributor>
+        <name>Contributor 2</name>
+    </contributor>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        // This causes contributors to be calculated twice
+        $this->assertSame('Contributor 1', $feed->contributors[0]->name->to_text());
+        $this->assertSame('Contributor 2', $feed->contributors[1]->name->to_text());
+    }
 }
 
 ?>
