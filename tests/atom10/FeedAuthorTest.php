@@ -148,6 +148,42 @@ class FeedAuthorTest extends PHPUnit_Framework_TestCase
             $this->assertSame($expected, $person->email);
         }
     }
+    
+    public function testMultipleAuthors()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name>Author 1</name>
+    </author>
+    <author>
+        <name>Author 2</name>
+    </author>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $authors = $feed->authors;
+        $this->assertSame('Author 1', $authors[0]->name->to_text());
+        $this->assertSame('Author 2', $authors[1]->name->to_text());
+    }
+    
+    public function testMultipleAuthorsConstantOrder()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name>Author 1</name>
+    </author>
+    <author>
+        <name>Author 2</name>
+    </author>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        // This causes authors to be calculated twice
+        $this->assertSame('Author 1', $feed->authors[0]->name->to_text());
+        $this->assertSame('Author 2', $feed->authors[1]->name->to_text());
+    }
 }
 
 ?>
