@@ -30,6 +30,7 @@ class FeedSubtitleTest extends TextConstructTest
 </feed>
 EOF
             ),
+            array(
 <<<EOF
 <feed xmlns="http://www.w3.org/2005/Atom">
     <subtitle>PASS</subtitle>
