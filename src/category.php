@@ -56,4 +56,12 @@ class Category
             return $this->get_term();
         }
     }
+    
+    public function __get($name)
+    {
+        if (method_exists($this, "get_$name"))
+        {
+            return $this->{"get_$name"}();
+        }
+    }
 }
