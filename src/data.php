@@ -26,9 +26,15 @@ class Data extends Extension
     public function __get($name)
     {
         $return = array();
-        foreach ($this->get_extensions('get') as $extension)
+        $extensions = $this->get_extensions('get');
+        if (method_exists($this, "get_$name"))
         {
-            if (($extreturn = $extension($this->dom, $name)) !== null)
+            $extensions[] = array($this, "get_$name");
+        }
+        
+        foreach ($extensions as $extension)
+        {
+            if (($extreturn = call_user_func($extension, $this->dom, $name)) !== null)
             {
                 if (is_array($extreturn))
                 {
@@ -43,11 +49,6 @@ class Data extends Extension
         if ($return)
         {
             return $return;
-        }
-        
-        if (method_exists($this, "get_$name"))
-        {
-            return call_user_func(array($this, "get_$name"));
         }
     }
 }

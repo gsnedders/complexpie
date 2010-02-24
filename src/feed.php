@@ -386,7 +386,7 @@ class Feed extends Data
         }
     }
 
-    protected function get_links($rel = 'alternate')
+    protected function get_links()
     {
         if (!isset($this->data['links']))
         {
@@ -439,9 +439,9 @@ class Feed extends Data
             }
         }
 
-        if (isset($this->data['links'][$rel]))
+        if (isset($this->data['links']['alternate']))
         {
-            return $this->data['links'][$rel];
+            return $this->data['links']['alternate'];
         }
         else
         {
