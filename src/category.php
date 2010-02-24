@@ -3,9 +3,9 @@ namespace ComplexPie;
 
 class Category
 {
-    var $term;
-    var $scheme;
-    var $label;
+    private $term;
+    private $scheme;
+    private $label;
 
     // Constructor, used to input the data
     public function __construct($term = null, $scheme = null, $label = null)
