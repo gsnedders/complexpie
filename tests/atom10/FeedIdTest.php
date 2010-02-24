@@ -59,6 +59,18 @@ EOF;
         $feed = \ComplexPie\ComplexPie(sprintf($input, $id));
         $this->assertSame($expected, $feed->id->to_text());
     }
+    
+    public function testMultipleReturnsFirst()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>http://example.com/1</id>
+    <id>http://example.com/2</id>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('http://example.com/1', $feed->id->to_text());
+    }
 }
 
 ?>

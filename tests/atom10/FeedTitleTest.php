@@ -26,6 +26,14 @@ class FeedTitleTest extends TextConstructTest
 <<<EOF
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>PASS</title>
+    <title>FAIL</title>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>PASS</title>
     <title xmlns="http://purl.org/atom/ns#">FAIL</title>
 </feed>
 EOF

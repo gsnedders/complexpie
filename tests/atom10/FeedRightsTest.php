@@ -26,6 +26,14 @@ class FeedRightsTest extends TextConstructTest
 <<<EOF
 <feed xmlns="http://www.w3.org/2005/Atom">
     <rights>PASS</rights>
+    <rights>FAIL</rights>
+</feed>
+EOF
+            ),
+            array(
+<<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <rights>PASS</rights>
     <rights xmlns="http://purl.org/atom/ns#">FAIL</rights>
 </feed>
 EOF

@@ -66,6 +66,21 @@ EOF;
             $this->assertSame($expected, $parsed);
         }
     }
+    
+    public function testMultipleReturnsFirst()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <updated>2000-01-01T00:00:00Z</updated>
+    <updated>2010-01-01T00:00:00Z</updated>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $parsed = $feed->updated;
+        $tz = new \DateTimeZone('UTC');
+        $parsed->setTimezone($tz);
+        $this->assertSame('2000-01-01T00:00:00+00:00', $parsed->format(\DateTime::ATOM));
+    }
 }
 
 ?>
