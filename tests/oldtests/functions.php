@@ -127,14 +127,7 @@ class SimplePie_Feed_Category_Label_Test extends SimplePie_Feed_Category_Test
     {
         if ($category = $this->category())
         {
-            if ($category->label)
-            {
-                $this->result = $category->label->to_html();
-            }
-            else
-            {
-                $this->result = $category->label;
-            }
+            $this->result = $category->label;
         }
     }
 }
