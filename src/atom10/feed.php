@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie\Atom10;
 
-class Feed
+class Feed extends \ComplexPie\Feed
 {
     private static $aliases = array(
         'description' => 'subtitle',
@@ -67,7 +67,14 @@ class Feed
         // XXX: entry
     );
     
-    public function __invoke($dom, $name)
+    public function __construct()
+    {
+        $this->add_extension('get', get_class($this) . '::get', 0);
+        $args = func_get_args();
+        call_user_func_array(array($this, 'parent::__construct'), $args);
+    }
+    
+    public static function get($dom, $name)
     {
         if ($name === 'links')
         {
@@ -94,15 +101,15 @@ class Feed
         }
         elseif (isset(self::$elements[$name]))
         {
-            return $this->elements_table($dom, $name);
+            return self::elements_table($dom, $name);
         }
         elseif (isset(self::$aliases[$name]))
         {
-            return $this->__invoke($dom, self::$aliases[$name]);
+            return self::get($dom, self::$aliases[$name]);
         }
     }
     
-    private function elements_table($dom, $name)
+    private static function elements_table($dom, $name)
     {
         $element = self::$elements[$name];
         $nodes = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => XMLNS));

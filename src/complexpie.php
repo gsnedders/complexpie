@@ -104,6 +104,9 @@ function ComplexPie($data, $uri = null)
         switch ('{' . $dom->documentElement->namespaceURI . '}' . $dom->documentElement->localName)
         {
             case '{' . NAMESPACE_ATOM_10 . '}feed':
+                return new Atom10\Feed($dom->documentElement, $tree);
+            
+            
             case '{' . NAMESPACE_ATOM_03 . '}feed':
                 $element = $dom->documentElement;
                 break;
@@ -164,7 +167,9 @@ function ComplexPie($data, $uri = null)
             default:
                 return false;
         }
-        return new Feed($element, $tree);
+        $feed = new Feed($element, $tree);
+        $feed->add_extension('get', '\\ComplexPie\\Atom10\\Feed::get', 10);
+        return $feed;
     }
     else
     {

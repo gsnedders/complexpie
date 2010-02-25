@@ -663,5 +663,4 @@ class Feed extends Data
     }
 }
 
-Feed::add_static_extension('get', new Atom10\Feed, 10);
 Feed::add_static_extension('get', '\\ComplexPie\\xmllang', 10);
