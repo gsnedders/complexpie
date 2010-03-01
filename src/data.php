@@ -7,6 +7,11 @@ class Data extends Extension
     
     public static function add_static_extension($extpoint, $ext, $priority)
     {
+        if (substr($ext, 0, 1) === '\\')
+        {
+            $ext = substr($ext, 1);
+        }
+        
         if ($extpoint === 'get' && !is_callable($ext))
         {
             throw new \InvalidArgumentException("$ext is not callable");
@@ -16,6 +21,11 @@ class Data extends Extension
     
     public function add_extension($extpoint, $ext, $priority)
     {
+        if (substr($ext, 0, 1) === '\\')
+        {
+            $ext = substr($ext, 1);
+        }
+        
         if ($extpoint === 'get' && !is_callable($ext))
         {
             throw new \InvalidArgumentException("$ext is not callable");
