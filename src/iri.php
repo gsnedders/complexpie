@@ -872,29 +872,62 @@ class IRI
      */
     private function set_authority($authority)
     {
-        if (($iuserinfo_end = strrpos($authority, '@')) !== false)
+        static $cache;
+        if (!$cache)
+            $cache = new CacheArray();
+        
+        if ($authority === null)
         {
-            $iuserinfo = substr($authority, 0, $iuserinfo_end);
-            $authority = substr($authority, $iuserinfo_end + 1);
+            $this->iuserinfo = null;
+            $this->ihost = null;
+            $this->port = null;
+            return true;
+        }
+        elseif (isset($cache[$authority]))
+        {
+            list($this->iuserinfo,
+                 $this->ihost,
+                 $this->port,
+                 $return) = $cache[$authority];
+            
+            return $return;
         }
         else
         {
-            $iuserinfo = null;
-        }
-        if (($port_start = strpos($authority, ':', strpos($authority, ']'))) !== false)
-        {
-            if (($port = substr($authority, $port_start + 1)) === false)
+            $remaining = $authority;
+            if (($iuserinfo_end = strrpos($remaining, '@')) !== false)
+            {
+                $iuserinfo = substr($remaining, 0, $iuserinfo_end);
+                $remaining = substr($remaining, $iuserinfo_end + 1);
+            }
+            else
+            {
+                $iuserinfo = null;
+            }
+            if (($port_start = strpos($remaining, ':', strpos($remaining, ']'))) !== false)
+            {
+                if (($port = substr($remaining, $port_start + 1)) === false)
+                {
+                    $port = null;
+                }
+                $remaining = substr($remaining, 0, $port_start);
+            }
+            else
             {
                 $port = null;
             }
-            $authority = substr($authority, 0, $port_start);
+    
+            $return = $this->set_userinfo($iuserinfo) &&
+                      $this->set_host($remaining) &&
+                      $this->set_port($port);
+            
+            $cache[$authority] = array($this->iuserinfo,
+                                       $this->ihost,
+                                       $this->port,
+                                       $return);
+            
+            return $return;
         }
-        else
-        {
-            $port = null;
-        }
-
-        return $this->set_userinfo($iuserinfo) && $this->set_host($authority) && $this->set_port($port);
     }
 
     /**
@@ -946,38 +979,27 @@ class IRI
         }
         else
         {
-            // A cache here makes sense as it's likely a lot of the IRIs will
-            // have the same host name, even if they otherwise differ.
-            static $cache;
-            if (!$cache)
-                $cache = new CacheArray();
+            $ihost = $this->replace_invalid_with_pct_encoding($ihost, '!$&\'()*+,;=');
             
-            if (!isset($cache[$ihost]))
+            // Lowercase, but ignore pct-encoded sections (as they should
+            // remain uppercase). This must be done after the previous step
+            // as that can add unescaped characters.
+            $position = 0;
+            $strlen = strlen($ihost);
+            while (($position += strcspn($ihost, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ%', $position)) < $strlen)
             {
-                $ihost = $this->replace_invalid_with_pct_encoding($ihost, '!$&\'()*+,;=');
-                
-                // Lowercase, but ignore pct-encoded sections (as they should
-                // remain uppercase). This must be done after the previous step
-                // as that can add unescaped characters.
-                $position = 0;
-                $strlen = strlen($ihost);
-                while (($position += strcspn($ihost, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ%', $position)) < $strlen)
+                if ($ihost[$position] === '%')
                 {
-                    if ($ihost[$position] === '%')
-                    {
-                        $position += 3;
-                    }
-                    else
-                    {
-                        $ihost[$position] = strtolower($ihost[$position]);
-                        $position++;
-                    }
+                    $position += 3;
                 }
-                
-                $cache[$ihost] = $ihost;
+                else
+                {
+                    $ihost[$position] = strtolower($ihost[$position]);
+                    $position++;
+                }
             }
             
-            $this->ihost = $cache[$ihost];
+            $this->ihost = $ihost;
         }
         
         $this->scheme_normalization();
@@ -1028,21 +1050,18 @@ class IRI
         
         $ipath = (string) $ipath;
         
-        if (!isset($cache[$ipath]))
+        if (isset($cache[$ipath]))
+        {
+            $this->ipath = $cache[$ipath][(int) ($this->scheme !== null)];
+        }
+        else
         {
             $valid = $this->replace_invalid_with_pct_encoding($ipath, '!$&\'()*+,;=@:/');
-            if (strpos($valid, './') !== false || strpos($valid, '/.') !== false || $valid === '.' || $valid === '..')
-            {
-                $removed = $this->remove_dot_segments($valid);
-            }
-            else
-            {
-                $removed = $valid;
-            }
+            $removed = $this->remove_dot_segments($valid);
+            
             $cache[$ipath] = array($valid, $removed);
+            $this->ipath =  ($this->scheme !== null) ? $removed : $valid;
         }
-        
-        $this->ipath = $cache[$ipath][(int) ($this->scheme !== null)];
         
         $this->scheme_normalization();
         return true;
