@@ -1179,22 +1179,21 @@ class IRI
      */
     private function get_iauthority()
     {
-        $iauthority = '';
-        if ($this->iuserinfo !== null)
-        {
-            $iauthority .= $this->iuserinfo . '@';
-        }
-        if ($this->ihost !== null)
-        {
-            $iauthority .= $this->ihost;
-        }
-        if ($this->port !== null)
-        {
-            $iauthority .= ':' . $this->port;
-        }
-
         if ($this->iuserinfo !== null || $this->ihost !== null || $this->port !== null)
         {
+            $iauthority = '';
+            if ($this->iuserinfo !== null)
+            {
+                $iauthority .= $this->iuserinfo . '@';
+            }
+            if ($this->ihost !== null)
+            {
+                $iauthority .= $this->ihost;
+            }
+            if ($this->port !== null)
+            {
+                $iauthority .= ':' . $this->port;
+            }
             return $iauthority;
         }
         else
