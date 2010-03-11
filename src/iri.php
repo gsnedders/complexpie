@@ -844,14 +844,7 @@ class IRI
         {
             $this->scheme = null;
         }
-        elseif (
-               !($scheme = (string) $scheme)
-            || !isset($scheme[0])
-            || $scheme[0] < 'A'
-            || $scheme[0] > 'Z' && $scheme[0] < 'a'
-            || $scheme[0] > 'z'
-            || strspn($scheme, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-.') !== strlen($scheme)
-        )
+        elseif (!preg_match('/^[A-Za-z][0-9A-Za-z+\-.]*$/', $scheme))
         {
             $this->scheme = null;
             return false;
