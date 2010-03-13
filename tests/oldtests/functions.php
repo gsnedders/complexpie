@@ -246,7 +246,7 @@ class SimplePie_First_Item_Category_Label_Test extends SimplePie_First_Item_Cate
     {
         if ($category = $this->category())
         {
-            $this->result = $category->get_label();
+            $this->result = $category->label;
         }
     }
 }
@@ -268,7 +268,7 @@ class SimplePie_First_Item_Contributor_Name_Test extends SimplePie_First_Item_Co
     {
         if ($contributor = $this->contributor())
         {
-            $this->result = $contributor->get_name();
+            $this->result = $contributor->name;
         }
     }
 }

@@ -623,20 +623,12 @@ class Feed extends XML\Data
         if (!isset($this->data['items']))
         {
             $this->data['items'] = array();
-            if ($items = $this->get_feed_tags(NAMESPACE_ATOM_10, 'entry'))
-            {
-                $keys = array_keys($items);
-                foreach ($keys as $key)
-                {
-                    $this->data['items'][] = new Entry($this, $items[$key], null);
-                }
-            }
             if ($items = $this->get_feed_tags(NAMESPACE_ATOM_03, 'entry'))
             {
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new Entry($this, $items[$key], null);
+                    $this->data['items'][] = new XML\Entry($this, $items[$key], $this->dom->getElementsByTagNameNS(NAMESPACE_ATOM_03, 'entry')->item($key));
                 }
             }
             if ($items = $this->get_feed_tags(NAMESPACE_RSS_10, 'item'))
@@ -644,7 +636,7 @@ class Feed extends XML\Data
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new Entry($this, $items[$key], null);
+                    $this->data['items'][] = new XML\Entry($this, $items[$key], $this->dom->ownerDocument->getElementsByTagNameNS(NAMESPACE_RSS_10, 'item')->item($key));
                 }
             }
             if ($items = $this->get_feed_tags(NAMESPACE_RSS_090, 'item'))
@@ -652,7 +644,7 @@ class Feed extends XML\Data
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new Entry($this, $items[$key], null);
+                    $this->data['items'][] = new XML\Entry($this, $items[$key], $this->dom->ownerDocument->getElementsByTagNameNS(NAMESPACE_RSS_090, 'item')->item($key));
                 }
             }
             if ($items = $this->get_channel_tags(NAMESPACE_RSS_20, 'item'))
@@ -660,7 +652,7 @@ class Feed extends XML\Data
                 $keys = array_keys($items);
                 foreach ($keys as $key)
                 {
-                    $this->data['items'][] = new Entry($this, $items[$key], null);
+                    $this->data['items'][] = new XML\Entry($this, $items[$key], $this->dom->getElementsByTagName('item')->item($key));
                 }
             }
         }

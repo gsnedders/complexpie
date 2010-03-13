@@ -57,32 +57,25 @@ class Entry extends XML\Data
         return $this->feed;
     }
 
-    public function get_id($hash = false)
+    public function get_id()
     {
-        if (!$hash)
+        if ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'id'))
         {
-            if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'id'))
-            {
-                return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
-            }
-            elseif ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'id'))
-            {
-                return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
-            }
-            elseif ($return = $this->get_item_tags(NAMESPACE_RSS_20, 'guid'))
-            {
-                return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
-            }
-            elseif (($return = $this->get_permalink()) !== null)
-            {
-                return $return;
-            }
-            elseif (($return = $this->get_title()) !== null)
-            {
-                return $return;
-            }
+            return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
         }
-        if ($this->get_permalink() !== null || $this->get_title() !== null)
+        elseif ($return = $this->get_item_tags(NAMESPACE_RSS_20, 'guid'))
+        {
+            return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
+        }
+        elseif (($return = $this->get_permalink()) !== null)
+        {
+            return $return;
+        }
+        elseif (($return = $this->get_title()) !== null)
+        {
+            return $return;
+        }
+        elseif ($this->get_permalink() !== null || $this->get_title() !== null)
         {
             return md5($this->get_permalink() . $this->get_title());
         }
@@ -96,11 +89,7 @@ class Entry extends XML\Data
     {
         if (!isset($this->data['title']))
         {
-            if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'title'))
-            {
-                $this->data['title'] = $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
-            }
-            elseif ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'title'))
+            if ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'title'))
             {
                 $this->data['title'] = $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
             }
@@ -126,11 +115,7 @@ class Entry extends XML\Data
 
     public function get_description()
     {
-        if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'summary'))
-        {
-            return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
-        }
-        elseif ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'summary'))
+        if ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'summary'))
         {
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
@@ -172,25 +157,6 @@ class Entry extends XML\Data
     {
         $categories = array();
 
-        foreach ((array) $this->get_item_tags(NAMESPACE_ATOM_10, 'category') as $category)
-        {
-            $term = null;
-            $scheme = null;
-            $label = null;
-            if (isset($category['attribs']['']['term']))
-            {
-                $term = $this->sanitize($category['attribs']['']['term'], CONSTRUCT_TEXT);
-            }
-            if (isset($category['attribs']['']['scheme']))
-            {
-                $scheme = $this->sanitize($category['attribs']['']['scheme'], CONSTRUCT_TEXT);
-            }
-            if (isset($category['attribs']['']['label']))
-            {
-                $label = $this->sanitize($category['attribs']['']['label'], CONSTRUCT_TEXT);
-            }
-            $categories[] = new Category($term, $scheme, $label);
-        }
         foreach ((array) $this->get_item_tags(NAMESPACE_RSS_20, 'category') as $category)
         {
             // This is really the label, but keep this as the term also for BC.
@@ -220,28 +186,6 @@ class Entry extends XML\Data
     public function get_contributors()
     {
         $contributors = array();
-        foreach ((array) $this->get_item_tags(NAMESPACE_ATOM_10, 'contributor') as $contributor)
-        {
-            $name = null;
-            $uri = null;
-            $email = null;
-            if (isset($contributor['child'][NAMESPACE_ATOM_10]['name'][0]['data']))
-            {
-                $name = $this->sanitize($contributor['child'][NAMESPACE_ATOM_10]['name'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if (isset($contributor['child'][NAMESPACE_ATOM_10]['uri'][0]['data']))
-            {
-                $uri = $this->sanitize($contributor['child'][NAMESPACE_ATOM_10]['uri'][0]['data'], CONSTRUCT_IRI, $this->get_base($contributor['child'][NAMESPACE_ATOM_10]['uri'][0]));
-            }
-            if (isset($contributor['child'][NAMESPACE_ATOM_10]['email'][0]['data']))
-            {
-                $email = $this->sanitize($contributor['child'][NAMESPACE_ATOM_10]['email'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if ($name !== null || $email !== null || $uri !== null)
-            {
-                $contributors[] = new Author($name, $uri, $email);
-            }
-        }
         foreach ((array) $this->get_item_tags(NAMESPACE_ATOM_03, 'contributor') as $contributor)
         {
             $name = null;
@@ -278,28 +222,6 @@ class Entry extends XML\Data
     public function get_authors()
     {
         $authors = array();
-        foreach ((array) $this->get_item_tags(NAMESPACE_ATOM_10, 'author') as $author)
-        {
-            $name = null;
-            $uri = null;
-            $email = null;
-            if (isset($author['child'][NAMESPACE_ATOM_10]['name'][0]['data']))
-            {
-                $name = $this->sanitize($author['child'][NAMESPACE_ATOM_10]['name'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if (isset($author['child'][NAMESPACE_ATOM_10]['uri'][0]['data']))
-            {
-                $uri = $this->sanitize($author['child'][NAMESPACE_ATOM_10]['uri'][0]['data'], CONSTRUCT_IRI, $this->get_base($author['child'][NAMESPACE_ATOM_10]['uri'][0]));
-            }
-            if (isset($author['child'][NAMESPACE_ATOM_10]['email'][0]['data']))
-            {
-                $email = $this->sanitize($author['child'][NAMESPACE_ATOM_10]['email'][0]['data'], CONSTRUCT_TEXT);
-            }
-            if ($name !== null || $email !== null || $uri !== null)
-            {
-                $authors[] = new Author($name, $uri, $email);
-            }
-        }
         if ($author = $this->get_item_tags(NAMESPACE_ATOM_03, 'author'))
         {
             $name = null;
@@ -338,18 +260,6 @@ class Entry extends XML\Data
         elseif ($authors = $this->feed->authors)
         {
             return $authors;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_copyright()
-    {
-        if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'rights'))
-        {
-            return $this->sanitize($return[0]['data'], Misc::atom_10_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
         else
         {
@@ -442,14 +352,14 @@ class Entry extends XML\Data
 
     public function get_permalink()
     {
-        list($link) = $this->links;
-        list($enclosure) = $this->enclosures;
-        if ($link !== null)
+        if (isset($this->links['alternate']))
         {
+            list($link) = $this->links['alternate'];
             return $link;
         }
-        elseif ($enclosure !== null)
+        elseif ($this->enclosures)
         {
+            list($enclosure) = $this->enclosures;
             return $enclosure->get_link();
         }
         else
@@ -463,15 +373,6 @@ class Entry extends XML\Data
         if (!isset($this->data['links']))
         {
             $this->data['links'] = array();
-            foreach ((array) $this->get_item_tags(NAMESPACE_ATOM_10, 'link') as $link)
-            {
-                if (isset($link['attribs']['']['href']))
-                {
-                    $link_rel = (isset($link['attribs']['']['rel'])) ? $link['attribs']['']['rel'] : 'alternate';
-                    $this->data['links'][$link_rel][] = $this->sanitize($link['attribs']['']['href'], CONSTRUCT_IRI, $this->get_base($link));
-
-                }
-            }
             foreach ((array) $this->get_item_tags(NAMESPACE_ATOM_03, 'link') as $link)
             {
                 if (isset($link['attribs']['']['href']))
@@ -524,7 +425,7 @@ class Entry extends XML\Data
         }
         if (isset($this->data['links']['alternate']))
         {
-            return $this->data['links']['alternate'];
+            return $this->data['links'];
         }
         else
         {
