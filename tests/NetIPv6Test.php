@@ -58,7 +58,7 @@ class NetIPv6Test extends PHPUnit_Framework_TestCase
 			array('0:0:0:0:0:0:0:0', '::'),
 			array('0:0:0:0:0:0:0:1', '::1'),
 			array('1:0:0:0:0:0:0:0', '1::'),
-			array('0:0:0588:0:0:FAEF:1428:57AB', '::588:0:0:faef:1428:57ab'),
+			array('0:0:0588:0:0:FAEF:1428:57AB', '0:0:588::faef:1428:57ab'),
 			array('0::1', '::1'),
 		);
 	}
