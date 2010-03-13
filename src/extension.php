@@ -101,7 +101,17 @@ abstract class Extension
             {
                 // Sort by priority (where lower is higher priority).
                 ksort($extensions, SORT_NUMERIC);
-                return call_user_func_array('array_merge', $extensions);
+                
+                // Flatten to a 1D array and remove duplicates.
+                $return = array();
+                foreach (call_user_func_array('array_merge', $extensions) as $extension)
+                {
+                    if (!in_array($extension, $return))
+                    {
+                        $return[] = $extension;
+                    }
+                }
+                return $return;
             }
             else
             {
