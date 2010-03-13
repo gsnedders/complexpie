@@ -253,10 +253,6 @@ class Entry extends XML\Data
         {
             return array_unique($authors);
         }
-        elseif (($source = $this->get_source()) && ($authors = $source->get_authors()))
-        {
-            return $authors;
-        }
         elseif ($authors = $this->feed->authors)
         {
             return $authors;
@@ -553,18 +549,6 @@ class Entry extends XML\Data
         if (!empty($this->data['enclosures']))
         {
             return $this->data['enclosures'];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_source()
-    {
-        if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'source'))
-        {
-            return new Source($this, $return[0]);
         }
         else
         {
