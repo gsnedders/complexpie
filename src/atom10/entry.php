@@ -34,7 +34,11 @@ class Entry extends \ComplexPie\XML\Entry
             'single' => true
         ),
         // link is special cased, added as an extension below
-        // XXX: published
+        'published' => array(
+            'element' => 'atom:published',
+            'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
+            'single' => true
+        ),
         'rights' => array(
             'element' => 'atom:rights',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',

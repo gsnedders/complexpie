@@ -6,6 +6,7 @@ require_once 'FeedEntryAuthorTest.php';
 require_once 'FeedEntryCategoryTest.php';
 require_once 'FeedEntryContributorTest.php';
 require_once 'FeedEntryIdTest.php';
+require_once 'FeedEntryPublishedTest.php';
 require_once 'FeedEntryRightsTest.php';
 require_once 'FeedEntrySummaryTest.php';
 require_once 'FeedEntryTitleTest.php';
@@ -21,6 +22,7 @@ class Atom10_FeedEntryTests
 		$suite->addTestSuite('Atom10_FeedEntryCategoryTest');
 		$suite->addTestSuite('Atom10_FeedEntryContributorTest');
 		$suite->addTestSuite('Atom10_FeedEntryIdTest');
+		$suite->addTestSuite('Atom10_FeedEntryPublishedTest');
 		$suite->addTestSuite('Atom10_FeedEntryRightsTest');
 		$suite->addTestSuite('Atom10_FeedEntrySummaryTest');
 		$suite->addTestSuite('Atom10_FeedEntryTitleTest');
