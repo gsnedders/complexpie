@@ -51,40 +51,28 @@ require_once 'nodeToHTML.php';
 require_once 'atom10/links.php';
 require_once 'xml/lang.php';
 
-if (extension_loaded('spl'))
+if (spl_autoload_functions() === false && function_exists('__autoload'))
 {
-    if (spl_autoload_functions() === false && function_exists('__autoload'))
+    spl_autoload_register('__autoload');
+}
+
+function autoload($classname)
+{
+    if (substr($classname, 0, 11) === 'ComplexPie\\')
     {
-        spl_autoload_register('__autoload');
-    }
-    
-    function autoload($classname)
-    {
-        if (substr($classname, 0, 11) === 'ComplexPie\\')
+        $file = dirname(__FILE__) . '/' . str_replace('\\', '/', strtolower(substr($classname, 11))) . '.php';
+        if (file_exists($file))
         {
-            $file = dirname(__FILE__) . '/' . str_replace('\\', '/', strtolower(substr($classname, 11))) . '.php';
-            if (file_exists($file))
-            {
-                $init = dirname($file) . '/_init.php';
-                if (file_exists($init))
-                    require_once $init;
-                
-                require_once $file;
-            }
+            $init = dirname($file) . '/_init.php';
+            if (file_exists($init))
+                require_once $init;
+            
+            require_once $file;
         }
     }
-    
-    spl_autoload_register('ComplexPie\autoload');
 }
-else
-{
-    $files = glob(dirname(__FILE__) . '/*.php');
-    foreach ($files as $file)
-    {
-        if ($file !== __FILE__)
-            require_once $file;
-    }
-}
+
+spl_autoload_register('ComplexPie\autoload');
 
 /**
  * ComplexPie
