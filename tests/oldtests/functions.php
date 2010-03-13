@@ -17,7 +17,7 @@ class SimplePie_Feed_Author_Test extends SimplePie_Feed_Test
     function author()
     {
         $feed = $this->feed();
-        if ($author = $item->get_author())
+        if (list($author) = $item->authors)
         {
             return $author;
         }
@@ -66,7 +66,7 @@ class SimplePie_First_Item_Author_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            if ($author = $item->get_author())
+            if (list($author) = $item->authors)
             {
                 return $author;
             }
@@ -81,7 +81,7 @@ class SimplePie_First_Item_Category_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            if ($category = $item->get_category())
+            if (list($category) = $item->categories)
             {
                 return $category;
             }
@@ -96,7 +96,7 @@ class SimplePie_First_Item_Contributor_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            if ($contributor = $item->get_contributor())
+            if (list($contributor) = $item->contributors)
             {
                 return $contributor;
             }
@@ -257,7 +257,7 @@ class SimplePie_First_Item_Content_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            $this->result = $item->get_content();
+            $this->result = $item->content;
         }
     }
 }
@@ -290,7 +290,7 @@ class SimplePie_First_Item_Description_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            $this->result = $item->get_description();
+            $this->result = $item->description;
         }
     }
 }
@@ -301,7 +301,7 @@ class SimplePie_First_Item_ID_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            $this->result = $item->get_id();
+            $this->result = $item->id;
         }
     }
 }
@@ -312,7 +312,7 @@ class SimplePie_First_Item_Permalink_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            $this->result = $item->get_permalink();
+            $this->result = $item->permalink;
         }
     }
 }
@@ -323,7 +323,7 @@ class SimplePie_First_Item_Title_Test extends SimplePie_First_Item_Test
     {
         if ($item = $this->first_item())
         {
-            $this->result = $item->get_title();
+            $this->result = $item->title;
         }
     }
 }

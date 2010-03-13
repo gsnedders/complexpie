@@ -1,15 +1,17 @@
 <?php
 namespace ComplexPie;
 
-class Entry
+class Entry extends Data
 {
     var $feed;
     var $data = array();
+    protected $dom;
 
-    public function __construct($feed, $data)
+    public function __construct($feed, $data, $dom)
     {
         $this->feed = $feed;
         $this->data = $data;
+        $this->dom = $dom;
     }
 
     public function __toString()
@@ -174,19 +176,6 @@ class Entry
         }
     }
 
-    public function get_category($key = 0)
-    {
-        $categories = $this->get_categories();
-        if (isset($categories[$key]))
-        {
-            return $categories[$key];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     public function get_categories()
     {
         $categories = array();
@@ -229,32 +218,6 @@ class Entry
         if (!empty($categories))
         {
             return array_unique($categories);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_author($key = 0)
-    {
-        $authors = $this->get_authors();
-        if (isset($authors[$key]))
-        {
-            return $authors[$key];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_contributor($key = 0)
-    {
-        $contributors = $this->get_contributors();
-        if (isset($contributors[$key]))
-        {
-            return $contributors[$key];
         }
         else
         {
@@ -487,8 +450,8 @@ class Entry
 
     public function get_permalink()
     {
-        $link = $this->get_link();
-        $enclosure = $this->get_enclosure(0);
+        list($link) = $this->links;
+        list($enclosure) = $this->enclosures;
         if ($link !== null)
         {
             return $link;
@@ -503,20 +466,7 @@ class Entry
         }
     }
 
-    public function get_link($key = 0, $rel = 'alternate')
-    {
-        $links = $this->get_links($rel);
-        if ($links[$key] !== null)
-        {
-            return $links[$key];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public function get_links($rel = 'alternate')
+    public function get_links()
     {
         if (!isset($this->data['links']))
         {
@@ -580,25 +530,9 @@ class Entry
                 $this->data['links'][$key] = array_unique($this->data['links'][$key]);
             }
         }
-        if (isset($this->data['links'][$rel]))
+        if (isset($this->data['links']['alternate']))
         {
-            return $this->data['links'][$rel];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * @todo Add ability to prefer one type of content over another (in a media group).
-     */
-    public function get_enclosure($key = 0, $prefer = null)
-    {
-        $enclosures = $this->get_enclosures();
-        if (isset($enclosures[$key]))
-        {
-            return $enclosures[$key];
+            return $this->data['links']['alternate'];
         }
         else
         {
