@@ -3,8 +3,6 @@ namespace ComplexPie;
 
 /**
  * Date Parser
- *
- * @package SimplePie
  */
 class Parse_Date
 {

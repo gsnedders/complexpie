@@ -37,17 +37,17 @@ Constants::$voidElements = array_flip(array(
 ));
 
 /**
- * SimplePie Name
+ * ComplexPie Name
  */
-const NAME = 'SimplePie';
+const NAME = 'ComplexPie';
 
 /**
- * SimplePie Version
+ * ComplexPie Version
  */
 const VERSION = '2.0-dev';
 
 /**
- * SimplePie Build
+ * ComplexPie Build
  */
 $build = 'unknown';
 $foo = array();
@@ -67,12 +67,12 @@ if ($return === 0)
 define('BUILD', $build);
 
 /**
- * SimplePie Website URL
+ * ComplexPie Website URL
  */
 const URL = 'http://simplepie.org';
 
 /**
- * SimplePie Useragent
+ * ComplexPie Useragent
  * This can be passed into whatever HTTP class you use.
  */
 define('USERAGENT', NAME . '/' . VERSION . ' (Feed Parser; ' . URL . ') Build/' . BUILD);

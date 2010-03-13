@@ -2,10 +2,10 @@
 namespace ComplexPie;
 
 /**
- * SimplePie
+ * ComplexPie
  *
  * A PHP-Based RSS and Atom Feed Framework.
- * Takes the hard work out of managing a complete RSS/Atom solution.
+ * Takes the easy work out of managing a complete feed reader.
  *
  * Copyright (c) 2004-2010, Ryan Parman, Geoffrey Sneddon, Ryan McCue, and
  * contributors. All rights reserved.
@@ -36,7 +36,6 @@ namespace ComplexPie;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package SimplePie
  * @version 2.0-dev
  * @copyright 2004-2010 Ryan Parman, Geoffrey Sneddon, Ryan McCue
  * @author Ryan Parman
@@ -87,9 +86,7 @@ else
 }
 
 /**
- * SimplePie
- *
- * @package SimplePie
+ * ComplexPie
  */
 function ComplexPie($data, $uri = null)
 {
