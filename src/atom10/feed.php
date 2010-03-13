@@ -3,6 +3,8 @@ namespace ComplexPie\Atom10;
 
 class Feed extends \ComplexPie\XMLFeed
 {
+    protected static $static_ext = array();
+
     protected static $aliases = array(
         'description' => 'subtitle',
         'tagline' => 'subtitle',
