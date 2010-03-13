@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie\Atom10;
 
-class Feed extends \ComplexPie\XMLFeed
+class Feed extends \ComplexPie\XML\Feed
 {
     protected static $static_ext = array();
 

@@ -1,12 +1,12 @@
 <?php
-namespace ComplexPie;
+namespace ComplexPie\XML;
 
-function xmllang($dom, $name)
+function lang($dom, $name)
 {
     if ($name === 'language')
     {
         $xpath = new \DOMXPath($dom->ownerDocument);
-        $xpath->registerNamespace('xml', NAMESPACE_XML);
+        $xpath->registerNamespace('xml', \ComplexPie\NAMESPACE_XML);
         $results = $xpath->query('ancestor-or-self::*/@xml:lang', $dom);
         if ($results->length)
         {

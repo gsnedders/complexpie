@@ -47,7 +47,7 @@ namespace ComplexPie;
 
 require_once 'constants.php';
 require_once 'nodeToHTML.php';
-require_once 'xmllang.php';
+require_once 'xml/lang.php';
 
 if (extension_loaded('spl'))
 {
@@ -126,7 +126,7 @@ function ComplexPie($data, $uri = null)
                     $dom->documentElement->appendChild($channel);
                     $element = $channel;
                 }
-                break;
+                return new RSS20\Feed($element, $tree);
             
             case '{' . NAMESPACE_RDF . '}RDF':
                 $channels = $dom->getElementsByTagNameNS(NAMESPACE_RSS_10, 'channel');
@@ -167,8 +167,7 @@ function ComplexPie($data, $uri = null)
             default:
                 return false;
         }
-        $feed = new Feed($element, $tree);
-        $feed->add_extension('get', '\\ComplexPie\\Atom10\\Feed::get', 10);
+        $feed = new XML\Feed($element, $tree);
         return $feed;
     }
     else

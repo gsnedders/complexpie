@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie;
 
-class Feed extends XMLData
+class Feed extends XML\Data
 {
     // The actual data
     protected $dom;
@@ -675,5 +675,3 @@ class Feed extends XMLData
         }
     }
 }
-
-Feed::add_static_extension('get', '\\ComplexPie\\xmllang', 10);

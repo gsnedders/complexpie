@@ -1,11 +1,11 @@
 <?php
-namespace ComplexPie;
+namespace ComplexPie\XML;
 
-class XMLData extends Data
+class Data extends \ComplexPie\Data
 {
     public function __construct()
     {
-        $this->add_extension('get', get_class($this) . '::get', 0);
+        $this->add_extension('get', get_class($this) . '::get', ~PHP_INT_MAX);
     }
     
     protected static function get($dom, $name)
