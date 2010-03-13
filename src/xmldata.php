@@ -27,7 +27,7 @@ class XMLData extends Data
     private static function elements_table($dom, $name)
     {
         $element = static::$elements[$name];
-        $nodes = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => \ComplexPie\Atom10\XMLNS));
+        $nodes = \ComplexPie\Misc::xpath($dom, $element['element'], static::$element_namespaces);
         if ($nodes->length !== 0)
         {
             if ($element['single'])

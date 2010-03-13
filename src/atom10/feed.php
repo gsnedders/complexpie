@@ -67,6 +67,10 @@ class Feed extends \ComplexPie\Feed
         // XXX: entry
     );
     
+    protected static $element_namespaces = array(
+        'atom' => XMLNS,
+    );
+    
     protected static function getter_links($dom)
     {
         $nodes = \ComplexPie\Misc::xpath($dom,'atom:link[@href]', array('atom' => XMLNS));
