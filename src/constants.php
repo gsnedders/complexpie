@@ -67,17 +67,6 @@ if ($return === 0)
 define('BUILD', $build);
 
 /**
- * ComplexPie Website URL
- */
-const URL = 'http://simplepie.org';
-
-/**
- * ComplexPie Useragent
- * This can be passed into whatever HTTP class you use.
- */
-define('USERAGENT', NAME . '/' . VERSION . ' (Feed Parser; ' . URL . ') Build/' . BUILD);
-
-/**
  * No known feed type
  */
 const TYPE_NONE = 0;
