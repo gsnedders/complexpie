@@ -100,13 +100,13 @@ class Feed extends \ComplexPie\Feed
     
     public static function get($dom, $name)
     {
-        if (isset(self::$elements[$name]))
+        if (isset(static::$elements[$name]))
         {
-            return self::elements_table($dom, $name);
+            return static::elements_table($dom, $name);
         }
-        elseif (isset(self::$aliases[$name]))
+        elseif (isset(static::$aliases[$name]))
         {
-            return self::get($dom, self::$aliases[$name]);
+            return static::get($dom, static::$aliases[$name]);
         }
         elseif (is_callable("static::getter_$name"))
         {
@@ -116,7 +116,7 @@ class Feed extends \ComplexPie\Feed
     
     private static function elements_table($dom, $name)
     {
-        $element = self::$elements[$name];
+        $element = static::$elements[$name];
         $nodes = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => XMLNS));
         if ($nodes->length !== 0)
         {
