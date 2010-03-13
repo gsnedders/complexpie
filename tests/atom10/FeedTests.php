@@ -11,6 +11,8 @@ require_once 'FeedSubtitleTest.php';
 require_once 'FeedTitleTest.php';
 require_once 'FeedUpdatedTest.php';
 
+require_once 'FeedEntryTests.php';
+
 class Atom10_FeedTests
 {
 	public static function suite()
@@ -25,6 +27,8 @@ class Atom10_FeedTests
 		$suite->addTestSuite('FeedSubtitleTest');
 		$suite->addTestSuite('FeedTitleTest');
 		$suite->addTestSuite('FeedUpdatedTest');
+		
+        $suite->addTest(Atom10_FeedEntryTests::suite());
 
 		return $suite;
 	}
