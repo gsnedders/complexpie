@@ -198,6 +198,18 @@ EOF;
         $this->assertSame('category 1', $feed->categories[0]->term->to_text());
         $this->assertSame('category 2', $feed->categories[1]->term->to_text());
     }
+    
+    public function testCategoryCount()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <category term="category 1"/>
+    <category term="category 2"/>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame(2, count($feed->categories));
+    }
 }
 
 ?>

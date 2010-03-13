@@ -184,6 +184,22 @@ EOF;
         $this->assertSame('Author 1', $feed->authors[0]->name->to_text());
         $this->assertSame('Author 2', $feed->authors[1]->name->to_text());
     }
+    
+    public function testAuthorCount()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name>Author 1</name>
+    </author>
+    <author>
+        <name>Author 2</name>
+    </author>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame(2, count($feed->authors));
+    }
 }
 
 ?>
