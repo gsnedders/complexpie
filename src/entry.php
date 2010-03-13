@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie;
 
-class Entry extends Data
+class Entry extends XML\Data
 {
     var $feed;
     var $data = array();
@@ -124,7 +124,7 @@ class Entry extends Data
         return $this->data['title'];
     }
 
-    public function get_description($description_only = false)
+    public function get_description()
     {
         if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'summary'))
         {
@@ -142,17 +142,13 @@ class Entry extends Data
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
         }
-        elseif (!$description_only)
-        {
-            return $this->get_content(true);
-        }
         else
         {
             return null;
         }
     }
 
-    public function get_content($content_only = false)
+    public function get_content()
     {
         if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'content'))
         {
@@ -165,10 +161,6 @@ class Entry extends Data
         elseif ($return = $this->get_item_tags(NAMESPACE_RSS_10_MODULES_CONTENT, 'encoded'))
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
-        }
-        elseif (!$content_only)
-        {
-            return $this->get_description(true);
         }
         else
         {
