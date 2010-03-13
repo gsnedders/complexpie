@@ -67,12 +67,12 @@ function autoload($classname)
             if (file_exists($init))
                 require_once $init;
             
-            require_once $file;
+            require $file;
         }
     }
 }
 
-spl_autoload_register('ComplexPie\autoload');
+spl_autoload_register('ComplexPie\\autoload');
 
 /**
  * ComplexPie
