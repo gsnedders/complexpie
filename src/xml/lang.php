@@ -10,7 +10,7 @@ function lang($dom, $name)
         $results = $xpath->query('ancestor-or-self::*/@xml:lang', $dom);
         if ($results->length)
         {
-            return $results->item($results->length - 1)->value;
+            return \ComplexPie\Content::from_textcontent($results->item($results->length - 1));
         }
     }
 }
