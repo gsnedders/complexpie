@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie;
 
-class Item
+class Entry
 {
     var $feed;
     var $data = array();
