@@ -1,10 +1,23 @@
 <?php
 namespace ComplexPie;
 
-class Feed extends Data
+class Feed extends XMLData
 {
+    // The actual data
+    protected $dom;
+    protected $data;
+    protected $sanitize;
+    
+    // tmp stuff for this class
+    protected static $elements = array();
+    protected static $aliases = array();
+    
     public function __construct($dom, $oldtree)
     {
+        // Start data stuff
+        parent::__construct();
+        
+        // Get this own object rolling
         $this->dom = $dom;
         $this->data = $oldtree;
         $this->sanitize = new Sanitize();

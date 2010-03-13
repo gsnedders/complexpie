@@ -3,13 +3,13 @@ namespace ComplexPie\Atom10;
 
 class Feed extends \ComplexPie\Feed
 {
-    private static $aliases = array(
+    protected static $aliases = array(
         'description' => 'subtitle',
         'tagline' => 'subtitle',
         'copyright' => 'rights',
     );
     
-    private static $elements = array(
+    protected static $elements = array(
         'authors' => array(
             'element' => 'atom:author',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
@@ -67,7 +67,7 @@ class Feed extends \ComplexPie\Feed
         // XXX: entry
     );
     
-    public static function getter_links($dom)
+    protected static function getter_links($dom)
     {
         $nodes = \ComplexPie\Misc::xpath($dom,'atom:link[@href]', array('atom' => XMLNS));
         if ($nodes->length !== 0)
@@ -88,68 +88,6 @@ class Feed extends \ComplexPie\Feed
                 $return[$rel][] = $link;
             }
             return $return;
-        }
-    }
-    
-    public function __construct()
-    {
-        $this->add_extension('get', get_class($this) . '::get', 0);
-        $args = func_get_args();
-        call_user_func_array(array($this, 'parent::__construct'), $args);
-    }
-    
-    public static function get($dom, $name)
-    {
-        if (isset(static::$elements[$name]))
-        {
-            return static::elements_table($dom, $name);
-        }
-        elseif (isset(static::$aliases[$name]))
-        {
-            return static::get($dom, static::$aliases[$name]);
-        }
-        elseif (is_callable("static::getter_$name"))
-        {
-            return call_user_func("static::getter_$name", $dom);
-        }
-    }
-    
-    private static function elements_table($dom, $name)
-    {
-        $element = static::$elements[$name];
-        $nodes = \ComplexPie\Misc::xpath($dom, $element['element'], array('atom' => XMLNS));
-        if ($nodes->length !== 0)
-        {
-            if ($element['single'])
-            {
-                if (class_exists($element['contentConstructor']))
-                {
-                    return new $element['contentConstructor']($nodes->item(0));
-                }
-                else
-                {
-                    return call_user_func($element['contentConstructor'], $nodes->item(0));
-                }
-            }
-            else
-            {
-                $return = array();
-                if (class_exists($element['contentConstructor']))
-                {
-                    foreach ($nodes as $node)
-                    {
-                        $return[] = new $element['contentConstructor']($node);
-                    }
-                }
-                else
-                {
-                    foreach ($nodes as $node)
-                    {
-                        $return[] = call_user_func($element['contentConstructor'], $node);
-                    }
-                }
-                return $return;
-            }
         }
     }
 }
