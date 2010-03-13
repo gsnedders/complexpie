@@ -67,6 +67,30 @@ class Feed extends \ComplexPie\Feed
         // XXX: entry
     );
     
+    public static function getter_links($dom)
+    {
+        $nodes = \ComplexPie\Misc::xpath($dom,'atom:link[@href]', array('atom' => XMLNS));
+        if ($nodes->length !== 0)
+        {
+            $return = array();
+            foreach ($nodes as $node)
+            {
+                $link = new Content\Link($node);
+                $rel = $link->rel->to_text();
+                if (!isset($return[$rel]))
+                {
+                    $return[$rel] = array();
+                    if (substr($rel, 0, 41) === 'http://www.iana.org/assignments/relation/')
+                    {
+                        $return[substr($rel, 41)] =& $return[$rel];
+                    }
+                }
+                $return[$rel][] = $link;
+            }
+            return $return;
+        }
+    }
+    
     public function __construct()
     {
         $this->add_extension('get', get_class($this) . '::get', 0);
@@ -76,36 +100,17 @@ class Feed extends \ComplexPie\Feed
     
     public static function get($dom, $name)
     {
-        if ($name === 'links')
-        {
-            $nodes = \ComplexPie\Misc::xpath($dom,'atom:link[@href]', array('atom' => XMLNS));
-            if ($nodes->length !== 0)
-            {
-                $return = array();
-                foreach ($nodes as $node)
-                {
-                    $link = new Content\Link($node);
-                    $rel = $link->rel->to_text();
-                    if (!isset($return[$rel]))
-                    {
-                        $return[$rel] = array();
-                        if (substr($rel, 0, 41) === 'http://www.iana.org/assignments/relation/')
-                        {
-                            $return[substr($rel, 41)] =& $return[$rel];
-                        }
-                    }
-                    $return[$rel][] = $link;
-                }
-                return $return;
-            }
-        }
-        elseif (isset(self::$elements[$name]))
+        if (isset(self::$elements[$name]))
         {
             return self::elements_table($dom, $name);
         }
         elseif (isset(self::$aliases[$name]))
         {
             return self::get($dom, self::$aliases[$name]);
+        }
+        elseif (is_callable("static::getter_$name"))
+        {
+            return call_user_func("static::getter_$name", $dom);
         }
     }
     
