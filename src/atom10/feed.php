@@ -72,28 +72,7 @@ class Feed extends \ComplexPie\XML\Feed
     protected static $element_namespaces = array(
         'atom' => XMLNS,
     );
-    
-    protected static function getter_links($dom)
-    {
-        $nodes = \ComplexPie\Misc::xpath($dom,'atom:link[@href]', array('atom' => XMLNS));
-        if ($nodes->length !== 0)
-        {
-            $return = array();
-            foreach ($nodes as $node)
-            {
-                $link = new Content\Link($node);
-                $rel = $link->rel->to_text();
-                if (!isset($return[$rel]))
-                {
-                    $return[$rel] = array();
-                    if (substr($rel, 0, 41) === 'http://www.iana.org/assignments/relation/')
-                    {
-                        $return[substr($rel, 41)] =& $return[$rel];
-                    }
-                }
-                $return[$rel][] = $link;
-            }
-            return $return;
-        }
-    }
 }
+
+require_once dirname(__FILE__) . '/links.php';
+Feed::add_static_extension('get', '\\ComplexPie\\Atom10\\links', ~PHP_INT_MAX);

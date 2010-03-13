@@ -48,6 +48,7 @@ namespace ComplexPie;
 
 require_once 'constants.php';
 require_once 'nodeToHTML.php';
+require_once 'atom10/links.php';
 require_once 'xml/lang.php';
 
 if (extension_loaded('spl'))
