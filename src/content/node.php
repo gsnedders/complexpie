@@ -108,14 +108,7 @@ class Node extends \ComplexPie\Content
         $xml = '';
         foreach ($this->nodes as $node)
         {
-            if ($node->nodeType === \XML_CDATA_SECTION_NODE)
-            {
-                $xml .= htmlspecialchars($node->nodeValue, ENT_QUOTES, 'UTF-8');
-            }
-            else
-            {
-                $xml .= $this->document->saveXML($node);
-            }
+            $xml .= $this->document->saveXML($node);
         }
         return $xml;
     }
