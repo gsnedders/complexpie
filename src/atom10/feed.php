@@ -74,5 +74,4 @@ class Feed extends \ComplexPie\XML\Feed
     );
 }
 
-require_once dirname(__FILE__) . '/links.php';
 Feed::add_static_extension('get', '\\ComplexPie\\Atom10\\links', ~PHP_INT_MAX);
