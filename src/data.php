@@ -5,28 +5,28 @@ class Data extends Extension
 {
     protected static $static_ext = array();
     
-    public static function add_static_extension($extpoint, $ext, $priority)
+    public static function add_static_extension($extpoint, $ext, $priority, $force = false)
     {
         if (is_string($ext) && substr($ext, 0, 1) === '\\')
         {
             $ext = substr($ext, 1);
         }
         
-        if ($extpoint === 'get' && !is_callable($ext))
+        if (!$force && $extpoint === 'get' && !is_callable($ext))
         {
             throw new \InvalidArgumentException("$ext is not callable");
         }
         parent::add_static_extension($extpoint, $ext, $priority);
     }
     
-    public function add_extension($extpoint, $ext, $priority)
+    public function add_extension($extpoint, $ext, $priority, $force = false)
     {
         if (is_string($ext) && substr($ext, 0, 1) === '\\')
         {
             $ext = substr($ext, 1);
         }
         
-        if ($extpoint === 'get' && !is_callable($ext))
+        if (!$force && $extpoint === 'get' && !is_callable($ext))
         {
             throw new \InvalidArgumentException("$ext is not callable");
         }

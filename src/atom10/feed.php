@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie\Atom10;
 
-class Feed extends \ComplexPie\Feed
+class Feed extends \ComplexPie\XMLFeed
 {
     protected static $aliases = array(
         'description' => 'subtitle',
