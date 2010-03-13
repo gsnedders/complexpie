@@ -187,31 +187,6 @@ const CONSTRUCT_IRI = 16;
 const CONSTRUCT_ALL = 63;
 
 /**
- * Don't change case
- */
-const SAME_CASE = 1;
-
-/**
- * Change to lowercase
- */
-const LOWERCASE = 2;
-
-/**
- * Change to uppercase
- */
-const UPPERCASE = 4;
-
-/**
- * PCRE for HTML attributes
- */
-const PCRE_HTML_ATTRIBUTE = '((?:[\x09\x0A\x0B\x0C\x0D\x20]+[^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x2F\x3D\x3E]*(?:[\x09\x0A\x0B\x0C\x0D\x20]*=[\x09\x0A\x0B\x0C\x0D\x20]*(?:"(?:[^"]*)"|\'(?:[^\']*)\'|(?:[^\x09\x0A\x0B\x0C\x0D\x20\x22\x27\x3E][^\x09\x0A\x0B\x0C\x0D\x20\x3E]*)?))?)*)[\x09\x0A\x0B\x0C\x0D\x20]*';
-
-/**
- * PCRE for XML attributes
- */
-const PCRE_XML_ATTRIBUTE = '((?:\s+(?:(?:[^\s:]+:)?[^\s:]+)\s*=\s*(?:"(?:[^"]*)"|\'(?:[^\']*)\'))*)\s*';
-
-/**
  * XML Namespace
  */
 const NAMESPACE_XML = 'http://www.w3.org/XML/1998/namespace';

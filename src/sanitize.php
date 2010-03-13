@@ -46,7 +46,7 @@ class Sanitize
 
             if ($type & CONSTRUCT_XHTML)
             {
-                $data = preg_replace('/^<div' . PCRE_XML_ATTRIBUTE . '>/', '', $data);
+                $data = preg_replace('/^<div((?:\s+(?:(?:[^\s:]+:)?[^\s:]+)\s*=\s*(?:"(?:[^"]*)"|\'(?:[^\']*)\'))*)\s*>/', '', $data);
                 $data = preg_replace('/<\/div>$/', '', $data);
             }
 
