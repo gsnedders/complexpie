@@ -382,7 +382,7 @@ uWe0KcJIoeCmsEYXdB4oKkJLttzV0KKkJwMZw7kVSBkvKzNZ2slOxOAyjXsgNsN8J2BmhjtWCuVV
 5qkApisZhVWSzhS3NSiJbFKFN8KXKXepXKSuX//Z
 EOF;
         $input = "<foobar type='image/jpeg'>$binary</foobar>";
-        $this->assertSame(base64_decode($binary), $this->getContent($input)->to_text());
+        $this->assertSame(base64_decode($binary), $this->getContent($input)->get_data());
     }
 
     public function testInvalidBinary()
@@ -394,7 +394,7 @@ EOF;
     public function testArbitaryText()
     {
         $input = "<foobar type='text/foobar'>YQ==</foobar>";
-        $this->assertSame('YQ==', $this->getContent($input)->to_text());
+        $this->assertSame('YQ==', $this->getContent($input)->get_data());
     }
 }
 

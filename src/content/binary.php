@@ -1,18 +1,32 @@
 <?php
 namespace ComplexPie\Content;
 
-class Binary extends String
+class Binary extends \ComplexPie\Content
 {
-    protected $type;
+    protected $data;
     
-    public function __construct($string, $type)
+    public function __construct($data)
     {
-        parent::__construct($string);
-        $this->type = $type;
+        $this->data = $data;
     }
     
-    public function getType()
+    public function get_data()
     {
-        return $this->type;
+        return $this->data;
+    }
+    
+    public function to_text()
+    {
+        throw new \Exception('Binary data cannot be serialized');
+    }
+    
+    public function to_xml()
+    {
+        throw new \Exception('Binary data cannot be serialized');
+    }
+    
+    public function to_html()
+    {
+        throw new \Exception('Binary data cannot be serialized');
     }
 }
