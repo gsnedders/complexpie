@@ -49,22 +49,26 @@ const VERSION = '2.0-dev';
 /**
  * ComplexPie Build
  */
-$build = 'unknown';
-$foo = array();
-exec('git --help', $foo, $return);
-if ($return === 0)
+function getBuild()
 {
-    $path = __FILE__;
-    while (($path = dirname($path)) !== '/')
+    $build = 'unknown';
+    $foo = array();
+    exec('git --help', $foo, $return);
+    if ($return === 0)
     {
-        if (file_exists($path . '/.git'))
+        $path = __FILE__;
+        while (($path = dirname($path)) !== '/')
         {
-            $build = trim(exec("git --git-dir=$path/.git log -1 --pretty=format:%H"));
-            break;
+            if (file_exists($path . '/.git'))
+            {
+                $build = trim(exec("git --git-dir=$path/.git log -1 --pretty=format:%H"));
+                break;
+            }
         }
     }
+    return $build;
 }
-define('BUILD', $build);
+define('BUILD', getBuild());
 
 /**
  * No known feed type
