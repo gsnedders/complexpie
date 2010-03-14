@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie\Atom10;
 
-function links($dom, $name)
+function links($data, $dom, $name)
 {
     if ($name === 'links')
     {

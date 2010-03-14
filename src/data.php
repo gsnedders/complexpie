@@ -45,7 +45,7 @@ class Data extends Extension
         $returnarray = false;
         foreach ($extensions as $extension)
         {
-            if (($extreturn = call_user_func($extension, $this->dom, $name)) !== null)
+            if (($extreturn = call_user_func($extension, $this, $this->dom, $name)) !== null)
             {
                 if (is_array($extreturn))
                 {

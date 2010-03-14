@@ -8,7 +8,7 @@ class Data extends \ComplexPie\Data
         $this->add_extension('get', get_class($this) . '::get', ~PHP_INT_MAX);
     }
     
-    protected static function get($dom, $name)
+    protected static function get($data, $dom, $name)
     {
         if (isset(static::$elements[$name]))
         {
@@ -16,11 +16,11 @@ class Data extends \ComplexPie\Data
         }
         elseif (isset(static::$aliases[$name]))
         {
-            return static::get($dom, static::$aliases[$name]);
+            return static::get($data, $dom, static::$aliases[$name]);
         }
         elseif (is_callable("static::getter_$name"))
         {
-            return call_user_func("static::getter_$name", $dom);
+            return call_user_func("static::getter_$name", $data, $dom);
         }
     }
     

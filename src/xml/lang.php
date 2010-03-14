@@ -1,7 +1,7 @@
 <?php
 namespace ComplexPie\XML;
 
-function lang($dom, $name)
+function lang($data, $dom, $name)
 {
     if ($name === 'language')
     {

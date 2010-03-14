@@ -9,6 +9,7 @@ class Feed extends \ComplexPie\XML\Feed
         'description' => 'subtitle',
         'tagline' => 'subtitle',
         'copyright' => 'rights',
+        'items' => 'entries'
     );
     
     protected static $elements = array(
@@ -72,29 +73,19 @@ class Feed extends \ComplexPie\XML\Feed
         'atom' => XMLNS,
     );
     
-    protected function entries($dom, $name)
+    protected static function getter_entries($feed, $dom)
     {
-        if ($name === 'entries' || $name === 'items')
+        $nodes = \ComplexPie\Misc::xpath($dom, 'atom:entry', self::$element_namespaces);
+        if ($nodes->length !== 0)
         {
-            $nodes = \ComplexPie\Misc::xpath($dom, 'atom:entry', self::$element_namespaces);
-            if ($nodes->length !== 0)
+            $return = array();
+            foreach ($nodes as $node)
             {
-                $return = array();
-                foreach ($nodes as $node)
-                {
-                    $tree = $this->data['child'][XMLNS]['feed'][0]['child'][XMLNS]['entry'][count($return)];
-                    $return[] = new Entry($this, $tree, $node);
-                }
-                return $return;
+                $tree = $feed->data['child'][XMLNS]['feed'][0]['child'][XMLNS]['entry'][count($return)];
+                $return[] = new Entry($feed, $tree, $node);
             }
+            return $return;
         }
-    }
-    
-    public function __construct()
-    {
-        $args = func_get_args();
-        call_user_func_array(array($this, 'parent::__construct'), $args);
-        $this->add_extension('get', array($this, 'entries'), ~PHP_INT_MAX);
     }
 }
 
