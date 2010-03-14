@@ -209,6 +209,20 @@ EOF
         $feed = \ComplexPie\ComplexPie($input);
         $this->assertSame('<a href="http://example.com">Test</a>', $feed->entries[0]->rights->to_html());
     }
+    
+    public function testInheritsFromFeed()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <rights>PASS</rights>
+    <entry>
+        <title>Foobar</title>
+    </entry>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('PASS', $feed->entries[0]->rights->to_html());
+    }
 }
 
 ?>
