@@ -6,6 +6,17 @@ abstract class Extension
     protected static $static_ext = array();
     protected $object_ext = array();
     
+    private static $changed_statically = array();
+    private $static_change_start = 0;
+    private $modified = false;
+    private $cache;
+    
+    public function __construct()
+    {
+        $this->static_change_start = count(self::$changed_statically);
+        $this->cache = new CacheArray;
+    }
+    
     public static function add_static_extension($extpoint, $ext, $priority)
     {
         if (!static::static_ext_point_exists($extpoint))
@@ -14,6 +25,7 @@ abstract class Extension
         }
         else
         {
+            self::$changed_statically[] = get_called_class();
             static::$static_ext[$extpoint][(int) $priority][] = $ext;
         }
     }
@@ -60,6 +72,7 @@ abstract class Extension
     {
         if (!isset(static::$static_ext[$name]) && !isset($this->object_ext[$name]))
         {
+            $this->modified = true;
             $this->object_ext[$name] = array();
         }
         else
@@ -69,7 +82,26 @@ abstract class Extension
     }
     
     public function get_extensions($extpoint)
-    {
+    {   
+        if (isset($this->cache[$extpoint]) && !$this->modified)
+        {
+            $valid = true;
+            for (; $this->static_change_start < count(self::$changed_statically); $this->static_change_start++)
+            {
+                if ($this instanceof self::$changed_statically[$this->static_change_start])
+                {
+                    $valid = false;
+                    $this->static_change_start = count(self::$changed_statically);
+                    break;
+                }
+            }
+            
+            if ($valid)
+            {
+                return $this->cache[$extpoint];
+            }
+        }
+        
         $extensions = array();
         $extpoint_exists = false;
         
@@ -97,13 +129,13 @@ abstract class Extension
         
         if ($extpoint_exists)
         {
+            $return = array();
             if ($extensions)
             {
                 // Sort by priority (where lower is higher priority).
                 ksort($extensions, SORT_NUMERIC);
                 
                 // Flatten to a 1D array and remove duplicates.
-                $return = array();
                 foreach (call_user_func_array('array_merge', $extensions) as $extension)
                 {
                     if (!in_array($extension, $return))
@@ -111,12 +143,9 @@ abstract class Extension
                         $return[] = $extension;
                     }
                 }
-                return $return;
             }
-            else
-            {
-                return array();
-            }
+            $this->cache[$extpoint] = $return;
+            return $return;
         }
         else
         {

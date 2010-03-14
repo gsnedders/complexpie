@@ -5,6 +5,7 @@ class Data extends \ComplexPie\Data
 {
     public function __construct()
     {
+        parent::__construct();
         $this->add_extension('get', get_class($this) . '::get', ~PHP_INT_MAX);
     }
     
