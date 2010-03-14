@@ -39,11 +39,6 @@ class Entry extends \ComplexPie\XML\Entry
             'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
             'single' => true
         ),
-        'rights' => array(
-            'element' => 'atom:rights',
-            'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_text_construct',
-            'single' => true
-        ),
         // XXX: source
         'summary' => array(
             'element' => 'atom:summary',
@@ -65,6 +60,19 @@ class Entry extends \ComplexPie\XML\Entry
     protected static $element_namespaces = array(
         'atom' => XMLNS,
     );
+    
+    protected static function getter_rights($entry, $dom)
+    {
+        $nodes = \ComplexPie\Misc::xpath($dom, 'atom:rights', self::$element_namespaces);
+        if ($nodes->length !== 0)
+        {
+            return \ComplexPie\Atom10\Content::from_text_construct($nodes->item(0));
+        }
+        elseif ($entry->feed && $entry->feed->rights)
+        {
+            return $entry->feed->rights;
+        }
+    }
 }
 
 Entry::add_static_extension('get', '\\ComplexPie\\Atom10\\links', ~PHP_INT_MAX);
