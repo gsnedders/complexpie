@@ -287,10 +287,6 @@ class Feed extends XML\Data
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
         }
-        elseif ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'title'))
-        {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
-        }
         else
         {
             return null;
@@ -424,10 +420,6 @@ class Feed extends XML\Data
             {
                 $this->data['links']['alternate'][] = $this->sanitize($links[0]['data'], CONSTRUCT_IRI, $this->get_base($links[0]));
             }
-            if ($links = $this->get_channel_tags(NAMESPACE_RSS_20, 'link'))
-            {
-                $this->data['links']['alternate'][] = $this->sanitize($links[0]['data'], CONSTRUCT_IRI, $this->get_base($links[0]));
-            }
 
             $keys = array_keys($this->data['links']);
             foreach ($keys as $key)
@@ -473,10 +465,6 @@ class Feed extends XML\Data
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
         }
         elseif ($return = $this->get_channel_tags(NAMESPACE_RSS_090, 'description'))
-        {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
-        }
-        elseif ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'description'))
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
         }
@@ -645,14 +633,6 @@ class Feed extends XML\Data
                 foreach ($keys as $key)
                 {
                     $this->data['items'][] = new XML\Entry($this, $items[$key], $this->dom->ownerDocument->getElementsByTagNameNS(NAMESPACE_RSS_090, 'item')->item($key));
-                }
-            }
-            if ($items = $this->get_channel_tags(NAMESPACE_RSS_20, 'item'))
-            {
-                $keys = array_keys($items);
-                foreach ($keys as $key)
-                {
-                    $this->data['items'][] = new XML\Entry($this, $items[$key], $this->dom->getElementsByTagName('item')->item($key));
                 }
             }
         }

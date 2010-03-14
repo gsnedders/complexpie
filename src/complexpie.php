@@ -49,6 +49,7 @@ namespace ComplexPie;
 require_once 'constants.php';
 require_once 'nodeToHTML.php';
 require_once 'atom10/links.php';
+require_once 'rss20/links.php';
 require_once 'xml/lang.php';
 
 if (spl_autoload_functions() === false && function_exists('__autoload'))

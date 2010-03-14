@@ -6,9 +6,15 @@ class Entry extends XML\Data
     var $feed;
     var $data = array();
     protected $dom;
+    
+    // tmp stuff for this class
+    protected static $elements = array();
+    protected static $aliases = array();
+
 
     public function __construct($feed, $data, $dom)
     {
+        parent::__construct();
         $this->feed = $feed;
         $this->data = $data;
         $this->dom = $dom;
@@ -101,10 +107,6 @@ class Entry extends XML\Data
             {
                 $this->data['title'] = $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
             }
-            elseif ($return = $this->get_item_tags(NAMESPACE_RSS_20, 'title'))
-            {
-                $this->data['title'] = $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
-            }
             else
             {
                 $this->data['title'] = null;
@@ -120,10 +122,6 @@ class Entry extends XML\Data
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
         elseif ($return = $this->get_item_tags(NAMESPACE_RSS_10, 'description'))
-        {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
-        }
-        elseif ($return = $this->get_item_tags(NAMESPACE_RSS_20, 'description'))
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_HTML, $this->get_base($return[0]));
         }
@@ -382,10 +380,6 @@ class Entry extends XML\Data
                 $this->data['links']['alternate'][] = $this->sanitize($links[0]['data'], CONSTRUCT_IRI, $this->get_base($links[0]));
             }
             if ($links = $this->get_item_tags(NAMESPACE_RSS_090, 'link'))
-            {
-                $this->data['links']['alternate'][] = $this->sanitize($links[0]['data'], CONSTRUCT_IRI, $this->get_base($links[0]));
-            }
-            if ($links = $this->get_item_tags(NAMESPACE_RSS_20, 'link'))
             {
                 $this->data['links']['alternate'][] = $this->sanitize($links[0]['data'], CONSTRUCT_IRI, $this->get_base($links[0]));
             }
