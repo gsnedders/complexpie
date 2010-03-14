@@ -206,6 +206,59 @@ EOF;
         $feed = \ComplexPie\ComplexPie($input);
         $this->assertSame(2, count($feed->entries[0]->authors));
     }
+    
+    public function testInheritsFromFeed()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name>Foobar</name>
+    </author>
+    <entry>
+        <title>Test</title>
+    </entry>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('Foobar', $feed->entries[0]->authors[0]->name->to_text());
+    }
+    
+    public function testInheritsFromSource()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <entry>
+        <source>
+            <author>
+                <name>Foobar</name>
+            </author>
+        </source>
+    </entry>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('Foobar', $feed->entries[0]->authors[0]->name->to_text());
+    }
+    
+    public function testInheritsFromSourceOverFeed()
+    {
+        $input = <<<EOF
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name>Foo</name>
+    </author>
+    <entry>
+        <source>
+            <author>
+                <name>Bar</name>
+            </author>
+        </source>
+    </entry>
+</feed>
+EOF;
+        $feed = \ComplexPie\ComplexPie($input);
+        $this->assertSame('Bar', $feed->entries[0]->authors[0]->name->to_text());
+    }
 }
 
 ?>
