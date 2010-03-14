@@ -10,11 +10,6 @@ class Entry extends \ComplexPie\XML\Entry
     );
     
     protected static $elements = array(
-        'authors' => array(
-            'element' => 'atom:author',
-            'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
-            'single' => false
-        ),
         'categories' => array(
             'element' => 'atom:category',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Category',
@@ -60,6 +55,28 @@ class Entry extends \ComplexPie\XML\Entry
     protected static $element_namespaces = array(
         'atom' => XMLNS,
     );
+    
+    protected static function getter_authors($entry, $dom)
+    {
+        $nodes = \ComplexPie\Misc::xpath($dom, 'atom:author', self::$element_namespaces);
+        if ($nodes->length !== 0)
+        {
+            $return = array();
+            foreach ($nodes as $node)
+            {
+                $return[] = new Content\Person($node);
+            }
+            return $return;
+        }
+        elseif ($entry->source && $entry->source->authors)
+        {
+            return $entry->source->authors;
+        }
+        elseif ($entry->feed && $entry->feed->authors)
+        {
+            return $entry->feed->authors;
+        }
+    }
     
     protected static function getter_rights($entry, $dom)
     {
