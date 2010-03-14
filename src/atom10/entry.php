@@ -15,7 +15,11 @@ class Entry extends \ComplexPie\XML\Entry
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Category',
             'single' => false
         ),
-        // XXX: content
+        'content' => array(
+            'element' => 'atom:content',
+            'contentConstructor' => 'ComplexPie\\Atom10\\Content::from_content',
+            'single' => true
+        ),
         'contributors' => array(
             'element' => 'atom:contributor',
             'contentConstructor' => 'ComplexPie\\Atom10\\Content\\Person',
