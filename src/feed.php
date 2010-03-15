@@ -293,36 +293,6 @@ class Feed extends XML\Data
         }
     }
 
-    protected function get_categories()
-    {
-        $categories = array();
-
-        foreach ((array) $this->get_channel_tags(NAMESPACE_RSS_20, 'category') as $category)
-        {
-            // This is really the label, but keep this as the term also for BC.
-            // Label will also work on retrieving because that falls back to term.
-            $term = $this->sanitize($category['data'], CONSTRUCT_TEXT);
-            if (isset($category['attribs']['']['domain']))
-            {
-                $scheme = $this->sanitize($category['attribs']['']['domain'], CONSTRUCT_TEXT);
-            }
-            else
-            {
-                $scheme = null;
-            }
-            $categories[] = new Category($term, $scheme, null);
-        }
-
-        if (!empty($categories))
-        {
-            return array_unique($categories);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
     protected function get_authors()
     {
         $authors = array();
@@ -480,26 +450,6 @@ class Feed extends XML\Data
         {
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
-        elseif ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'copyright'))
-        {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    protected function get_language()
-    {
-        if ($return = $this->get_channel_tags(NAMESPACE_RSS_20, 'language'))
-        {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
-        }
-        elseif (isset($this->data['headers']['content-language']))
-        {
-            return $this->sanitize($this->data['headers']['content-language'], CONSTRUCT_TEXT);
-        }
         else
         {
             return null;
@@ -516,9 +466,9 @@ class Feed extends XML\Data
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
         }
-        elseif ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'title'))
+        elseif (($image = $this->image) && ($return = $image->title))
         {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_TEXT);
+            return $return;
         }
         else
         {
@@ -544,9 +494,9 @@ class Feed extends XML\Data
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_IRI, $this->get_base($return[0]));
         }
-        elseif ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'url'))
+        elseif (($image = $this->image) && ($return = $image->url))
         {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_IRI, $this->get_base($return[0]));
+            return $return;
         }
         else
         {
@@ -564,9 +514,9 @@ class Feed extends XML\Data
         {
             return $this->sanitize($return[0]['data'], CONSTRUCT_IRI, $this->get_base($return[0]));
         }
-        elseif ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'link'))
+        elseif (($image = $this->image) && ($return = $image->link))
         {
-            return $this->sanitize($return[0]['data'], CONSTRUCT_IRI, $this->get_base($return[0]));
+            return $return;
         }
         else
         {
@@ -576,13 +526,9 @@ class Feed extends XML\Data
 
     protected function get_image_width()
     {
-        if ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'width'))
+        if (($image = $this->image) && ($return = $image->width))
         {
-            return round($return[0]['data']);
-        }
-        elseif ($this->get_type() & TYPE_RSS_SYNDICATION && $this->get_image_tags(NAMESPACE_RSS_20, 'url'))
-        {
-            return 88.0;
+            return $return;
         }
         else
         {
@@ -592,13 +538,9 @@ class Feed extends XML\Data
 
     protected function get_image_height()
     {
-        if ($return = $this->get_image_tags(NAMESPACE_RSS_20, 'height'))
+        if (($image = $this->image) && ($return = $image->height))
         {
-            return round($return[0]['data']);
-        }
-        elseif ($this->get_type() & TYPE_RSS_SYNDICATION && $this->get_image_tags(NAMESPACE_RSS_20, 'url'))
-        {
-            return 31.0;
+            return $return;
         }
         else
         {
