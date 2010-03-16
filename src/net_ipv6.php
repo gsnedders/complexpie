@@ -180,6 +180,10 @@ class Net_IPv6
                 if ($ipv6_part === '')
                     return false;
                 
+                // Nor can it be over four characters
+                if (strlen($ipv6_part) > 4)
+                    return false;
+                
                 // Remove leading zeros (this is safe because of the above)
                 $ipv6_part = ltrim($ipv6_part, '0');
                 if ($ipv6_part === '')
