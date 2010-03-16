@@ -176,9 +176,16 @@ class Net_IPv6
         {
             foreach ($ipv6 as $ipv6_part)
             {
+                // The section can't be empty
+                if ($ipv6_part === '')
+                    return false;
+                
+                // Remove leading zeros (this is safe because of the above)
                 $ipv6_part = ltrim($ipv6_part, '0');
                 if ($ipv6_part === '')
                     $ipv6_part = '0';
+                
+                // Check the value is valid
                 $value = hexdec($ipv6_part);
                 if (dechex($value) !== strtolower($ipv6_part) || $value < 0 || $value > 0xFFFF)
                     return false;
