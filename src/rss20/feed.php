@@ -52,8 +52,8 @@ class Feed extends \ComplexPie\XML\Feed
             'contentConstructor' => 'ComplexPie\\RSS20\\Content\\Image',
             'single' => true
         ),
-        'langauge' => array(
-            'element' => 'langauge',
+        'language' => array(
+            'element' => 'language',
             'contentConstructor' => 'ComplexPie\\Content::from_textcontent',
             'single' => true
         ),
