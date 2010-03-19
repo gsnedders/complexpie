@@ -8,7 +8,7 @@ abstract class Extension
     
     private static $changed_statically = array();
     private $static_change_start = 0;
-    private $modified = false;
+    private $modified = array();
     private $cache;
     
     public function __construct()
@@ -34,6 +34,7 @@ abstract class Extension
     {
         if (!static::static_ext_point_exists($name))
         {
+            self::$changed_statically[] = get_called_class();
             static::$static_ext[$name] = array();
         }
         else
@@ -64,6 +65,7 @@ abstract class Extension
         }
         else
         {
+            $this->modified[$extpoint] = true;
             $this->object_ext[$extpoint][(int) $priority][] = $ext;
         }
     }
@@ -72,7 +74,7 @@ abstract class Extension
     {
         if (!isset(static::$static_ext[$name]) && !isset($this->object_ext[$name]))
         {
-            $this->modified = true;
+            $this->modified[$extpoint] = true;
             $this->object_ext[$name] = array();
         }
         else
@@ -83,7 +85,7 @@ abstract class Extension
     
     public function get_extensions($extpoint)
     {   
-        if (isset($this->cache[$extpoint]) && !$this->modified)
+        if (isset($this->cache[$extpoint]) && !isset($this->modified[$extpoint]))
         {
             $valid = true;
             for (; $this->static_change_start < count(self::$changed_statically); $this->static_change_start++)
@@ -145,6 +147,7 @@ abstract class Extension
                 }
             }
             $this->cache[$extpoint] = $return;
+            unset($this->modified[$extpoint]);
             return $return;
         }
         else
