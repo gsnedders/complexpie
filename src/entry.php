@@ -133,11 +133,7 @@ class Entry extends XML\Data
 
     public function get_content()
     {
-        if ($return = $this->get_item_tags(NAMESPACE_ATOM_10, 'content'))
-        {
-            return $this->sanitize($return[0]['data'], Misc::atom_10_content_construct_type($return[0]['attribs']), $this->get_base($return[0]));
-        }
-        elseif ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'content'))
+        if ($return = $this->get_item_tags(NAMESPACE_ATOM_03, 'content'))
         {
             return $this->sanitize($return[0]['data'], Misc::atom_03_construct_type($return[0]['attribs']), $this->get_base($return[0]));
         }
