@@ -11,24 +11,30 @@ class Item extends \ComplexPie\XML\Entry
     );
     
     protected static $elements = array(
+        // XXX: author
+        // XXX: category
+        // XXX: comments
         'description' => array(
             'element' => 'description',
             'contentConstructor' => 'ComplexPie\\Content::from_escaped_html',
             'single' => true
         ),
+        // XXX: enclosure
+        // XXX: guid
         'link' => array(
             'element' => 'link',
             'contentConstructor' => 'ComplexPie\\Content\\IRINode',
             'single' => true
         ),
-        'title' => array(
-            'element' => 'title',
-            'contentConstructor' => 'ComplexPie\\Content::from_escaped_html',
-            'single' => true
-        ),
         'pubDate' => array(
             'element' => 'pubDate',
             'contentConstructor' => 'ComplexPie\\Content::from_date_in_textcontent',
+            'single' => true
+        ),
+        // XXX: source
+        'title' => array(
+            'element' => 'title',
+            'contentConstructor' => 'ComplexPie\\Content::from_escaped_html',
             'single' => true
         ),
     );
