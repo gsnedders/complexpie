@@ -74,7 +74,7 @@ abstract class Extension
     {
         if (!isset(static::$static_ext[$name]) && !isset($this->object_ext[$name]))
         {
-            $this->modified[$extpoint] = true;
+            $this->modified[$name] = true;
             $this->object_ext[$name] = array();
         }
         else
