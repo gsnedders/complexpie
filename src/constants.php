@@ -57,7 +57,7 @@ function getBuild()
     if ($return === 0)
     {
         $path = __FILE__;
-        while (($path = dirname($path)) !== '/')
+        while (($path = dirname($path)) !== dirname($path))
         {
             if (file_exists($path . '/.git'))
             {
