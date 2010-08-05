@@ -458,7 +458,7 @@ class IRI
         $string = preg_replace_callback('/(?:%[A-Fa-f0-9]{2})+/', array(&$this, 'remove_iunreserved_percent_encoded'), $string);
         
         // Replace invalid percent characters
-        $string = preg_replace('/%($|[^A-Fa-f0-9]|[A-Fa-f0-9][^A-Fa-f0-9])/', '%25\1', $string);
+        $string = preg_replace('/%(?![A-Fa-f0-9]{2})/', '%25', $string);
         
         // Add unreserved and % to $extra_chars (the latter is safe because all
         // pct-encoded sections are now valid).
