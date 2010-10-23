@@ -3,7 +3,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'FeedTests.php';
 require_once 'ContentTests.php';
-require_once 'Content/AllTests.php';
+require_once 'content/AllTests.php';
 
 class Atom10_AllTests
 {
