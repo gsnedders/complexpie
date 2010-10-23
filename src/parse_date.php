@@ -332,18 +332,9 @@ class Parse_Date
             }
             
             $date = new \DateTime();
-            if ($timezone % 3600 === 0)
-            {
-                // It would appear ETC/GMT+1 is what most people would call GMT-1.
-                $tz = new \DateTimeZone(sprintf('ETC/GMT%+d', -$timezone / 3600));
-                $date->setTimezone($tz);
-            }
-            else
-            {
-                $tz = new \DateTimeZone('UTC');
-                $date->setTimezone($tz);
-                $second -= $timezone;
-            }
+            $tz = new \DateTimeZone('UTC');
+            $date->setTimezone($tz);
+            $second -= $timezone;
             $date->setDate($match[3], $month, $match[1]);
             $date->setTime($match[4], $match[5], $second);
 
